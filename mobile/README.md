@@ -1,4 +1,4 @@
-# mobile
+# soccer_live_score
 
 A new Flutter project.
 

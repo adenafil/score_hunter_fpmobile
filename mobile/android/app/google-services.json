@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "728299924156",
+    "project_id": "guest-score",
+    "storage_bucket": "guest-score.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728299924156:android:a09453979c7736abe6beb9",
+        "android_client_info": {
+          "package_name": "com.example.soccer_live_score"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728299924156-9mmtuc2rvsniqeulfr7kbjmuo6ognj4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB39xKbmxNVM8M3LFfrM90bnlS5VDS_kxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728299924156-9mmtuc2rvsniqeulfr7kbjmuo6ognj4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
