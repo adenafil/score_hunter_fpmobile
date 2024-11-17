@@ -146,7 +146,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           onPressed: _previousPage,
                           style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: Colors.white),
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
@@ -169,7 +169,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         onPressed: _nextPage,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: kPrimaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),

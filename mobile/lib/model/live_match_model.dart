@@ -39,13 +39,37 @@ class LiveMatch {
 
 List<LiveMatch> liveMatches = [
   LiveMatch(
-    awayGoal: 3,
-    homeGoal: 0,
-    stadium: "St James' Park",
-    time: 83,
+    awayGoal: 1,
+    homeGoal: 2,
+    stadium: "Etihad Stadium",
+    time: 45, // First half time elapsed
+    awayLogo: "assets/img/man_city.png",
+    homeLogo: "assets/img/arsenal.png",
+    awayTitle: "Manchester City",
+    homeTitle: "Arsenal F.C.",
+    color: const Color(0xffe4e4e4),
+    textColors: Colors.black,
+    onTheWinner: false,
+    backgroundImage: const DecorationImage(
+      image: AssetImage("assets/img/pl.png"),
+      fit: BoxFit.contain,
+      alignment: Alignment.bottomLeft,
+      opacity: 0.2,
+    ),
+    shotOnTarget: 5, // Placeholder, isi dengan data yang sesuai
+    possession: 60, // Placeholder, isi dengan data yang sesuai
+    yelloCard: 2, // Placeholder, isi dengan data yang sesuai
+    redCard: 0, // Placeholder, isi dengan data yang sesuai
+    corner: 6, // Placeholder, isi dengan data yang sesuai
+  ),
+  LiveMatch(
+    awayGoal: 0,
+    homeGoal: 2,
+    stadium: "King Power Stadium",
+    time: 93, // Second half time elapsed
     awayLogo: "assets/img/leicester_city.png",
     homeLogo: "assets/img/chelsea.png",
-    awayTitle: "Lester City",
+    awayTitle: "Leicester City",
     homeTitle: "Chelsea",
     color: const Color(0xff202020),
     textColors: Colors.white,
@@ -54,84 +78,36 @@ List<LiveMatch> liveMatches = [
       image: AssetImage("assets/img/pl.png"),
       fit: BoxFit.contain,
       alignment: Alignment.bottomLeft,
-      opacity: 0.2,
-    ),
-    shotOnTarget: 2,
-    possession: 60,
-    yelloCard: 6,
-    redCard: 5,
-    corner: 12,
-  ),
-  LiveMatch(
-    awayGoal: 1,
-    homeGoal: 2,
-    stadium: "London Stadium",
-    time: 55,
-    onTheWinner: true,
-    awayLogo: "assets/img/southampton.png",
-    homeLogo: "assets/img/west_ham.png",
-    awayTitle: "Southampton",
-    homeTitle: "West Ham",
-    color: const Color(0xffe4e4e4),
-    textColors: Colors.black,
-    backgroundImage: const DecorationImage(
-      image: AssetImage("assets/img/pl.png"),
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomLeft,
-      opacity: 0.1,
-    ),
-    shotOnTarget: 5,
-    possession: 65,
-    yelloCard: 5,
-    redCard: 1,
-    corner: 8,
-  ),
-  LiveMatch(
-    awayGoal: 0,
-    homeGoal: 2,
-    stadium: "Camp Nou",
-    time: 83,
-    awayLogo: "assets/img/bayern.png",
-    homeLogo: "assets/img/barcelona.png",
-    awayTitle: "Bayern Munich",
-    homeTitle: "FC Barcelona",
-    onTheWinner: true,
-    color: const Color(0xff202020),
-    textColors: Colors.white,
-    backgroundImage: const DecorationImage(
-      image: AssetImage("assets/img/pl.png"),
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomLeft,
       opacity: 0.3,
     ),
-    shotOnTarget: 3,
-    possession: 66,
-    yelloCard: 2,
-    redCard: 2,
-    corner: 4,
+    shotOnTarget: 7, // Placeholder, isi dengan data yang sesuai
+    possession: 55, // Placeholder, isi dengan data yang sesuai
+    yelloCard: 3, // Placeholder, isi dengan data yang sesuai
+    redCard: 0, // Placeholder, isi dengan data yang sesuai
+    corner: 4, // Placeholder, isi dengan data yang sesuai
   ),
   LiveMatch(
-    awayGoal: 2,
-    homeGoal: 3,
-    time: 55,
-    stadium: "Etihad Stadium",
-    awayLogo: "assets/img/arsenal.png",
-    homeLogo: "assets/img/man_city.png",
-    awayTitle: "Arsenal",
-    homeTitle: "Manchester City",
-    onTheWinner: true,
+    awayGoal: 3,
+    homeGoal: 0,
+    stadium: "Old Trafford Stadium",
+    time: 45, // First half time elapsed
+    awayLogo: "assets/img/man_united.png",
+    homeLogo: "assets/img/liverpool.png",
+    awayTitle: "Manchester United",
+    homeTitle: "Liverpool F.C.",
     color: const Color(0xffe4e4e4),
     textColors: Colors.black,
+    onTheWinner: true,
     backgroundImage: const DecorationImage(
       image: AssetImage("assets/img/pl.png"),
       fit: BoxFit.contain,
       alignment: Alignment.bottomLeft,
       opacity: 0.2,
     ),
-    shotOnTarget: 5,
-    possession: 51,
-    yelloCard: 3,
-    redCard: 1,
-    corner: 8,
+    shotOnTarget: 8, // Placeholder, isi dengan data yang sesuai
+    possession: 50, // Placeholder, isi dengan data yang sesuai
+    yelloCard: 1, // Placeholder, isi dengan data yang sesuai
+    redCard: 0, // Placeholder, isi dengan data yang sesuai
+    corner: 5, // Placeholder, isi dengan data yang sesuai
   ),
 ];

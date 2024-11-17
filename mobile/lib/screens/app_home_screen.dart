@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,23 +81,71 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                   "Up-Coming Matches",
                   style: GoogleFonts.spaceGrotesk(
                     fontWeight: FontWeight.w500,
-                    fontSize: 24,
+                    fontSize: 16,
                     letterSpacing: -1.5,
                     color: Colors.black54,
                   ),
                 ),
                 const Spacer(),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: kPrimaryColor,
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 2,
+                    bottom: 2,
+                    left: 20,
+                    right: 20,
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    "See all",
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 20,
+                        color: Colors.black12.withOpacity(0.08),
+                      ),
+                    ],
+                  ),
+                  child: DropdownButton<String>(
+                    value: selectedLeague,
+                    icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                    elevation: 16,
                     style: GoogleFonts.spaceGrotesk(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -1,
+                      color: Colors.black,
                     ),
+                    underline: Container(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedLeague = value!;
+                      });
+                    },
+                    items: leagues.map<DropdownMenuItem<String>>(
+                        (Map<String, dynamic> league) {
+                      return DropdownMenuItem<String>(
+                        value: league['name'],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              league['image'],
+                              width: 32,
+                              height: 32,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              league['name'],
+                              style: GoogleFonts.spaceGrotesk(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: -1,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
               ],
@@ -135,65 +184,17 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             ),
           ),
           const Spacer(),
-          Container(
-            padding: const EdgeInsets.only(
-              top: 2,
-              bottom: 2,
-              left: 20,
-              right: 20,
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: kPrimaryColor,
             ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  blurRadius: 20,
-                  color: Colors.black12.withOpacity(0.08),
-                ),
-              ],
-            ),
-            child: DropdownButton<String>(
-              value: selectedLeague,
-              icon: const Icon(Icons.keyboard_arrow_down_outlined),
-              elevation: 16,
+            onPressed: () {},
+            child: Text(
+              "See all",
               style: GoogleFonts.spaceGrotesk(
                 fontSize: 18,
-                fontWeight: FontWeight.w600,
-                letterSpacing: -1,
-                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
-              underline: Container(),
-              onChanged: (String? value) {
-                setState(() {
-                  selectedLeague = value!;
-                });
-              },
-              items: leagues
-                  .map<DropdownMenuItem<String>>((Map<String, dynamic> league) {
-                return DropdownMenuItem<String>(
-                  value: league['name'],
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        league['image'],
-                        width: 32,
-                        height: 32,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        league['name'],
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: -1,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
             ),
           ),
         ],
@@ -201,91 +202,89 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     );
   }
 
-  AppBar headerParts() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      actions: [
-        const SizedBox(
-          width: 20,
+  PreferredSize headerParts() {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(80),
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: kBackgroundColor,
+          statusBarIconBrightness: Brightness.light,
         ),
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: Material(
-            elevation: 0.2,
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: const Icon(IconsaxPlusLinear.category_2),
+        child: SafeArea(
+          child: Container(
+            height: 72, // Tinggi AppBar
+            decoration: BoxDecoration(
+              color: kBackgroundColor, // Warna latar belakang AppBar
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 4),
+                  blurRadius: 10,
+                ),
+              ],
             ),
-          ),
-        ),
-        const Spacer(),
-        Row(
-          children: [
-            Text(
-              'Sc',
-              style: GoogleFonts.ubuntu(
-                  fontWeight: FontWeight.w900, fontSize: 35, letterSpacing: -2),
-            ),
-            const Icon(
-              Icons.sports_soccer,
-              color: kPrimaryColor,
-              size: 28,
-            ),
-            Text(
-              're',
-              style: GoogleFonts.ubuntu(
-                  fontWeight: FontWeight.w900, fontSize: 35, letterSpacing: -3),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Hunter',
-              style: GoogleFonts.ubuntu(
-                  fontWeight: FontWeight.w900,
-                  color: kPrimaryColor,
-                  fontSize: 35,
-                  letterSpacing: -2),
-            )
-          ],
-        ),
-        const Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(5),
-          child: Material(
-            elevation: 0.2,
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: const Stack(
-                children: [
-                  Icon(IconsaxPlusLinear.notification),
-                  Positioned(
-                    top: 2.5,
-                    right: 2.5,
-                    child: CircleAvatar(
-                      radius: 4,
-                      backgroundColor: kPrimaryColor,
+            child: Stack(
+              alignment: Alignment.center, // Pusatkan elemen di tengah vertikal
+              children: [
+                // Logo di tengah
+                Center(
+                  child: Image.asset(
+                    'assets/img/score_hunter_logo.png',
+                    height: 32,
+                  ),
+                ),
+                // Tombol notifikasi di kanan
+                Positioned(
+                  right: 16,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Fitur on the way maniez'),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: kBackgroundColorDarken,
+                      padding: const EdgeInsets.all(8),
+                    ),
+                    child: const Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        Positioned(
+                          top: 2,
+                          right: 2,
+                          child: CircleAvatar(
+                            radius: 8,
+                            backgroundColor: Colors.red,
+                            child: Text(
+                              '8',
+                              style: TextStyle(
+                                fontFamily: 'PlusJakartaSans',
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        const SizedBox(
-          width: 20,
-        )
-      ],
+      ),
     );
   }
 }

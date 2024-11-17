@@ -17,15 +17,15 @@ class _AppMainScreenState extends State<AppMainScreen> {
 
   final icons = [
     IconsaxPlusLinear.home,
-    IconsaxPlusLinear.calendar,
     IconsaxPlusLinear.chart_square,
+    IconsaxPlusLinear.coin,
     IconsaxPlusLinear.user_square,
   ];
 
   final titles = [
     "Home",
-    "Calendar",
-    "Standing",
+    "Leaderboard",
+    "My Guess",
     "Profile",
   ];
 
@@ -73,10 +73,9 @@ class _AppMainScreenState extends State<AppMainScreen> {
 
     return Scaffold(
       bottomNavigationBar: Container(
-        height: 80,
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: kBackgroundColorDarken,
           boxShadow: [
             BoxShadow(
               color: Colors.black12.withOpacity(0.015),
@@ -84,21 +83,24 @@ class _AppMainScreenState extends State<AppMainScreen> {
               spreadRadius: 5,
             ),
           ],
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(30),
-          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: List.generate(
-            4,
-            (index) => MyBottomNavBarItems(
-              title: titles[index],
-              isActive: currentTab == index,
-              onTab: () => setState(() {
-                currentTab = index;
-              }),
-              icon: icons[index],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(
+              4,
+              (index) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: MyBottomNavBarItems(
+                  title: titles[index],
+                  isActive: currentTab == index,
+                  onTab: () => setState(() {
+                    currentTab = index;
+                  }),
+                  icon: icons[index],
+                ),
+              ),
             ),
           ),
         ),
@@ -126,27 +128,45 @@ class MyBottomNavBarItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTab,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: isActive ? kPrimaryColor : Colors.white,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: isActive ? Colors.white : Colors.grey.shade400,
+      child: IntrinsicWidth(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 80),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: isActive ? kPrimaryColor50 : kBackgroundColorDarken,
+              borderRadius: BorderRadius.circular(8),
             ),
-            if (isActive)
-              Text(
-                title,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
-              ),
-          ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  icon,
+                  color: isActive ? Colors.white : kTransparentWhite,
+                ),
+                Offstage(
+                  offstage: !isActive,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      title,
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                  ),
+                ),
+                if (!isActive)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                          color: kTransparentWhite, fontSize: 10),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
