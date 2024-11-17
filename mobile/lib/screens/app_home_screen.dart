@@ -19,7 +19,7 @@ class AppHomeScreen extends StatefulWidget {
 class _AppHomeScreenState extends State<AppHomeScreen> {
   final List<Map<String, dynamic>> leagues = [
     {
-      'image': 'assets/pl.png',
+      'image': 'assets/img/pl_white.png',
       'name': 'Premiere League',
     },
     {
@@ -45,7 +45,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kBackgroundColor,
       appBar: headerParts(),
       body: Column(
         children: [
@@ -77,13 +77,12 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             padding: const EdgeInsets.all(20),
             child: Row(
               children: [
-                Text(
+                const Text(
                   "Up-Coming Matches",
-                  style: GoogleFonts.spaceGrotesk(
-                    fontWeight: FontWeight.w500,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    letterSpacing: -1.5,
-                    color: Colors.black54,
+                    color: Colors.white,
                   ),
                 ),
                 const Spacer(),
@@ -95,8 +94,8 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                     right: 20,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    color: kBackgroundColorDarken,
+                    borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
                         blurRadius: 20,
@@ -106,14 +105,16 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                   ),
                   child: DropdownButton<String>(
                     value: selectedLeague,
-                    icon: const Icon(Icons.keyboard_arrow_down_outlined),
-                    elevation: 16,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: -1,
-                      color: Colors.black,
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_outlined,
+                      color: Colors.white,
                     ),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    dropdownColor: kBackgroundColorDarken,
                     underline: Container(),
                     onChanged: (String? value) {
                       setState(() {
@@ -129,17 +130,16 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                           children: [
                             Image.asset(
                               league['image'],
-                              width: 32,
-                              height: 32,
+                              width: 24,
+                              height: 24,
                             ),
                             const SizedBox(width: 8),
                             Text(
                               league['name'],
-                              style: GoogleFonts.spaceGrotesk(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: -1,
-                                color: Colors.black,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -152,18 +152,19 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             ),
           ),
           Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: upcomingMatches.length,
-              itemBuilder: (context, index) {
-                final upMatch = upcomingMatches[index];
-                return UpComingMatches(upMatch: upMatch);
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: upcomingMatches.length,
+                itemBuilder: (context, index) {
+                  final upMatch = upcomingMatches[index];
+                  return UpComingMatches(upMatch: upMatch);
+                },
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -174,13 +175,12 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       padding: const EdgeInsets.all(20),
       child: Row(
         children: [
-          Text(
-            "Live Match",
-            style: GoogleFonts.spaceGrotesk(
-              fontWeight: FontWeight.w500,
-              fontSize: 24,
-              color: Colors.black54,
-              letterSpacing: -1.5,
+          const Text(
+            "Live Matches",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.white,
             ),
           ),
           const Spacer(),
@@ -189,10 +189,11 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
               foregroundColor: kPrimaryColor,
             ),
             onPressed: () {},
-            child: Text(
-              "See all",
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: 18,
+            child: const Text(
+              "View all",
+              style: TextStyle(
+                color: kTransparentWhite,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),

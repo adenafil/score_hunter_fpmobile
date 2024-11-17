@@ -26,7 +26,7 @@ List<UpcomingMatch> upcomingMatches = [
     homeTitle: "AFC Bournemouth",
     date: "11 Nov",
     time: "02:35 AM",
-    isFavorite: false,
+    isFavorite: true,
   ),
   UpcomingMatch(
     awayLogo: "assets/img/nottingham_forest.png",
@@ -44,7 +44,7 @@ List<UpcomingMatch> upcomingMatches = [
     homeTitle: "Aston Villa",
     date: "24 Nov",
     time: "04:35 AM",
-    isFavorite: false,
+    isFavorite: true,
   ),
   UpcomingMatch(
     awayLogo: "assets/img/wolves.png",
@@ -53,7 +53,7 @@ List<UpcomingMatch> upcomingMatches = [
     homeTitle: "Fulham",
     date: "24 Nov",
     time: "02:35 AM",
-    isFavorite: false,
+    isFavorite: true,
   ),
   UpcomingMatch(
     awayLogo: "assets/img/tottenham.png",

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../constants.dart';
 import '../model/live_match_model.dart';
 
@@ -14,116 +12,173 @@ class LiveMatchData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 230,
-      margin: const EdgeInsets.only(right: 20),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 15,
-      ),
-      decoration: BoxDecoration(
-        color: live.color,
-        borderRadius: BorderRadius.circular(35),
-        image: live.backgroundImage,
-      ),
-      child: Column(
-        children: [
-          Text(
-            live.stadium,
-            style: GoogleFonts.spaceGrotesk(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: live.textColors,
-              letterSpacing: -1,
-            ),
-          ),
-          Text(
-            "Week 13",
-            style: GoogleFonts.spaceGrotesk(
-              color: live.textColors,
-              letterSpacing: -1,
-              fontSize: 11,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Image.asset(
-                    live.homeLogo,
-                    height: 90,
-                    width: 90,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    live.homeTitle.toUpperCase(),
-                    style: GoogleFonts.spaceGrotesk(
-                        color: live.textColors,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -1),
-                  ),
-                  Text(
-                    "Home",
-                    style: GoogleFonts.spaceGrotesk(
-                        fontSize: 13,
-                        color: live.textColors,
-                        letterSpacing: -1),
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Container(
+        height: 230,
+        width: MediaQuery.of(context).size.width * 0.85,
+        margin: const EdgeInsets.only(right: 20),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
+        decoration: BoxDecoration(
+          color: kAccentColor,
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              live.stadium,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
-              const SizedBox(
-                width: 20,
+            ),
+            const Text(
+              "Week 13",
+              style: TextStyle(
+                color: kSecondaryColor,
+                fontSize: 10,
               ),
-              // Time and Score
-              Column(
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "${live.time}'",
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 14,
-                      color: live.textColors,
+                  // Team Kiri (Home)
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 64,
+                            maxHeight: 64,
+                          ),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Image.asset(
+                              live.homeLogo,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          live.homeTitle,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Home',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text.rich(
-                    TextSpan(
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TextSpan(
-                          text: "${live.homeGoal} : ",
-                          style: GoogleFonts.spaceGrotesk(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: live.onTheWinner
-                                ? kPrimaryColor
-                                : live.textColors,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 25.0,
-                                color: Colors.black87.withOpacity(0.4),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "${live.homeGoal} : ",
+                                style: TextStyle(
+                                  color: live.onTheWinner
+                                      ? live.textColors
+                                      : kPrimaryColor,
+                                  fontSize: 24,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              TextSpan(
+                                text: live.awayGoal.toString(),
+                                style: TextStyle(
+                                  color: live.onTheWinner
+                                      ? kPrimaryColor
+                                      : live.textColors,
+                                  fontSize: 24,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             ],
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        TextSpan(
-                          text: live.awayGoal.toString(),
-                          style: GoogleFonts.spaceGrotesk(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: live.onTheWinner
-                                ? live.textColors
-                                : kPrimaryColor,
+                        const SizedBox(height: 4),
+                        const Text(
+                          '1st half,\ntime elapse: 44:55',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 8,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Team Kanan (Away)
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: 64,
+                            maxHeight: 64,
+                          ),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: Image.asset(
+                              live.awayLogo,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          live.awayTitle,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Away',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFFD3D3D3),
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -131,38 +186,123 @@ class LiveMatchData extends StatelessWidget {
                   ),
                 ],
               ),
-              // for away team and logo
-              const SizedBox(width: 20),
-              Column(
+            ),
+
+            // Betting Odds Section
+            SizedBox(
+              height: 31,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    live.awayLogo,
-                    height: 90,
-                    width: 90,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                    decoration: ShapeDecoration(
+                      color: kBackgroundColorDarken,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'W1',
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Text(
+                          '2.56',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  const SizedBox(width: 16),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                    decoration: ShapeDecoration(
+                      color: kBackgroundColorDarken,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'X',
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(width: 28),
+                        Text(
+                          '2.33',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    live.awayTitle.toUpperCase(),
-                    style: GoogleFonts.spaceGrotesk(
-                        color: live.textColors,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: -1),
-                  ),
-                  Text(
-                    "Away",
-                    style: GoogleFonts.spaceGrotesk(
-                        fontSize: 13,
-                        color: live.textColors,
-                        letterSpacing: -1),
+                  const SizedBox(width: 16),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                    decoration: ShapeDecoration(
+                      color: kBackgroundColorDarken,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'W2',
+                          style: TextStyle(
+                            color: kSecondaryColor,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(width: 19),
+                        Text(
+                          '1.37',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontFamily: 'Plus Jakarta Sans',
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ],
-          )
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

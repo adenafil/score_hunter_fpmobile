@@ -29,11 +29,11 @@ class UpComingMatches extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              color: Colors.white,
+              color: kAccentColor,
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(0, -4.5),
-                  color: upMatch.isFavorite ? kPrimaryColor : Colors.black12,
+                  color: upMatch.isFavorite ? kPrimaryColor : Colors.white,
                 ),
               ],
             ),
@@ -47,20 +47,19 @@ class UpComingMatches extends StatelessWidget {
                       height: 45,
                       width: 45,
                     ),
-                    Text(
+                    const Text(
                       "Home",
-                      style: GoogleFonts.spaceGrotesk(
-                        fontSize: 11,
-                        letterSpacing: -1,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: kTransparentWhite,
                       ),
                     ),
                     Text(
                       upMatch.homeTitle,
-                      style: GoogleFonts.spaceGrotesk(
-                        fontSize: 14,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade700,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -70,17 +69,17 @@ class UpComingMatches extends StatelessWidget {
                   children: [
                     Text(
                       upMatch.time,
-                      style: GoogleFonts.spaceGrotesk(
+                      style: const TextStyle(
                         fontSize: 18,
-                        letterSpacing: -1,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       upMatch.date,
-                      style: GoogleFonts.spaceGrotesk(
-                        fontSize: 12,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: kPrimaryColor,
                       ),
                     )
                   ],
@@ -93,20 +92,16 @@ class UpComingMatches extends StatelessWidget {
                       height: 45,
                       width: 45,
                     ),
-                    Text(
+                    const Text(
                       "Away",
-                      style: GoogleFonts.spaceGrotesk(
-                        fontSize: 11,
-                        letterSpacing: -1,
-                      ),
+                      style: TextStyle(fontSize: 11, color: kTransparentWhite),
                     ),
                     Text(
                       upMatch.awayTitle,
-                      style: GoogleFonts.spaceGrotesk(
-                        fontSize: 14,
-                        letterSpacing: -1,
+                      style: const TextStyle(
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey.shade700,
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -115,14 +110,14 @@ class UpComingMatches extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            top: 12,
-            left: 12,
-            child: Icon(
-              Icons.star,
-              color: upMatch.isFavorite ? kPrimaryColor : Colors.white,
-            ),
-          )
+          // Positioned(
+          //   top: 12,
+          //   left: 12,
+          //   child: Icon(
+          //     Icons.star,
+          //     color: upMatch.isFavorite ? kPrimaryColor : Colors.white,
+          //   ),
+          // )
         ],
       ),
     );

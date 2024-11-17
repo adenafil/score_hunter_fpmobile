@@ -48,7 +48,7 @@ List<LiveMatch> liveMatches = [
     awayTitle: "Manchester City",
     homeTitle: "Arsenal F.C.",
     color: const Color(0xffe4e4e4),
-    textColors: Colors.black,
+    textColors: Colors.white,
     onTheWinner: false,
     backgroundImage: const DecorationImage(
       image: AssetImage("assets/img/pl.png"),
@@ -96,7 +96,7 @@ List<LiveMatch> liveMatches = [
     awayTitle: "Manchester United",
     homeTitle: "Liverpool F.C.",
     color: const Color(0xffe4e4e4),
-    textColors: Colors.black,
+    textColors: Colors.white,
     onTheWinner: true,
     backgroundImage: const DecorationImage(
       image: AssetImage("assets/img/pl.png"),
