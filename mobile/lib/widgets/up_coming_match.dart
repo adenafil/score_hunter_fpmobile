@@ -33,7 +33,7 @@ class UpComingMatches extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(0, -4.5),
-                  color: upMatch.isFavorite ? kprimaryColor : Colors.black12,
+                  color: upMatch.isFavorite ? kPrimaryColor : Colors.black12,
                 ),
               ],
             ),
@@ -120,7 +120,7 @@ class UpComingMatches extends StatelessWidget {
             left: 12,
             child: Icon(
               Icons.star,
-              color: upMatch.isFavorite ? kprimaryColor : Colors.white,
+              color: upMatch.isFavorite ? kPrimaryColor : Colors.white,
             ),
           )
         ],

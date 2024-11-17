@@ -3,7 +3,6 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
 import 'package:soccer_live_score/screens/app_home_screen.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
-
 import '../controller/user_controller.dart';
 
 class AppMainScreen extends StatefulWidget {
@@ -131,7 +130,7 @@ class MyBottomNavBarItems extends StatelessWidget {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: isActive ? kprimaryColor : Colors.white,
+          color: isActive ? kPrimaryColor : Colors.white,
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(20),
           ),

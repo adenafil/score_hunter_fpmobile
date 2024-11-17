@@ -106,7 +106,7 @@ class LiveMatchData extends StatelessWidget {
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
                             color: live.onTheWinner
-                                ? kprimaryColor
+                                ? kPrimaryColor
                                 : live.textColors,
                             shadows: [
                               Shadow(
@@ -123,7 +123,7 @@ class LiveMatchData extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: live.onTheWinner
                                 ? live.textColors
-                                : kprimaryColor,
+                                : kPrimaryColor,
                           ),
                         ),
                       ],

@@ -30,7 +30,7 @@ class LiveMatchStats extends StatelessWidget {
               Text(
                 homeStats.toString(),
                 style: GoogleFonts.spaceGrotesk(
-                  color: isHomeWinner ? kprimaryColor : ksecondryColor,
+                  color: isHomeWinner ? kPrimaryColor : kBackgroundColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1,
@@ -46,7 +46,7 @@ class LiveMatchStats extends StatelessWidget {
               Text(
                 awayStats.toString(),
                 style: GoogleFonts.spaceGrotesk(
-                  color: !isHomeWinner ? kprimaryColor : ksecondryColor,
+                  color: !isHomeWinner ? kPrimaryColor : kBackgroundColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   letterSpacing: -1,
@@ -66,7 +66,7 @@ class LiveMatchStats extends StatelessWidget {
                     minHeight: 10,
                     backgroundColor: Colors.grey.shade200,
                     valueColor: AlwaysStoppedAnimation(
-                      isHomeWinner ? kprimaryColor : ksecondryColor,
+                      isHomeWinner ? kPrimaryColor : kBackgroundColor,
                     ),
                   ),
                 ),
@@ -78,7 +78,7 @@ class LiveMatchStats extends StatelessWidget {
                   minHeight: 10,
                   backgroundColor: Colors.grey.shade200,
                   valueColor: AlwaysStoppedAnimation(
-                    !isHomeWinner ? kprimaryColor : ksecondryColor,
+                    !isHomeWinner ? kPrimaryColor : kBackgroundColor,
                   ),
                 ),
               ),

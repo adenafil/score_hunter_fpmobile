@@ -23,5 +23,35 @@ class Assets {
   static const String assetsSunderland = 'assets/sunderland.png';
   static const String assetsSwansea = 'assets/swansea.png';
   static const String assetsTottenham = 'assets/tottenham.png';
+  static const String assetsWelcomeImg1 = 'assets/welcome_img_1.png';
+  static const String assetsWelcomeImg2 = 'assets/welcome_img_2.png';
   static const String assetsWestHam = 'assets/west_ham.png';
+  static const String fontsPlusJakartaSansItalicVariableFontWght =
+      'assets/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf';
+  static const String fontsPlusJakartaSansVariableFontWght =
+      'assets/fonts/PlusJakartaSans-VariableFont_wght.ttf';
+  static const String imgArsenal = 'assets/img/arsenal.png';
+  static const String imgBarcelona = 'assets/img/barcelona.png';
+  static const String imgBayern = 'assets/img/bayern.png';
+  static const String imgBundesliga = 'assets/img/Bundesliga.png';
+  static const String imgChelsea = 'assets/img/chelsea.png';
+  static const String imgCl = 'assets/img/cl.png';
+  static const String imgGoogleIcon = 'assets/img/google_icon.png';
+  static const String imgLaLiga = 'assets/img/LaLiga.png';
+  static const String imgLeicesterCity = 'assets/img/leicester_city.png';
+  static const String imgLigue1UberEats = 'assets/img/Ligue1_Uber_Eats.png';
+  static const String imgLiverpool = 'assets/img/liverpool.png';
+  static const String imgLoginImg = 'assets/img/login_img.png';
+  static const String imgManCity = 'assets/img/man_city.png';
+  static const String imgManUnited = 'assets/img/man_united.png';
+  static const String imgPl = 'assets/img/pl.png';
+  static const String imgSerieA = 'assets/img/SerieA.png';
+  static const String imgSouthampton = 'assets/img/southampton.png';
+  static const String imgStoke = 'assets/img/stoke.png';
+  static const String imgSunderland = 'assets/img/sunderland.png';
+  static const String imgSwansea = 'assets/img/swansea.png';
+  static const String imgTottenham = 'assets/img/tottenham.png';
+  static const String imgWelcomeImg1 = 'assets/img/welcome_img_1.png';
+  static const String imgWelcomeImg2 = 'assets/img/welcome_img_2.png';
+  static const String imgWestHam = 'assets/img/west_ham.png';
 }

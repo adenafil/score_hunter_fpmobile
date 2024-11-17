@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soccer_live_score/firebase_options.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
 import 'package:soccer_live_score/screens/main_screen.dart';
+import 'package:soccer_live_score/screens/welcome_screen.dart';
 
 import 'controller/user_controller.dart';
 
@@ -20,9 +21,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'PlusJakartaSans',
+      ),
       home: UserController.user != null
           ? const AppMainScreen()
-          : const LoginScreen(),
+          : const WelcomeScreen(),
     );
   }
 }

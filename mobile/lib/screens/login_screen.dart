@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soccer_live_score/constants.dart';
 import 'package:soccer_live_score/controller/user_controller.dart';
 import 'package:soccer_live_score/screens/main_screen.dart';
 
@@ -16,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A1B35),
+      backgroundColor: kBackgroundColor,
       body: Stack(
         children: [
           // Full width illustration
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 0,
             right: 0,
             child: Image.asset(
-              'assets/login_img.png',
+              'assets/img/login_img.png',
               height: MediaQuery.of(context).size.height * 0.4,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
@@ -42,20 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 96),
 
                 // Welcome text
-                Text(
-                  "Welcome to",
-                  style: GoogleFonts.plusJakartaSans(
+                const Text(
+                  "Welcome to\nScore Hunter",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
                     color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-                Text(
-                  "Score Hunter",
-                  style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white,
-                    fontSize: 32,
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -68,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.white70,
-                    fontSize: 16,
+                    fontSize: 18,
                   ),
                 ),
 
@@ -118,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/google_icon.png',
+                          'assets/img/google_icon.png',
                           height: 24,
                           width: 24,
                         ),

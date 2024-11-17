@@ -22,19 +22,19 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       'name': 'Premiere League',
     },
     {
-      'image': 'assets/LaLiga.png',
+      'image': 'assets/img/LaLiga.png',
       'name': 'La Liga',
     },
     {
-      'image': 'assets/Bundesliga.png',
+      'image': 'assets/img/Bundesliga.png',
       'name': 'Bundesliga',
     },
     {
-      'image': 'assets/Ligue1_Uber_Eats.png',
+      'image': 'assets/img/Ligue1_Uber_Eats.png',
       'name': 'Ligue 1 Uber Eats',
     },
     {
-      'image': 'assets/SerieA.png',
+      'image': 'assets/img/SerieA.png',
       'name': 'Serie A',
     },
   ];
@@ -88,7 +88,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 const Spacer(),
                 TextButton(
                   style: TextButton.styleFrom(
-                    foregroundColor: kprimaryColor,
+                    foregroundColor: kPrimaryColor,
                   ),
                   onPressed: () {},
                   child: Text(
@@ -233,7 +233,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             ),
             const Icon(
               Icons.sports_soccer,
-              color: kprimaryColor,
+              color: kPrimaryColor,
               size: 28,
             ),
             Text(
@@ -248,7 +248,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
               'Hunter',
               style: GoogleFonts.ubuntu(
                   fontWeight: FontWeight.w900,
-                  color: kprimaryColor,
+                  color: kPrimaryColor,
                   fontSize: 35,
                   letterSpacing: -2),
             )
@@ -274,7 +274,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                     right: 2.5,
                     child: CircleAvatar(
                       radius: 4,
-                      backgroundColor: kprimaryColor,
+                      backgroundColor: kPrimaryColor,
                     ),
                   ),
                 ],

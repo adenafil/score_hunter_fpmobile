@@ -32,7 +32,7 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: detailBackgroundColor,
+      backgroundColor: kBackgroundColor,
       appBar: headerParts(context),
       body: SingleChildScrollView(
         child: Stack(
@@ -73,8 +73,8 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: selectedIndex == index
-                                  ? kprimaryColor
-                                  : detailBackgroundColor,
+                                  ? kPrimaryColor
+                                  : kBackgroundColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             margin: const EdgeInsets.only(right: 10),
@@ -164,12 +164,12 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
       toolbarHeight: 80,
       automaticallyImplyLeading: false,
       centerTitle: true,
-      backgroundColor: detailBackgroundColor,
+      backgroundColor: kBackgroundColor,
       elevation: 0,
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [kprimaryColor, Colors.amber],
+            colors: [kPrimaryColor, Colors.amber],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

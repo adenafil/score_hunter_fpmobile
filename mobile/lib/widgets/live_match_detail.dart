@@ -36,7 +36,7 @@ class LiveMatchDetail extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.asset(
-                        "assets/cl.png",
+                        "assets/img/cl.png",
                       ),
                     )),
               ),
@@ -77,14 +77,14 @@ class LiveMatchDetail extends StatelessWidget {
                               children: [
                                 const Icon(
                                   Icons.circle,
-                                  color: kprimaryColor,
+                                  color: kPrimaryColor,
                                   size: 10,
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
                                   "Live",
                                   style: GoogleFonts.spaceGrotesk(
-                                    color: kprimaryColor,
+                                    color: kPrimaryColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -103,7 +103,7 @@ class LiveMatchDetail extends StatelessWidget {
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
                                     color: widget.liveMatch.onTheWinner
-                                        ? kprimaryColor
+                                        ? kPrimaryColor
                                         : widget.liveMatch.textColors,
                                   ),
                                 ),
@@ -114,7 +114,7 @@ class LiveMatchDetail extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: widget.liveMatch.onTheWinner
                                         ? widget.liveMatch.textColors
-                                        : kprimaryColor,
+                                        : kPrimaryColor,
                                   ),
                                 ),
                               ],
@@ -150,7 +150,7 @@ class LiveMatchDetail extends StatelessWidget {
                           bottom: 3,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: kprimaryColor,
+                              color: kPrimaryColor,
                               borderRadius: BorderRadius.circular(3),
                             ),
                           ),
