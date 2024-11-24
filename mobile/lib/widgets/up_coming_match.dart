@@ -19,8 +19,8 @@ class UpComingMatches extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(
-              top: 5,
-              bottom: 5,
+              top: 8,
+              bottom: 8,
             ),
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
@@ -38,86 +38,96 @@ class UpComingMatches extends StatelessWidget {
               ],
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Spacer(),
-                Column(
-                  children: [
-                    Image.asset(
-                      upMatch.homeLogo,
-                      height: 45,
-                      width: 45,
-                    ),
-                    const Text(
-                      "Home",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: kTransparentWhite,
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        upMatch.homeLogo,
+                        height: 45,
+                        width: 45,
                       ),
-                    ),
-                    Text(
-                      upMatch.homeTitle,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                      const Text(
+                        textAlign: TextAlign.center,
+                        "Home",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: kTransparentWhite,
+                        ),
                       ),
-                    ),
-                  ],
+                      Text(
+                        textAlign: TextAlign.center,
+                        upMatch.homeTitle,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  children: [
-                    Text(
-                      upMatch.time,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        upMatch.time,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Text(
-                      upMatch.date,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: kPrimaryColor,
-                      ),
-                    )
-                  ],
+                      Text(
+                        textAlign: TextAlign.center,
+                        upMatch.date,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: kPrimaryColor,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  children: [
-                    Image.asset(
-                      upMatch.awayLogo,
-                      height: 45,
-                      width: 45,
-                    ),
-                    const Text(
-                      "Away",
-                      style: TextStyle(fontSize: 11, color: kTransparentWhite),
-                    ),
-                    Text(
-                      upMatch.awayTitle,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        upMatch.awayLogo,
+                        height: 45,
+                        width: 45,
                       ),
-                    ),
-                  ],
+                      const Text(
+                        textAlign: TextAlign.center,
+                        "Away",
+                        style:
+                            TextStyle(fontSize: 11, color: kTransparentWhite),
+                      ),
+                      Text(
+                        textAlign: TextAlign.center,
+                        upMatch.awayTitle,
+                        style: const TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const Spacer(),
               ],
             ),
           ),
-          // Positioned(
-          //   top: 12,
-          //   left: 12,
-          //   child: Icon(
-          //     Icons.star,
-          //     color: upMatch.isFavorite ? kPrimaryColor : Colors.white,
-          //   ),
-          // )
         ],
       ),
     );

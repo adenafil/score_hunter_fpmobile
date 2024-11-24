@@ -126,11 +126,11 @@ class _MatchDetailScreenState extends State<MatchDetailScreen> {
                     isHomeWinner: true,
                   ),
                   LiveMatchStats(
-                    homeStats: widget.liveMatch.yelloCard,
-                    awayStats: widget.liveMatch.yelloCard + 1,
+                    homeStats: widget.liveMatch.yellowCard,
+                    awayStats: widget.liveMatch.yellowCard + 1,
                     title: "Yellow Cards",
-                    homeValue: widget.liveMatch.yelloCard.toDouble() / 10,
-                    awayValue: widget.liveMatch.yelloCard.toDouble() * 2 / 10,
+                    homeValue: widget.liveMatch.yellowCard.toDouble() / 10,
+                    awayValue: widget.liveMatch.yellowCard.toDouble() * 2 / 10,
                     isHomeWinner: false,
                   ),
                   LiveMatchStats(

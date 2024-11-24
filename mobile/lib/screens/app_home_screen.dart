@@ -5,9 +5,11 @@ import 'package:soccer_live_score/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soccer_live_score/model/live_match_model.dart';
 import 'package:soccer_live_score/model/up_coming_model.dart';
+import 'package:soccer_live_score/screens/match_detail.dart';
 import 'package:soccer_live_score/screens/match_detail_screen.dart';
 import '../widgets/live_match.dart';
 import '../widgets/up_coming_match.dart';
+import '../screens/match_detail.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({super.key});
@@ -64,7 +66,9 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MatchDetailScreen(liveMatch: live),
+                          builder: (_) => MatchDetail(
+                            liveMatch: live,
+                          ), //before: MatchDetailScreen(liveMatch: live)
                         ),
                       );
                     },

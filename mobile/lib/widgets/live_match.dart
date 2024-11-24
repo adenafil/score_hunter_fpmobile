@@ -36,9 +36,9 @@ class LiveMatchData extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            const Text(
-              "Week 13",
-              style: TextStyle(
+            Text(
+              'Week ${live.stageWeek.toString()}',
+              style: const TextStyle(
                 color: kSecondaryColor,
                 fontSize: 10,
               ),
@@ -126,10 +126,10 @@ class LiveMatchData extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          '1st half,\ntime elapse: 44:55',
+                        Text(
+                          live.getFormattedMatchTime(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: kSecondaryColor,
                             fontSize: 8,
                             fontFamily: 'Plus Jakarta Sans',
