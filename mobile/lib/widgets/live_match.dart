@@ -73,7 +73,7 @@ class LiveMatchData extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -84,7 +84,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -106,7 +106,7 @@ class LiveMatchData extends StatelessWidget {
                                       ? live.textColors
                                       : kPrimaryColor,
                                   fontSize: 24,
-                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontFamily: 'PlusJakartaSans',
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -117,7 +117,7 @@ class LiveMatchData extends StatelessWidget {
                                       ? kPrimaryColor
                                       : live.textColors,
                                   fontSize: 24,
-                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontFamily: 'PlusJakartaSans',
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -132,7 +132,7 @@ class LiveMatchData extends StatelessWidget {
                           style: const TextStyle(
                             color: kSecondaryColor,
                             fontSize: 8,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -166,7 +166,7 @@ class LiveMatchData extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -177,7 +177,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: Color(0xFFD3D3D3),
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -211,7 +211,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -221,7 +221,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -246,7 +246,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -256,7 +256,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -281,7 +281,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -291,7 +291,7 @@ class LiveMatchData extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
-                            fontFamily: 'Plus Jakarta Sans',
+                            fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w700,
                           ),
                         ),

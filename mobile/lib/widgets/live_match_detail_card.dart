@@ -63,7 +63,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
         width: double.infinity,
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFF252A4A),
+          color: kAccentColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
@@ -82,7 +82,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
-                      fontFamily: 'Plus Jakarta Sans',
+                      fontFamily: 'PlusJakartaSans',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -93,7 +93,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                     style: const TextStyle(
                       color: kSecondaryColor,
                       fontSize: 10,
-                      fontFamily: 'Plus Jakarta Sans',
+                      fontFamily: 'PlusJakartaSans',
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -122,7 +122,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 10,
-                                fontFamily: 'Plus Jakarta Sans',
+                                fontFamily: 'PlusJakartaSans',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -152,7 +152,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                           ? liveMatch.textColors
                                           : kPrimaryColor,
                                       fontSize: 24,
-                                      fontFamily: 'Plus Jakarta Sans',
+                                      fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
@@ -163,7 +163,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                           ? kPrimaryColor
                                           : liveMatch.textColors,
                                       fontSize: 24,
-                                      fontFamily: 'Plus Jakarta Sans',
+                                      fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
@@ -177,7 +177,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                               style: const TextStyle(
                                 color: kSecondaryColor,
                                 fontSize: 8,
-                                fontFamily: 'Plus Jakarta Sans',
+                                fontFamily: 'PlusJakartaSans',
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -200,7 +200,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 10,
-                                fontFamily: 'Plus Jakarta Sans',
+                                fontFamily: 'PlusJakartaSans',
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -267,7 +267,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
             style: const TextStyle(
               color: kSecondaryColor,
               fontSize: 10,
-              fontFamily: 'Plus Jakarta Sans',
+              fontFamily: 'PlusJakartaSans',
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -277,7 +277,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
             style: const TextStyle(
               color: Colors.white,
               fontSize: 10,
-              fontFamily: 'Plus Jakarta Sans',
+              fontFamily: 'PlusJakartaSans',
               fontWeight: FontWeight.w700,
             ),
           ),

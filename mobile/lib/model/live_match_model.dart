@@ -3,26 +3,29 @@ import 'package:flutter/material.dart';
 class LiveMatch {
   final int awayGoal;
   final int homeGoal;
-  final int time; // Time elapsed (in minutes)
+  final int time;
   final String awayLogo;
   final String homeLogo;
   final String awayTitle;
   final String homeTitle;
   final String stadium;
-  final int stageWeek; // Week number
-  final DateTime matchTime; // Match date and time
-  final List<String> awayGoalScorers; // Scorers for away team
-  final List<String> homeGoalScorers; // Scorers for home team
-  final Map<String, double> odds; // Betting odds (W1, X, W2)
+  final int stageWeek;
+  final DateTime matchTime;
+  final List<String> awayGoalScorers;
+  final List<String> homeGoalScorers;
+  final Map<String, double> odds;
   final int shotOnTarget;
-  final int possession; // Percentage
+  final int possession;
   final int yellowCard;
   final int redCard;
   final int corner;
-  final Color color; // Background color
-  final Color textColors; // Text color
-  final DecorationImage backgroundImage; // Background image
-  final bool onTheWinner; // Indicates if the home team is winning
+  final Color color;
+  final Color textColors;
+  final DecorationImage backgroundImage;
+  final bool onTheWinner;
+
+  // New fields for voting
+  final Map<String, Map<String, dynamic>> votes; // Votes for each category
 
   LiveMatch({
     required this.awayGoal,
@@ -47,15 +50,14 @@ class LiveMatch {
     required this.textColors,
     required this.backgroundImage,
     required this.onTheWinner,
+    required this.votes, // New parameter
   });
 
   // Method to get formatted match time
   String getFormattedMatchTime() {
-    int minutes = time; // Time in minutes
-    int seconds = (minutes * 60) %
-        60; // Calculating seconds (can be customized if needed)
-    String half =
-        minutes < 45 ? "1st" : "2nd"; // Determine first or second half
+    int minutes = time;
+    int seconds = (minutes * 60) % 60;
+    String half = minutes < 45 ? "1st" : "2nd";
     return '$half half, time elapse: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 }
@@ -93,6 +95,44 @@ List<LiveMatch> liveMatches = [
       opacity: 0.2,
     ),
     onTheWinner: false,
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1353,
+        "percentage": {
+          "homeTeam": 11.0,
+          "draw": 7.0,
+          "awayTeam": 82.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   LiveMatch(
     awayGoal: 0,
@@ -126,6 +166,44 @@ List<LiveMatch> liveMatches = [
       opacity: 0.3,
     ),
     onTheWinner: false,
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 2055,
+        "percentage": {
+          "homeTeam": 27.0,
+          "draw": 15.0,
+          "awayTeam": 58.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   LiveMatch(
     awayGoal: 3,
@@ -159,5 +237,43 @@ List<LiveMatch> liveMatches = [
       opacity: 0.2,
     ),
     onTheWinner: true,
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 2055,
+        "percentage": {
+          "homeTeam": 27.0,
+          "draw": 15.0,
+          "awayTeam": 58.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
 ];
