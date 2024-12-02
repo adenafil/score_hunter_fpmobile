@@ -3,6 +3,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
 import 'package:soccer_live_score/screens/app_home_screen.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
+import 'package:soccer_live_score/screens/my_guest_screen.dart';
 import '../controller/user_controller.dart';
 
 class AppMainScreen extends StatefulWidget {
@@ -42,8 +43,21 @@ class _AppMainScreenState extends State<AppMainScreen> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const AppHomeScreen(),
-      const Scaffold(),
-      const Scaffold(),
+      const Scaffold(
+        body: Center(
+          child: Text(
+            "Ini Leaderboard Screen\nYa Maniez🤗",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+              color: kBackgroundColor,
+            ),
+          ),
+        ),
+      ),
+      const MyGuestScreen(),
       Scaffold(
         body: Center(
           child: Column(

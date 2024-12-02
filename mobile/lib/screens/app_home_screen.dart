@@ -217,9 +217,9 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
         ),
         child: SafeArea(
           child: Container(
-            height: 72, // Tinggi AppBar
+            height: 72,
             decoration: BoxDecoration(
-              color: kBackgroundColor, // Warna latar belakang AppBar
+              color: kBackgroundColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -229,16 +229,14 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
               ],
             ),
             child: Stack(
-              alignment: Alignment.center, // Pusatkan elemen di tengah vertikal
+              alignment: Alignment.center,
               children: [
-                // Logo di tengah
                 Center(
                   child: Image.asset(
                     'assets/img/score_hunter_logo.png',
                     height: 32,
                   ),
                 ),
-                // Tombol notifikasi di kanan
                 Positioned(
                   right: 16,
                   child: ElevatedButton(
