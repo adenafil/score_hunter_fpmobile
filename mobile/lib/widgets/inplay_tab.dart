@@ -12,40 +12,58 @@ class _InPlayTabState extends State<InPlayTab> {
   // Dummy data untuk testing
   final List<Map<String, dynamic>> matches = [
     {
-      'homeTeam': 'Arsenal F.C',
-      'homeLogo': 'assets/img/arsenal.png',
-      'homeScore': 2,
-      'awayTeam': 'Manchester City',
-      'awayLogo': 'assets/img/man_city.png',
-      'awayScore': 1,
+      'teams': [
+        {
+          'name': 'Arsenal F.C',
+          'logo': 'assets/img/arsenal.png',
+          'score': 2,
+        },
+        {
+          'name': 'Manchester City',
+          'logo': 'assets/img/man_city.png',
+          'score': 1
+        },
+      ],
       'matchStatus': '1st half, time elapse: 44:55',
       'odds': '2.56',
       'statusLabel': 'MATCH IN PROGRESS',
-      'halfTimeOdds': '1.75',
+      'guessCategory': 'Regular Time',
     },
     {
-      'homeTeam': 'Chelsea F.C',
-      'homeLogo': 'assets/img/chelsea.png',
-      'homeScore': 1,
-      'awayTeam': 'Liverpool F.C',
-      'awayLogo': 'assets/img/liverpool.png',
-      'awayScore': 3,
+      'teams': [
+        {
+          'name': 'Chelsea F.C',
+          'logo': 'assets/img/chelsea.png',
+          'score': 1,
+        },
+        {
+          'name': 'Liverpool F.C',
+          'logo': 'assets/img/liverpool.png',
+          'score': 3
+        },
+      ],
       'matchStatus': '1st half, time elapse: 40:12',
       'odds': '3.75',
-      'statusLabel': 'MATCH IS OVER',
-      'halfTimeOdds': '1.60',
+      'statusLabel': 'MATCH IN PROGRESS',
+      'guessCategory': 'First to Happen',
     },
     {
-      'homeTeam': 'Arsenal F.C',
-      'homeLogo': 'assets/img/arsenal.png',
-      'homeScore': 2,
-      'awayTeam': 'Manchester City',
-      'awayLogo': 'assets/img/man_city.png',
-      'awayScore': 1,
+      'teams': [
+        {
+          'name': 'Arsenal F.C',
+          'logo': 'assets/img/arsenal.png',
+          'score': 2,
+        },
+        {
+          'name': 'Manchester City',
+          'logo': 'assets/img/man_city.png',
+          'score': 1
+        },
+      ],
       'matchStatus': '1st half, time elapse: 44:55',
       'odds': '2.56',
       'statusLabel': 'MATCH IN PROGRESS',
-      'halfTimeOdds': '1.75',
+      'guessCategory': 'Regular Time',
     },
   ];
 
@@ -59,16 +77,11 @@ class _InPlayTabState extends State<InPlayTab> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: MatchCard(
-            homeTeam: match['homeTeam'],
-            homeLogo: match['homeLogo'],
-            homeScore: match['homeScore'],
-            awayTeam: match['awayTeam'],
-            awayLogo: match['awayLogo'],
-            awayScore: match['awayScore'],
+            teams: match['teams'],
             matchStatus: match['matchStatus'],
             odds: match['odds'],
             statusLabel: match['statusLabel'],
-            halfTimeOdds: match['halfTimeOdds'],
+            guessCategory: match['guessCategory'],
           ),
         );
       },
@@ -77,410 +90,191 @@ class _InPlayTabState extends State<InPlayTab> {
 }
 
 class MatchCard extends StatelessWidget {
-  final String homeTeam;
-  final String homeLogo;
-  final int homeScore;
-  final String awayTeam;
-  final String awayLogo;
-  final int awayScore;
+  final List<Map<String, dynamic>> teams;
   final String matchStatus;
   final String odds;
   final String statusLabel;
-  final String halfTimeOdds;
+  final String guessCategory;
 
   const MatchCard({
     super.key,
-    required this.homeTeam,
-    required this.homeLogo,
-    required this.homeScore,
-    required this.awayTeam,
-    required this.awayLogo,
-    required this.awayScore,
+    required this.teams,
     required this.matchStatus,
     required this.odds,
     required this.statusLabel,
-    required this.halfTimeOdds,
+    required this.guessCategory,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 280),
-      width: MediaQuery.of(context).size.width * 0.85,
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: kAccentColor,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: 1,
-            color: Colors.white.withOpacity(0.5),
+    final int maxScore = teams
+        .map((team) => team['score'] as int)
+        .reduce((a, b) => a > b ? a : b);
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: kAccentColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.5), width: 1),
           ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: const ShapeDecoration(
-                    color: Color(0xFFD3C529),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
-                      ),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        statusLabel,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'PlusJakartaSans',
-                          fontWeight: FontWeight.w700,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                matchStatus,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: kSecondaryColor,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  matchStatus,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: kSecondaryColor,
-                    fontSize: 10,
-                    fontFamily: 'PlusJakartaSans',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          Positioned(
-            left: 24,
-            top: 75,
-            child: SizedBox(
-              width: 313,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              ),
+              const SizedBox(height: 16),
+              Column(
+                children: teams.map((team) {
+                  final bool isWinner = team['score'] == maxScore;
+                  return _buildTeamRow(
+                    team['name'],
+                    team['logo'],
+                    team['score'],
+                    isWinner,
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 16),
+              Divider(color: Colors.white.withOpacity(0.5)),
+              const SizedBox(height: 8),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(homeLogo),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      Image.asset(
+                        teams[1]['logo'],
+                        width: 24,
+                        height: 24,
                       ),
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 60,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              homeTeam,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Odds',
+                            style: TextStyle(
+                              color: kSecondaryColor,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
                             ),
-                            const SizedBox(height: 2),
-                            const SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                'HOME',
-                                style: TextStyle(
-                                  color: Color(0xFFD3D3D3),
-                                  fontSize: 10,
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 167),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (homeScore > awayScore)
-                        Container(
-                          width: 16,
-                          height: 16,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(),
-                          child: const Icon(
-                            Icons.arrow_right,
-                            color: Colors.white,
                           ),
-                        ),
-                      const SizedBox(width: 6),
-                      Text(
-                        homeScore.toString(),
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontFamily: 'PlusJakartaSans',
-                          fontWeight: FontWeight.w800,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 211,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(homeLogo),
-                            fit: BoxFit.contain,
+                          const SizedBox(height: 4),
+                          Text(
+                            odds,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Odds',
-                      style: TextStyle(
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: kBackgroundColorDarken,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Text(
+                      guessCategory,
+                      style: const TextStyle(
                         color: kSecondaryColor,
                         fontSize: 10,
-                        fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.w400,
-                        height: 0,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      odds,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 131,
-            child: SizedBox(
-              width: 313,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(awayLogo),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 95,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              awayTeam,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontFamily: 'PlusJakartaSans',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            const SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                'AWAY',
-                                style: TextStyle(
-                                  color: kSecondaryColor,
-                                  fontSize: 10,
-                                  fontFamily: 'PlusJakartaSans',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 124),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (awayScore > homeScore)
-                        Container(
-                          width: 16,
-                          height: 16,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(),
-                          child: const Icon(
-                            Icons.arrow_right,
-                            color: Colors.white,
-                          ),
-                        ),
-                      const SizedBox(width: 6),
-                      Text(
-                        awayScore.toString(),
-                        textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontFamily: 'PlusJakartaSans',
-                          fontWeight: FontWeight.w800,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 24,
-            top: 191,
-            child: Container(
-              width: 313,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 1,
-                    strokeAlign: BorderSide.strokeAlignCenter,
-                    color: Colors.white.withOpacity(0.5),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 249,
-            top: 216,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: ShapeDecoration(
-                color: kBackgroundColorDarken,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '1st half time',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontSize: 10,
-                      fontFamily: 'PlusJakartaSans',
-                      fontWeight: FontWeight.w500,
-                      height: 0,
                     ),
                   ),
                 ],
               ),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: const BoxDecoration(
+              color: Color(0xFFD3C529),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+            ),
+            child: Text(
+              statusLabel,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTeamRow(
+      String teamName, String logoPath, int score, bool isWinner) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              logoPath,
+              width: 32,
+              height: 32,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              teamName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            if (isWinner)
+              const Icon(
+                Icons.arrow_right,
+                color: Colors.white,
+                size: 16,
+              ),
+            const SizedBox(width: 6),
+            Text(
+              score.toString(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

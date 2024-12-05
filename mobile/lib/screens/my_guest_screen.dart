@@ -126,12 +126,6 @@ class _MyGuestScreenState extends State<MyGuestScreen> {
       ),
     );
   }
-
-  buildHistoryTab() {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-    );
-  }
 }
 
 PreferredSize headerParts(BuildContext context) {
