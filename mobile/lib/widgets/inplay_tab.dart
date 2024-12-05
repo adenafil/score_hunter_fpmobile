@@ -69,23 +69,57 @@ class _InPlayTabState extends State<InPlayTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: matches.length,
-      itemBuilder: (context, index) {
-        final match = matches[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: MatchCard(
-            teams: match['teams'],
-            matchStatus: match['matchStatus'],
-            odds: match['odds'],
-            statusLabel: match['statusLabel'],
-            guessCategory: match['guessCategory'],
-          ),
-        );
-      },
-    );
+    return matches.isEmpty
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/img/empty_data.png',
+                width: 150,
+                height: 150,
+              ),
+              const SizedBox(height: 16),
+              const SizedBox(
+                width: 250,
+                child: Text(
+                  "No guesses in play,\nmake more predictions and win!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'PlusJakartaSans',
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ),
+            ],
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: matches.length,
+            itemBuilder: (context, index) {
+              final match = matches[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: GestureDetector(
+                  onTap: () {
+                    // Navigate to the match_detail.dart screen
+                    // Navigator.push( context, MaterialPageRoute(
+                    //     builder: (context) => MatchDetail(),
+                    //   ),
+                    // );
+                  },
+                  child: MatchCard(
+                    teams: match['teams'],
+                    matchStatus: match['matchStatus'],
+                    odds: match['odds'],
+                    statusLabel: match['statusLabel'],
+                    guessCategory: match['guessCategory'],
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
 
