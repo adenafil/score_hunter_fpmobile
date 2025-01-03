@@ -7,6 +7,7 @@ import 'package:soccer_live_score/model/live_match_model.dart';
 import 'package:soccer_live_score/model/up_coming_model.dart';
 import 'package:soccer_live_score/screens/match_detail.dart';
 import 'package:soccer_live_score/screens/match_detail_screen.dart';
+import 'package:soccer_live_score/screens/upmatch_detail.dart';
 import '../widgets/live_match.dart';
 import '../widgets/up_coming_match.dart';
 import '../screens/match_detail.dart';
@@ -164,7 +165,17 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 itemCount: upcomingMatches.length,
                 itemBuilder: (context, index) {
                   final upMatch = upcomingMatches[index];
-                  return UpComingMatches(upMatch: upMatch);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => UpmatchDetail(upcomingMatch: upMatch),
+                        ),
+                      );
+                    },
+                    child: UpComingMatches(upMatch: upMatch),
+                  );
                 },
               ),
             ),

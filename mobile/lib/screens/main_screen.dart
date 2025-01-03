@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
 import 'package:soccer_live_score/screens/app_home_screen.dart';
+import 'package:soccer_live_score/screens/leaderboard_screen.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
 import 'package:soccer_live_score/screens/my_guest_screen.dart';
 import '../controller/user_controller.dart';
@@ -43,20 +44,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const AppHomeScreen(),
-      const Scaffold(
-        body: Center(
-          child: Text(
-            "Ini Leaderboard Screen\nYa Maniez🤗",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: kBackgroundColor,
-            ),
-          ),
-        ),
-      ),
+      const LeaderboardScreen(),
       const MyGuestScreen(),
       Scaffold(
         body: Center(
@@ -140,45 +128,49 @@ class MyBottomNavBarItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTab,
-      child: IntrinsicWidth(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 80),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 100),
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: isActive ? kPrimaryColor50 : kBackgroundColorDarken,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  icon,
-                  color: isActive ? Colors.white : kTransparentWhite,
-                ),
-                Offstage(
-                  offstage: !isActive,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      title,
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
+    return SafeArea(
+      bottom: true,
+      child: GestureDetector(
+        onTap: onTab,
+        child: IntrinsicWidth(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 80),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: isActive ? kPrimaryColor50 : kBackgroundColorDarken,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    color: isActive ? Colors.white : kTransparentWhite,
+                  ),
+                  Offstage(
+                    offstage: !isActive,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 10),
+                      ),
                     ),
                   ),
-                ),
-                if (!isActive)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                          color: kTransparentWhite, fontSize: 10),
+                  if (!isActive)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            color: kTransparentWhite, fontSize: 10),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

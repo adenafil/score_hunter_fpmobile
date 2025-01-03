@@ -6,6 +6,11 @@ class UpcomingMatch {
   final String date;
   final String time;
   final bool isFavorite;
+  final String stadium;
+  final int stageWeek;
+  final Map<String, double> odds;
+  final Map<String, Map<String, dynamic>> votes;
+
 
   UpcomingMatch({
     required this.awayLogo,
@@ -15,6 +20,10 @@ class UpcomingMatch {
     required this.date,
     required this.time,
     required this.isFavorite,
+    required this.stadium,
+    required this.stageWeek,
+    required this.odds,
+    required this.votes,
   });
 }
 
@@ -27,6 +36,51 @@ List<UpcomingMatch> upcomingMatches = [
     date: "11 Nov",
     time: "02:35 AM",
     isFavorite: true,
+    stadium: "Vitality Stadium",
+    stageWeek: 12,
+    odds: {
+      "homeWin": 2.10,
+      "draw": 3.20,
+      "awayWin": 1.90,
+    },
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1000,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 30.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   UpcomingMatch(
     awayLogo: "assets/img/nottingham_forest.png",
@@ -36,6 +90,51 @@ List<UpcomingMatch> upcomingMatches = [
     date: "23 Nov",
     time: "10:00 PM",
     isFavorite: true,
+    stadium: "Emirates Stadium",
+    stageWeek: 13,
+    odds: {
+      "homeWin": 1.80,
+      "draw": 3.50,
+      "awayWin": 2.20,
+    },
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1500,
+        "percentage": {
+          "homeTeam": 60.0,
+          "draw": 25.0,
+          "awayTeam": 15.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   UpcomingMatch(
     awayLogo: "assets/img/crystal_palace.png",
@@ -45,6 +144,51 @@ List<UpcomingMatch> upcomingMatches = [
     date: "24 Nov",
     time: "04:35 AM",
     isFavorite: true,
+    stadium: "Emirates Stadium",
+    stageWeek: 13,
+    odds: {
+      "homeWin": 1.80,
+      "draw": 3.50,
+      "awayWin": 2.20,
+    },
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1500,
+        "percentage": {
+          "homeTeam": 60.0,
+          "draw": 25.0,
+          "awayTeam": 15.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   UpcomingMatch(
     awayLogo: "assets/img/wolves.png",
@@ -54,6 +198,51 @@ List<UpcomingMatch> upcomingMatches = [
     date: "24 Nov",
     time: "02:35 AM",
     isFavorite: true,
+    stadium: "Emirates Stadium",
+    stageWeek: 13,
+    odds: {
+      "homeWin": 1.80,
+      "draw": 3.50,
+      "awayWin": 2.20,
+    },
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1500,
+        "percentage": {
+          "homeTeam": 60.0,
+          "draw": 25.0,
+          "awayTeam": 15.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
   UpcomingMatch(
     awayLogo: "assets/img/tottenham.png",
@@ -63,5 +252,50 @@ List<UpcomingMatch> upcomingMatches = [
     date: "24 Nov",
     time: "12:30 AM",
     isFavorite: true,
+    stadium: "Emirates Stadium",
+    stageWeek: 13,
+    odds: {
+      "homeWin": 1.80,
+      "draw": 3.50,
+      "awayWin": 2.20,
+    },
+    votes: {
+      "regularTime": {
+        "categoryName": "Regular Time",
+        "totalVotes": 1500,
+        "percentage": {
+          "homeTeam": 60.0,
+          "draw": 25.0,
+          "awayTeam": 15.0,
+        },
+      },
+      "firstHalfTime": {
+        "categoryName": "1st Half Time",
+        "totalVotes": 800,
+        "percentage": {
+          "homeTeam": 30.0,
+          "draw": 50.0,
+          "awayTeam": 20.0,
+        },
+      },
+      "secondHalfTime": {
+        "categoryName": "2nd Half Time",
+        "totalVotes": 600,
+        "percentage": {
+          "homeTeam": 40.0,
+          "draw": 35.0,
+          "awayTeam": 25.0,
+        },
+      },
+      "firstToHappen": {
+        "categoryName": "First to Happen",
+        "totalVotes": 400,
+        "percentage": {
+          "homeTeam": 45.0,
+          "draw": 15.0,
+          "awayTeam": 40.0,
+        },
+      },
+    },
   ),
 ];

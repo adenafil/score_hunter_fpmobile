@@ -47,7 +47,6 @@ class _MatchDetailState extends State<MatchDetail> {
               liveMatch: widget.liveMatch,
             ),
             // Match Detail Guess Component
-            // Match Detail Guess Component
             Column(
               children: [
                 SizedBox(
