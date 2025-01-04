@@ -75,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       try {
                         final user = await UserController.loginWithGoogle();
+
                         if (user != null && mounted) {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(

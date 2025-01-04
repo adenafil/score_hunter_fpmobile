@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
+import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 import 'package:soccer_live_score/screens/app_home_screen.dart';
 import 'package:soccer_live_score/screens/leaderboard_screen.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
@@ -33,6 +35,14 @@ class _AppMainScreenState extends State<AppMainScreen> {
 
   Future<void> _logout() async {
     await UserController.signOut();
+    final dbHelper = DatabaseHelper();
+    print("crott ${await dbHelper.getToken()}");
+
+    await dbHelper.deleteToken();
+    ApiService crott = new ApiService();
+    await crott.logoutUser();
+
+    // await dbHelper.deleteToken();
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()),

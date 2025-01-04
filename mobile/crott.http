@@ -1,0 +1,5 @@
+### Login User
+DELETE http://localhost:3000/auth/google
+Content-Type: application/json
+Accept: application/json
+X-API-TOKEN:
