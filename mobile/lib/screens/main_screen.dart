@@ -35,12 +35,11 @@ class _AppMainScreenState extends State<AppMainScreen> {
 
   Future<void> _logout() async {
     await UserController.signOut();
-    final dbHelper = DatabaseHelper();
-    print("crott ${await dbHelper.getToken()}");
 
-    await dbHelper.deleteToken();
     ApiService crott = new ApiService();
     await crott.logoutUser();
+
+
 
     // await dbHelper.deleteToken();
     if (mounted) {

@@ -24,23 +24,26 @@ class UserController {
 
     print(userCredential.user);
 
-    final token = await user!.getIdToken() ?? "";
+
+
+    final token = await user!.displayName ?? "";
+    print("memek ${token}");
+
 
     ApiService apiService = ApiService();
     final response = await apiService.loginUser(creationTime: user!.metadata.creationTime.toString() , displayName: user!.displayName.toString(), email: user!.email.toString(), isAnonymous: user!.isAnonymous, isEmailVerified: user!.emailVerified, lastSignInTime: user!.metadata.lastSignInTime.toString(), phoneNumber: user!.phoneNumber.toString() ?? "", photoURL: user!.photoURL.toString(), token: token ?? "", username: user!.displayName.toString().splitMapJoin(" "));
 
-    print("token : ${await user?.getIdToken()}");
 
     if (user != null) {
       // Mendapatkan token.
-      final String? token = await user?.getIdToken();
+      print("memek ${token}");
 
       // Simpan token ke database lokal
       final dbHelper = DatabaseHelper();
-      if (token != null) {
         await dbHelper.saveToken(token);
-      }
     }
+
+    print(await apiService.fetchHomeData());
 
     // POST KE API AUTHENTICATION SI GOLEK API
     return userCredential.user;

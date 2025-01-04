@@ -110,7 +110,7 @@ class UpComingMatches extends StatelessWidget {
                         textAlign: TextAlign.center,
                         "Away",
                         style:
-                            TextStyle(fontSize: 11, color: kTransparentWhite),
+                        TextStyle(fontSize: 11, color: kTransparentWhite),
                       ),
                       Text(
                         textAlign: TextAlign.center,

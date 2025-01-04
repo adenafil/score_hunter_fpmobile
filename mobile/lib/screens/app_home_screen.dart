@@ -127,30 +127,30 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       });
                     },
                     items: leagues.map<DropdownMenuItem<String>>(
-                        (Map<String, dynamic> league) {
-                      return DropdownMenuItem<String>(
-                        value: league['name'],
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              league['image'],
-                              width: 24,
-                              height: 24,
+                            (Map<String, dynamic> league) {
+                          return DropdownMenuItem<String>(
+                            value: league['name'],
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  league['image'],
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  league['name'],
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              league['name'],
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                          );
+                        }).toList(),
                   ),
                 ),
               ],
