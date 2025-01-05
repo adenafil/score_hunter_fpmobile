@@ -166,159 +166,166 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 64,
-                                    width: 64,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32),
-                                      color: Colors.transparent,
-                                    ),
-                                    child: AbsorbPointer(
-                                      child: InkWell(
-                                        onTap: null,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Image.network(
-                                            widget.upcomingMatch.homeLogo,
-                                                                    height: 45,
-                        width: 45,
-                        loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
-
-                                  ),
-                                );
-                        },
-
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-'${widget.upcomingMatch.votes["regularTime"]?["percentage"]["homeWin"] ?? 0.0}',
-                                    
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 64,
-                                    width: 64,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white.withOpacity(0.5),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32),
-                                      color: Colors.transparent,
-                                    ),
-                                    child: const AbsorbPointer(
-                                      child: InkWell(
-                                        onTap: null,
-                                        child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Center(
-                                              child: Text(
-                                                "X",
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                  'PlusJakartaSans',
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-'${widget.upcomingMatch.votes["regularTime"]?["percentage"]["draw"] ?? 0.0}',
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: kTransparentWhite,
-                                      fontSize: 14,
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 64,
-                                    width: 64,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: kPrimaryColor,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(32),
-                                      color: Colors.transparent,
-                                    ),
-                                    child: AbsorbPointer(
-                                      child: InkWell(
-                                        onTap: null,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Image.network(
-                                            widget.upcomingMatch.awayLogo,
-                        height: 45,
-                        width: 45,
-                        loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
-
-                                  ),
-                                );
-                        },
-                                            
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["awayWin"] ?? 0.0)}',
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'PlusJakartaSans',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+Expanded(
+  child: Column(
+    children: [
+      Container(
+        height: 64,
+        width: 64,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white.withOpacity(0.5),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(32),
+          color: Colors.transparent,
+        ),
+        child: InkWell(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("hi Home")),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(
+              widget.upcomingMatch.homeLogo,
+              height: 45,
+              width: 45,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            (loadingProgress.expectedTotalBytes ?? 1)
+                        : null,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        '${widget.upcomingMatch.votes["regularTime"]?["percentage"]["homeWin"] ?? 0.0}',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ],
+  ),
+),
+Expanded(
+  child: Column(
+    children: [
+      Container(
+        height: 64,
+        width: 64,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.white.withOpacity(0.5),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(32),
+          color: Colors.transparent,
+        ),
+        child: InkWell(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("X tapped")),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Center(
+              child: Text(
+                "X",
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        '${widget.upcomingMatch.votes["regularTime"]?["percentage"]["draw"] ?? 0.0}',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: kTransparentWhite,
+          fontSize: 14,
+          fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ],
+  ),
+),
+Expanded(
+  child: Column(
+    children: [
+      Container(
+        height: 64,
+        width: 64,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: kPrimaryColor,
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(32),
+          color: Colors.transparent,
+        ),
+        child: InkWell(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Away team logo tapped")),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(
+              widget.upcomingMatch.awayLogo,
+              height: 45,
+              width: 45,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            (loadingProgress.expectedTotalBytes ?? 1)
+                        : null,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["awayWin"] ?? 0.0)}',
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ],
+  ),
+),
                           ],
                         ),
                         Padding(

@@ -60,7 +60,7 @@ class LiveMatchData extends StatelessWidget {
                           ),
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Image.asset(
+                            child: Image.network(
                               live.homeLogo,
                               fit: BoxFit.contain,
                             ),
@@ -102,9 +102,9 @@ class LiveMatchData extends StatelessWidget {
                               TextSpan(
                                 text: "${live.homeGoal} : ",
                                 style: TextStyle(
-                                  color: live.onTheWinner
-                                      ? Colors.white
-                                      : kPrimaryColor,
+                                  color: live.onTheWinner == 0
+                                      ? kPrimaryColor
+                                      : Colors.white,
                                   fontSize: 24,
                                   fontFamily: 'PlusJakartaSans',
                                   fontWeight: FontWeight.w800,
@@ -113,7 +113,7 @@ class LiveMatchData extends StatelessWidget {
                               TextSpan(
                                 text: live.awayGoal.toString(),
                                 style: TextStyle(
-                                  color: live.onTheWinner
+                                  color: live.onTheWinner == 1
                                       ? kPrimaryColor
                                       : Colors.white,
                                   fontSize: 24,
@@ -126,10 +126,10 @@ class LiveMatchData extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          "999:999",
+                        Text(
+                          live.time,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: kSecondaryColor,
                             fontSize: 8,
                             fontFamily: 'PlusJakartaSans',
@@ -153,7 +153,7 @@ class LiveMatchData extends StatelessWidget {
                           ),
                           child: AspectRatio(
                             aspectRatio: 1,
-                            child: Image.asset(
+                            child: Image.network(
                               live.awayLogo,
                               fit: BoxFit.contain,
                             ),
@@ -203,10 +203,10 @@ class LiveMatchData extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
+                        const Text(
                           'W1',
                           style: TextStyle(
                             color: kSecondaryColor,
@@ -215,10 +215,10 @@ class LiveMatchData extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Text(
-                          '2.56',
-                          style: TextStyle(
+                          live.votes["regularTime"]?["percentage"]["homeWin"] ?? '0.0',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontFamily: 'PlusJakartaSans',
@@ -238,10 +238,10 @@ class LiveMatchData extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
+                        const Text(
                           'X',
                           style: TextStyle(
                             color: kSecondaryColor,
@@ -250,10 +250,10 @@ class LiveMatchData extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(width: 28),
+                        const SizedBox(width: 28),
                         Text(
-                          '2.33',
-                          style: TextStyle(
+                          live.votes["regularTime"]?["percentage"]["draw"] ?? '0.0',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontFamily: 'PlusJakartaSans',
@@ -273,21 +273,21 @@ class LiveMatchData extends StatelessWidget {
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'W2',
-                          style: TextStyle(
+                          'W3',
+                          style: const TextStyle(
                             color: kSecondaryColor,
                             fontSize: 10,
                             fontFamily: 'PlusJakartaSans',
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        SizedBox(width: 19),
+                        const SizedBox(width: 19),
                         Text(
-                          '1.37',
+                          live.votes["regularTime"]?["percentage"]["awayWin"] ?? '0.0',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,

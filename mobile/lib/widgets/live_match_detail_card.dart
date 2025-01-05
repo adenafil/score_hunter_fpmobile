@@ -113,7 +113,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.asset(liveMatch.homeLogo),
+                              child: Image.network(liveMatch.homeLogo),
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -148,9 +148,9 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                   TextSpan(
                                     text: liveMatch.homeGoal.toString(),
                                     style: TextStyle(
-                                      color: liveMatch.onTheWinner
-                                          ? Colors.white
-                                          : kPrimaryColor,
+                                      color: liveMatch.onTheWinner == 0
+                                          ? kPrimaryColor
+                                          : Colors.white,
                                       fontSize: 24,
                                       fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
@@ -159,7 +159,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                   TextSpan(
                                     text: ' : ${liveMatch.awayGoal}',
                                     style: TextStyle(
-                                      color: liveMatch.onTheWinner
+                                      color: liveMatch.onTheWinner == 1
                                           ? kPrimaryColor
                                           : Colors.white,
                                       fontSize: 24,
@@ -171,8 +171,8 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            const Text(
-                              "66-66",
+                            Text(
+                              liveMatch.time,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: kSecondaryColor,
@@ -191,7 +191,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.asset(liveMatch.awayLogo),
+                              child: Image.network(liveMatch.awayLogo),
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -235,11 +235,11 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildOddsPill('W1', '2.56'),
+                    _buildOddsPill('W1', liveMatch.votes["regularTime"]?["percentage"]["homeWin"] ?? '0.0'),
                     const SizedBox(width: 16),
-                    _buildOddsPill('X', '2.33'),
+                    _buildOddsPill('X', liveMatch.votes["regularTime"]?["percentage"]["draw"] ?? '0.0'),
                     const SizedBox(width: 16),
-                    _buildOddsPill('W2', '1.37'),
+                    _buildOddsPill('W2', liveMatch.votes["regularTime"]?["percentage"]["awayWin"] ?? '0.0'),
                   ],
                 ),
               ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
 class LiveMatch {
   final String awayGoal;
@@ -22,20 +25,18 @@ class LiveMatch {
   final String color;
   final String textColors;
   final String backgroundImage;
-  final bool onTheWinner;
-
-  // New fields for voting
-  final Map<String, Map<String, dynamic>> votes; // Votes for each category
+  final int onTheWinner;
+  final Map<String, Map<String, dynamic>> votes;
 
   LiveMatch({
     required this.awayGoal,
     required this.homeGoal,
     required this.time,
-    required this.stadium,
     required this.awayLogo,
     required this.homeLogo,
     required this.awayTitle,
     required this.homeTitle,
+    required this.stadium,
     required this.stageWeek,
     required this.matchTime,
     required this.awayGoalScorers,
@@ -50,10 +51,92 @@ class LiveMatch {
     required this.textColors,
     required this.backgroundImage,
     required this.onTheWinner,
-    required this.votes, // New parameter
+    required this.votes,
   });
+  
+  
+  factory LiveMatch.fromJson(Map<String, dynamic> json) {
+  return LiveMatch(
+    awayGoal: json['awayGoal']?.toString() ?? '0',
+    homeGoal: json['homeGoal']?.toString() ?? '0',
+    time: json['time'] ?? '',
+    awayLogo: json['awayLogo'] ?? '',
+    homeLogo: json['homeLogo'] ?? '',
+    awayTitle: json['awayTitle'] ?? '',
+    homeTitle: json['homeTitle'] ?? '',
+    stadium: json['stadium'] ?? 'Unknown Stadium',
+    stageWeek: json['stageWeek']?.toString() ?? '0',
+    matchTime: json['matchTime'] ?? '',
+    awayGoalScorers: List<String>.from(json['awayGoalScorers'] ?? []),
+    homeGoalScorers: List<String>.from(json['homeGoalScorers'] ?? []),
+    odds: Map<String, String>.from(json['odds'] ?? {}),
+    shotOnTarget: json['shotOnTarget']?.toString() ?? '0',
+    possession: json['possession']?.toString() ?? '0',
+    yellowCard: json['yellowCard']?.toString() ?? '0',
+    redCard: json['redCard']?.toString() ?? '0',
+    corner: json['corner']?.toString() ?? '0',
+    color: json['color']?.toString() ?? '0xff202020',
+    textColors: json['textColors'] ?? '#ffffff',
+    backgroundImage: json['backgroundImage'] ?? '',
+    onTheWinner: json['onTheWinner'] ?? false,
+    votes: Map<String, Map<String, dynamic>>.from(
+      (json['votes'] ?? {}).map(
+        (key, value) => MapEntry(key, Map<String, dynamic>.from(value)),
+      ),
+    ),
+  );
+}
+
 
 }
+
+
+class LiveMatchService {
+  Future<List<LiveMatch>> fetchLiveMatches() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://192.168.1.101:3000/api/startedmatch'),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-TOKEN': "admin",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final decodedResponse = jsonDecode(response.body);
+
+        // Memastikan data ada dan dalam format yang diharapkan
+        if (decodedResponse != null &&
+            decodedResponse is Map<String, dynamic> &&
+            decodedResponse['data'] is List) {
+          // Memproses hanya data yang valid
+          final matches = (decodedResponse['data'] as List)
+              .map((match) {
+                try {
+                  return LiveMatch.fromJson(match);
+                } catch (e) {
+                  // Abaikan elemen yang tidak valid
+                  return null;
+                }
+              })
+              .whereType<LiveMatch>()
+              .toList();
+
+          return matches;
+        } else {
+          throw Exception("Invalid data format from API");
+        }
+      } else {
+        throw Exception('Failed to load live matches');
+      }
+    } catch (e) {
+      throw Exception('Error fetching live matches: $e');
+    }
+  }
+}
+
+
+
 
 List<LiveMatch> liveMatches = [
   LiveMatch(
@@ -82,7 +165,7 @@ List<LiveMatch> liveMatches = [
     color: "0xffe4e4e4",
     textColors: "#ffffff",
     backgroundImage: "assets/img/pl.png",
-    onTheWinner: false,
+    onTheWinner: 11,
     votes: {
       "regularTime": {
         "categoryName": "Regular Time",
@@ -148,7 +231,7 @@ List<LiveMatch> liveMatches = [
     color: "#000000",
     textColors: "#ffffff",
     backgroundImage: "assets/img/pl.png",
-    onTheWinner: false,
+    onTheWinner: 11,
     votes: {
       "regularTime": {
         "categoryName": "Regular Time",
@@ -214,7 +297,7 @@ List<LiveMatch> liveMatches = [
     color: "#0xffe4e4e4",
     textColors: "#ffffff",
     backgroundImage: "assets/img/pl.png",
-    onTheWinner: true,
+    onTheWinner: 11,
     votes: {
       "regularTime": {
         "categoryName": "Regular Time",

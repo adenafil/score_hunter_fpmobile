@@ -9,6 +9,7 @@ import 'package:soccer_live_score/model/up_coming_model.dart';
 import 'package:soccer_live_score/screens/match_detail.dart';
 import 'package:soccer_live_score/screens/match_detail_screen.dart';
 import 'package:soccer_live_score/screens/upmatch_detail.dart';
+import 'package:soccer_live_score/widgets/live_match_detail_card.dart';
 import '../widgets/live_match.dart';
 import '../widgets/up_coming_match.dart';
 import '../screens/match_detail.dart';
@@ -22,6 +23,7 @@ class AppHomeScreen extends StatefulWidget {
 
 class _AppHomeScreenState extends State<AppHomeScreen> {
     final UpcomingMatchService service = UpcomingMatchService();
+    final LiveMatchService serviceLive = LiveMatchService();
 
   final List<Map<String, dynamic>> leagues = [
     {
@@ -49,12 +51,14 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
   
   // Define a state variable to store upcoming matches
   List<UpcomingMatch> upcomingMatches = [];
+  List<LiveMatch> liveMatch = [];
 
   // Fetch upcoming matches in initState
   @override
   void initState() {
     super.initState();
     fetchUpcomingMatches(); // Fetch the upcoming matches when the screen is initialized
+    fetchLiveMatch();
   }
 
   // Asynchronous method to fetch upcoming matches
@@ -71,6 +75,20 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     }
   }
 
+    Future<void> fetchLiveMatch() async {
+    try {
+      // Fetch upcoming matches from service
+      List<LiveMatch> matches = await serviceLive.fetchLiveMatches();
+      // Update the state with fetched matches
+      setState(() {
+        liveMatch = matches;
+      });
+    } catch (e) {
+      print('Error fetching upcoming matches: $e');
+    }
+  }
+
+
 
   String selectedLeague = 'Premiere League';
 
@@ -85,18 +103,18 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
           SizedBox(
             height: 230,
             child: ListView.builder(
-                itemCount: liveMatches.length,
+                itemCount: liveMatch.length,
                 shrinkWrap: true,
                 padding: const EdgeInsets.only(left: 20),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final live = liveMatches[index];
+                  final live = liveMatch[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MatchDetail(
+                          builder: (_) => MatchDetailCard(
                             liveMatch: live,
                           ), //before: MatchDetailScreen(liveMatch: live)
                         ),

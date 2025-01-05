@@ -102,7 +102,7 @@ class LiveMatchDetail extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
-                                    color: widget.liveMatch.onTheWinner
+                                    color: widget.liveMatch.onTheWinner == 1
                                         ? kPrimaryColor
                                         : Colors.white,
                                   ),
@@ -112,9 +112,9 @@ class LiveMatchDetail extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
-                                    color: widget.liveMatch.onTheWinner
-                                        ? Colors.white
-                                        : kPrimaryColor,
+                                    color: widget.liveMatch.onTheWinner == 1
+                                        ? kPrimaryColor
+                                        : Colors.white,
                                   ),
                                 ),
                               ],
