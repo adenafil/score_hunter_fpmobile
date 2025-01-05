@@ -103,7 +103,7 @@ class LiveMatchData extends StatelessWidget {
                                 text: "${live.homeGoal} : ",
                                 style: TextStyle(
                                   color: live.onTheWinner
-                                      ? live.textColors
+                                      ? Colors.white
                                       : kPrimaryColor,
                                   fontSize: 24,
                                   fontFamily: 'PlusJakartaSans',
@@ -115,7 +115,7 @@ class LiveMatchData extends StatelessWidget {
                                 style: TextStyle(
                                   color: live.onTheWinner
                                       ? kPrimaryColor
-                                      : live.textColors,
+                                      : Colors.white,
                                   fontSize: 24,
                                   fontFamily: 'PlusJakartaSans',
                                   fontWeight: FontWeight.w800,
@@ -126,10 +126,10 @@ class LiveMatchData extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 4),
-                        Text(
-                          live.getFormattedMatchTime(),
+                        const Text(
+                          "999:999",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 8,
                             fontFamily: 'PlusJakartaSans',

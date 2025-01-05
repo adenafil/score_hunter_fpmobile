@@ -22,7 +22,7 @@ class LiveMatchDetail extends StatelessWidget {
         height: 250,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: widget.liveMatch.color,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(25),
         ),
         child: Stack(
@@ -50,9 +50,9 @@ class LiveMatchDetail extends StatelessWidget {
                 children: [
                   Text(
                     widget.liveMatch.stadium,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
-                      color: widget.liveMatch.textColors,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -104,7 +104,7 @@ class LiveMatchDetail extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: widget.liveMatch.onTheWinner
                                         ? kPrimaryColor
-                                        : widget.liveMatch.textColors,
+                                        : Colors.white,
                                   ),
                                 ),
                                 TextSpan(
@@ -113,7 +113,7 @@ class LiveMatchDetail extends StatelessWidget {
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
                                     color: widget.liveMatch.onTheWinner
-                                        ? widget.liveMatch.textColors
+                                        ? Colors.white
                                         : kPrimaryColor,
                                   ),
                                 ),

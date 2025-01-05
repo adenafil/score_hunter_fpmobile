@@ -3,28 +3,47 @@ class UpcomingMatch {
   final String awayTitle;
   final String homeLogo;
   final String homeTitle;
-  final String date;
-  final String time;
+  final String? date;
+  final String? time;
   final bool isFavorite;
   final String stadium;
   final int stageWeek;
-  final Map<String, double> odds;
+  final Map<String, String> odds;
   final Map<String, Map<String, dynamic>> votes;
-
 
   UpcomingMatch({
     required this.awayLogo,
     required this.awayTitle,
     required this.homeLogo,
     required this.homeTitle,
-    required this.date,
-    required this.time,
+    this.date,
+    this.time,
     required this.isFavorite,
     required this.stadium,
     required this.stageWeek,
     required this.odds,
     required this.votes,
   });
+
+  factory UpcomingMatch.fromJson(Map<String, dynamic> json) {
+    return UpcomingMatch(
+      awayLogo: json['awayLogo'],
+      awayTitle: json['awayTitle'],
+      homeLogo: json['homeLogo'],
+      homeTitle: json['homeTitle'] ?? '', // default jika kosong
+      date: json['date'],
+      time: json['time'], // Tambahkan jika ada waktu
+      isFavorite: json['isFavorite'] ?? false,
+      stadium: json['stadium'],
+      stageWeek: int.tryParse(json['stageWeek'] ?? '0') ?? 0,
+      odds: Map<String, String>.from(json['odds']),
+      votes: Map<String, Map<String, dynamic>>.from(
+        (json['votes'] as Map).map(
+          (key, value) => MapEntry(key, Map<String, dynamic>.from(value)),
+        ),
+      ),
+    );
+  }
 }
 
 List<UpcomingMatch> upcomingMatches = [
@@ -39,17 +58,17 @@ List<UpcomingMatch> upcomingMatches = [
     stadium: "Vitality Stadium",
     stageWeek: 12,
     odds: {
-      "homeWin": 2.10,
-      "draw": 3.20,
-      "awayWin": 1.90,
+      "homeWin": "2.10",
+      "draw": "3.20",
+      "awayWin": "1.90",
     },
     votes: {
       "regularTime": {
         "categoryName": "Regular Time",
         "totalVotes": 1000,
         "percentage": {
-          "homeTeam": 45.0,
-          "draw": 30.0,
+          "homeTeam": "45.0",
+          "draw": "30.0",
           "awayTeam": 25.0,
         },
       },
@@ -93,9 +112,9 @@ List<UpcomingMatch> upcomingMatches = [
     stadium: "Emirates Stadium",
     stageWeek: 13,
     odds: {
-      "homeWin": 1.80,
-      "draw": 3.50,
-      "awayWin": 2.20,
+      "homeWin": "1.80",
+      "draw": "3.50",
+      "awayWin": "2.20",
     },
     votes: {
       "regularTime": {
@@ -147,9 +166,9 @@ List<UpcomingMatch> upcomingMatches = [
     stadium: "Emirates Stadium",
     stageWeek: 13,
     odds: {
-      "homeWin": 1.80,
-      "draw": 3.50,
-      "awayWin": 2.20,
+      "homeWin": "1.80",
+      "draw": "3.50",
+      "awayWin": "2.20",
     },
     votes: {
       "regularTime": {
@@ -201,9 +220,9 @@ List<UpcomingMatch> upcomingMatches = [
     stadium: "Emirates Stadium",
     stageWeek: 13,
     odds: {
-      "homeWin": 1.80,
-      "draw": 3.50,
-      "awayWin": 2.20,
+      "homeWin": "1.80",
+      "draw": "3.50",
+      "awayWin": "2.20",
     },
     votes: {
       "regularTime": {
@@ -255,9 +274,9 @@ List<UpcomingMatch> upcomingMatches = [
     stadium: "Emirates Stadium",
     stageWeek: 13,
     odds: {
-      "homeWin": 1.80,
-      "draw": 3.50,
-      "awayWin": 2.20,
+      "homeWin": "1.80",
+      "draw": "3.50",
+      "awayWin": "2.20",
     },
     votes: {
       "regularTime": {

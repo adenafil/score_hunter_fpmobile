@@ -149,7 +149,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                     text: liveMatch.homeGoal.toString(),
                                     style: TextStyle(
                                       color: liveMatch.onTheWinner
-                                          ? liveMatch.textColors
+                                          ? Colors.white
                                           : kPrimaryColor,
                                       fontSize: 24,
                                       fontFamily: 'PlusJakartaSans',
@@ -161,7 +161,7 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                                     style: TextStyle(
                                       color: liveMatch.onTheWinner
                                           ? kPrimaryColor
-                                          : liveMatch.textColors,
+                                          : Colors.white,
                                       fontSize: 24,
                                       fontFamily: 'PlusJakartaSans',
                                       fontWeight: FontWeight.w800,
@@ -171,10 +171,10 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              liveMatch.getFormattedMatchTime(),
+                            const Text(
+                              "66-66",
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: kSecondaryColor,
                                 fontSize: 8,
                                 fontFamily: 'PlusJakartaSans',

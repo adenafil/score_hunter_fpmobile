@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:soccer_live_score/constants.dart';
 
 class LiveMatchStats extends StatelessWidget {
-  final int homeStats, awayStats;
+  final String homeStats, awayStats;
   final String title;
-  final double homeValue, awayValue;
+  final String homeValue, awayValue;
   final bool isHomeWinner;
   const LiveMatchStats({
     super.key,
@@ -62,7 +62,7 @@ class LiveMatchStats extends StatelessWidget {
                 child: RotatedBox(
                   quarterTurns: 2,
                   child: LinearProgressIndicator(
-                    value: homeValue,
+                    value: 0.666,
                     minHeight: 10,
                     backgroundColor: Colors.grey.shade200,
                     valueColor: AlwaysStoppedAnimation(
@@ -74,7 +74,7 @@ class LiveMatchStats extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: LinearProgressIndicator(
-                  value: awayValue,
+                  value: 0.666,
                   minHeight: 10,
                   backgroundColor: Colors.grey.shade200,
                   valueColor: AlwaysStoppedAnimation(

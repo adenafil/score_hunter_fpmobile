@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 
 class LiveMatch {
-  final int awayGoal;
-  final int homeGoal;
-  final int time;
+  final String awayGoal;
+  final String homeGoal;
+  final String time;
   final String awayLogo;
   final String homeLogo;
   final String awayTitle;
   final String homeTitle;
   final String stadium;
-  final int stageWeek;
-  final DateTime matchTime;
+  final String stageWeek;
+  final String matchTime;
   final List<String> awayGoalScorers;
   final List<String> homeGoalScorers;
-  final Map<String, double> odds;
-  final int shotOnTarget;
-  final int possession;
-  final int yellowCard;
-  final int redCard;
-  final int corner;
-  final Color color;
-  final Color textColors;
-  final DecorationImage backgroundImage;
+  final Map<String, String> odds;
+  final String shotOnTarget;
+  final String possession;
+  final String yellowCard;
+  final String redCard;
+  final String corner;
+  final String color;
+  final String textColors;
+  final String backgroundImage;
   final bool onTheWinner;
 
   // New fields for voting
@@ -53,47 +53,35 @@ class LiveMatch {
     required this.votes, // New parameter
   });
 
-  // Method to get formatted match time
-  String getFormattedMatchTime() {
-    int minutes = time;
-    int seconds = (minutes * 60) % 60;
-    String half = minutes < 45 ? "1st" : "2nd";
-    return '$half half, time elapse: ${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-  }
 }
 
 List<LiveMatch> liveMatches = [
   LiveMatch(
-    awayGoal: 1,
-    homeGoal: 2,
+    awayGoal: "1",
+    homeGoal: "2",
     stadium: "Etihad Stadium",
-    time: 45, // First half time elapsed
+    time: "45", // First half time elapsed
     awayLogo: "assets/img/man_city.png",
     homeLogo: "assets/img/arsenal.png",
     awayTitle: "Manchester City",
     homeTitle: "Arsenal F.C.",
-    stageWeek: 12,
-    matchTime: DateTime(2024, 11, 24, 20, 30),
+    stageWeek: "1",
+    matchTime: "2024-03-23",
     awayGoalScorers: ["Haaland (25')"],
     homeGoalScorers: ["G. Jesus (17')", "Saka (43')"],
     odds: {
-      "homeWin": 2.56, // W1
-      "draw": 2.33, // X
-      "awayWin": 1.37, // W2
+      "homeWin": "2.56", // W1
+      "draw": "2.33", // X
+      "awayWin": "1.37", // W2
     },
-    shotOnTarget: 5,
-    possession: 60,
-    yellowCard: 2,
-    redCard: 0,
-    corner: 6,
-    color: const Color(0xffe4e4e4),
-    textColors: Colors.white,
-    backgroundImage: const DecorationImage(
-      image: AssetImage("assets/img/pl.png"),
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomLeft,
-      opacity: 0.2,
-    ),
+    shotOnTarget: "5",
+    possession: "60",
+    yellowCard: "2",
+    redCard: "0",
+    corner: "6",
+    color: "0xffe4e4e4",
+    textColors: "#ffffff",
+    backgroundImage: "assets/img/pl.png",
     onTheWinner: false,
     votes: {
       "regularTime": {
@@ -135,36 +123,31 @@ List<LiveMatch> liveMatches = [
     },
   ),
   LiveMatch(
-    awayGoal: 0,
-    homeGoal: 2,
+    awayGoal: "0",
+    homeGoal: "2",
     stadium: "King Power Stadium",
-    time: 93, // Second half time elapsed
+    time: "93", // Second half time elapsed
     awayLogo: "assets/img/leicester_city.png",
     homeLogo: "assets/img/chelsea.png",
     awayTitle: "Leicester City",
     homeTitle: "Chelsea",
-    stageWeek: 12,
-    matchTime: DateTime(2024, 11, 24, 22, 15),
+    stageWeek: "12",
+    matchTime: "2024-03-02",
     awayGoalScorers: [],
     homeGoalScorers: ["Pedro Neto (57')", "Sancho (85')"],
     odds: {
-      "homeWin": 1.95, // W1
-      "draw": 3.10, // X
-      "awayWin": 4.20, // W2
+      "homeWin": "1.95", // W1
+      "draw": "3.10", // X
+      "awayWin": "4.20", // W2
     },
-    shotOnTarget: 7,
-    possession: 55,
-    yellowCard: 3,
-    redCard: 0,
-    corner: 4,
-    color: const Color(0xff202020),
-    textColors: Colors.white,
-    backgroundImage: const DecorationImage(
-      image: AssetImage("assets/img/pl.png"),
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomLeft,
-      opacity: 0.3,
-    ),
+    shotOnTarget: "7",
+    possession: "55",
+    yellowCard: "3",
+    redCard: "0",
+    corner: "4",
+    color: "#000000",
+    textColors: "#ffffff",
+    backgroundImage: "assets/img/pl.png",
     onTheWinner: false,
     votes: {
       "regularTime": {
@@ -206,36 +189,31 @@ List<LiveMatch> liveMatches = [
     },
   ),
   LiveMatch(
-    awayGoal: 3,
-    homeGoal: 1,
+    awayGoal: "3",
+    homeGoal: "1",
     stadium: "Old Trafford Stadium",
-    time: 45, // First half time elapsed
+    time: "45", // First half time elapsed
     awayLogo: "assets/img/man_united.png",
     homeLogo: "assets/img/liverpool.png",
     awayTitle: "Manchester United",
     homeTitle: "Liverpool F.C.",
-    stageWeek: 12,
-    matchTime: DateTime(2024, 11, 24, 18, 0),
+    stageWeek: "12",
+    matchTime: "2024-03-02",
     awayGoalScorers: ["Rashford (14')", "Bruno (30')", "Garnacho (43')"],
     homeGoalScorers: ["M. Salah (27')"],
     odds: {
-      "homeWin": 3.00, // W1
-      "draw": 2.75, // X
-      "awayWin": 2.00, // W2
+      "homeWin": "3.00", // W1
+      "draw": "2.75", // X
+      "awayWin": "2.00", // W2
     },
-    shotOnTarget: 8,
-    possession: 50,
-    yellowCard: 1,
-    redCard: 0,
-    corner: 5,
-    color: const Color(0xffe4e4e4),
-    textColors: Colors.white,
-    backgroundImage: const DecorationImage(
-      image: AssetImage("assets/img/pl.png"),
-      fit: BoxFit.contain,
-      alignment: Alignment.bottomLeft,
-      opacity: 0.2,
-    ),
+    shotOnTarget: "8",
+    possession: "50",
+    yellowCard: "1",
+    redCard: "0",
+    corner: "5",
+    color: "#0xffe4e4e4",
+    textColors: "#ffffff",
+    backgroundImage: "assets/img/pl.png",
     onTheWinner: true,
     votes: {
       "regularTime": {

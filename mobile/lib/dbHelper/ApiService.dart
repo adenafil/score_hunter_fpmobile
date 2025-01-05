@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
+import 'package:soccer_live_score/model/up_coming_model.dart';
 
 class ApiService {
   final String baseUrl = 'https://api.scorehunter.my.id';
@@ -117,7 +118,7 @@ class ApiService {
 
   /// Method untuk fetch data dari endpoint `/api/home`.
   Future<Map<String, dynamic>> fetchHomeData() async {
-    final url = Uri.parse('$baseUrl/api/home');
+    final url = Uri.parse('localhost:3000/api/upcomingmatch');
     final token = await dbHelper.getToken();
 
     try {
@@ -125,7 +126,7 @@ class ApiService {
         url,
         headers: {
           'accept': 'application/json',
-          'X-API-TOKEN': token,
+          'X-API-TOKEN': "admin",
         },
       );
 
@@ -183,4 +184,34 @@ class ApiService {
     }
   }
 
+}
+
+class UpcomingMatchService {
+  final String baseUrl = "http://192.168.1.101:3000/api/upcomingmatch";
+  final String apiToken = "admin";
+
+  Future<List<UpcomingMatch>> fetchUpcomingMatches() async {
+    try {
+      final response = await http.get(
+        Uri.parse(baseUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-TOKEN': apiToken,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> matches = data['data']
+        .expand((item) => item['upcomingMatches'] as List)
+        .toList();
+
+        return matches.map((json) => UpcomingMatch.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to fetch upcoming matches. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching upcoming matches: $e');
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../constants.dart';
 import '../model/up_coming_model.dart';
 
@@ -63,7 +64,20 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.asset(upMatch.homeLogo),
+                              child: Image.network(
+                                                        upMatch.homeLogo,
+                        height: 45,
+                        width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -104,7 +118,9 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  upMatch.date,
+  upMatch.date != null
+      ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(upMatch.date!))
+      : "",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: Colors.white,
@@ -114,7 +130,7 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  upMatch.time,
+                                  upMatch.time ?? "",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: kSecondaryColor,
@@ -134,7 +150,20 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.asset(upMatch.awayLogo),
+                              child: Image.network(
+                                                        upMatch.awayLogo,
+                        height: 45,
+                        width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(

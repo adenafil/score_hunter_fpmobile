@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:soccer_live_score/constants.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
 import 'package:soccer_live_score/model/up_coming_model.dart';
 import 'package:soccer_live_score/widgets/live_match_detail_card.dart';
 import 'package:soccer_live_score/widgets/upcoming_match_detail_card.dart';
@@ -17,6 +18,23 @@ class UpmatchDetail extends StatefulWidget {
 
 class _UpmatchDetailState extends State<UpmatchDetail> {
   late List<String> guestCategoryItems;
+    final UpcomingMatchService service = UpcomingMatchService();
+
+
+  // Asynchronous method to fetch upcoming matches
+  Future<void> fetchUpcomingMatches() async {
+    try {
+      // Fetch upcoming matches from service
+      List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
+      // Update the state with fetched matches
+      setState(() {
+        upcomingMatches = matches;
+      });
+    } catch (e) {
+      print('Error fetching upcoming matches: $e');
+    }
+  }
+
 
   @override
   void initState() {
@@ -24,6 +42,8 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
 
     // Validasi apakah votes ada
     if (widget.upcomingMatch.votes != null) {
+          super.initState();
+    fetchUpcomingMatches(); // Fetch the upcoming matches when the screen is initialized
       guestCategoryItems = widget.upcomingMatch.votes.values
           .map(
               (vote) => (vote['categoryName'] as String?) ?? 'Unknown Category')
@@ -165,9 +185,20 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                                         onTap: null,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Image.asset(
+                                          child: Image.network(
                                             widget.upcomingMatch.homeLogo,
-                                            fit: BoxFit.contain,
+                                                                    height: 45,
+                        width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
+
                                           ),
                                         ),
                                       ),
@@ -175,7 +206,8 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["homeTeam"] ?? 0.0).toStringAsFixed(1)}%',
+'${widget.upcomingMatch.votes["regularTime"]?["percentage"]["homeWin"] ?? 0.0}',
+                                    
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -223,7 +255,7 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["draw"] ?? 0.0).toStringAsFixed(1)}%',
+'${widget.upcomingMatch.votes["regularTime"]?["percentage"]["draw"] ?? 0.0}',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: kTransparentWhite,
@@ -254,9 +286,20 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                                         onTap: null,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Image.asset(
+                                          child: Image.network(
                                             widget.upcomingMatch.awayLogo,
-                                            fit: BoxFit.contain,
+                        height: 45,
+                        width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
+                                            
                                           ),
                                         ),
                                       ),
@@ -264,7 +307,7 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["awayTeam"] ?? 0.0).toStringAsFixed(1)}%',
+                                    '${(widget.upcomingMatch.votes["regularTime"]?["percentage"]["awayWin"] ?? 0.0)}',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       color: Colors.white,

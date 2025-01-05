@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
 
 import '../constants.dart';
 import '../model/up_coming_model.dart';
@@ -10,7 +12,8 @@ class UpComingMatches extends StatelessWidget {
     required this.upMatch,
   });
 
-  final UpcomingMatch upMatch;
+  
+  final UpcomingMatch upMatch ;
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +49,19 @@ class UpComingMatches extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
+                      Image.network(
                         upMatch.homeLogo,
                         height: 45,
                         width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
                       ),
                       const Text(
                         textAlign: TextAlign.center,
@@ -78,7 +90,7 @@ class UpComingMatches extends StatelessWidget {
                     children: [
                       Text(
                         textAlign: TextAlign.center,
-                        upMatch.time,
+                       upMatch.date != null ? DateFormat('HH:mm').format(DateTime.parse(upMatch.date!)) : "",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w900,
@@ -87,7 +99,9 @@ class UpComingMatches extends StatelessWidget {
                       ),
                       Text(
                         textAlign: TextAlign.center,
-                        upMatch.date,
+  upMatch.date != null
+      ? DateFormat('dd MMM').format(DateTime.parse(upMatch.date!))
+      : "",
                         style: const TextStyle(
                           fontSize: 10,
                           color: kPrimaryColor,
@@ -101,16 +115,25 @@ class UpComingMatches extends StatelessWidget {
                   flex: 3,
                   child: Column(
                     children: [
-                      Image.asset(
+                      Image.network(
                         upMatch.awayLogo,
                         height: 45,
                         width: 45,
+                        loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
+
+                                  ),
+                                );
+                        },
                       ),
                       const Text(
                         textAlign: TextAlign.center,
                         "Away",
                         style:
-                        TextStyle(fontSize: 11, color: kTransparentWhite),
+                            TextStyle(fontSize: 11, color: kTransparentWhite),
                       ),
                       Text(
                         textAlign: TextAlign.center,

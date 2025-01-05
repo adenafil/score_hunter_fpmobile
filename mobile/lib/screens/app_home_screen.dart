@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:soccer_live_score/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
 import 'package:soccer_live_score/model/live_match_model.dart';
 import 'package:soccer_live_score/model/up_coming_model.dart';
 import 'package:soccer_live_score/screens/match_detail.dart';
@@ -20,6 +21,8 @@ class AppHomeScreen extends StatefulWidget {
 }
 
 class _AppHomeScreenState extends State<AppHomeScreen> {
+    final UpcomingMatchService service = UpcomingMatchService();
+
   final List<Map<String, dynamic>> leagues = [
     {
       'image': 'assets/img/pl_white.png',
@@ -42,6 +45,32 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       'name': 'Serie A',
     },
   ];
+
+  
+  // Define a state variable to store upcoming matches
+  List<UpcomingMatch> upcomingMatches = [];
+
+  // Fetch upcoming matches in initState
+  @override
+  void initState() {
+    super.initState();
+    fetchUpcomingMatches(); // Fetch the upcoming matches when the screen is initialized
+  }
+
+  // Asynchronous method to fetch upcoming matches
+  Future<void> fetchUpcomingMatches() async {
+    try {
+      // Fetch upcoming matches from service
+      List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
+      // Update the state with fetched matches
+      setState(() {
+        upcomingMatches = matches;
+      });
+    } catch (e) {
+      print('Error fetching upcoming matches: $e');
+    }
+  }
+
 
   String selectedLeague = 'Premiere League';
 
@@ -108,50 +137,6 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       ),
                     ],
                   ),
-                  child: DropdownButton<String>(
-                    value: selectedLeague,
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: Colors.white,
-                    ),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    dropdownColor: kBackgroundColorDarken,
-                    underline: Container(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedLeague = value!;
-                      });
-                    },
-                    items: leagues.map<DropdownMenuItem<String>>(
-                            (Map<String, dynamic> league) {
-                          return DropdownMenuItem<String>(
-                            value: league['name'],
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  league['image'],
-                                  width: 24,
-                                  height: 24,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  league['name'],
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                  ),
                 ),
               ],
             ),
@@ -191,7 +176,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       child: Row(
         children: [
           const Text(
-            "Live Matches",
+            "End Matches",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
