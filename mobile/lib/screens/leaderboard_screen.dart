@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:soccer_live_score/constants.dart';
 
 class LeaderboardScreen extends StatefulWidget {
@@ -11,194 +13,218 @@ class LeaderboardScreen extends StatefulWidget {
 }
 
 class _LeaderboardScreenState extends State<LeaderboardScreen> {
-  // Mock data - replace with your API data model
-  final List<Map<String, dynamic>> leaderboardData = [
-    {"rank": 1, "name": "Alex Sampuri", "wins": 394, "avatar": "assets/avatar1.png"},
-    {"rank": 2, "name": "Go Youn Jung", "wins": 345, "avatar": "assets/avatar2.png"},
-    {"rank": 3, "name": "Sisep British", "wins": 320, "avatar": "assets/avatar3.png"},
-    {"rank": 4, "name": "Michael Sumain", "wins": 300, "avatar": "assets/avatar4.png"},
-    {"rank": 5, "name": "Mehul Kanzariya", "wins": 243, "avatar": "assets/avatar5.png"},
-    {"rank": 6, "name": "Steven Sudarsono", "wins": 220, "avatar": "assets/avatar6.png"},
-    {"rank": 7, "name": "Alexander Suwito", "wins": 190, "avatar": "assets/avatar7.png"},
-    {"rank": 8, "name": "Smith Marto", "wins": 174, "avatar": "assets/avatar8.png"},
-    {"rank": 9, "name": "IRIS", "wins": 170, "avatar": "assets/avatar9.png"},
-    {"rank": 10, "name": "Go Goo Dols", "wins": 100, "avatar": "assets/avatar10.png"},
-    {"rank": 11, "name": "Yung Kai", "wins": 99, "avatar": "assets/avatar11.png"},
-  ];
+  List<dynamic> leaderboardData = [];
+  Map<String, dynamic>? currentUser;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLeaderboardData();
+  }
+
+  Future<void> fetchLeaderboardData() async {
+    const String apiUrl = 'https://api.scorehunter.my.id/api/user/rank'; // Ganti dengan URL API Anda
+    try {
+      final response = await http.get(Uri.parse(apiUrl),         headers: {
+          'Content-Type': 'application/json',
+          'X-API-TOKEN': "ade",
+        },
+);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        setState(() {
+          leaderboardData = data['data'];
+          currentUser = data['current_rank_user'];
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load leaderboard data');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: headerParts(context),
-      body: Column(
-        children: [
-          // User Stats Card
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
               children: [
-                // Avatar and Name
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.red[100],
-                      child: const Icon(Icons.person, color: Colors.white),
-                    ),
-                    const SizedBox(width: 12),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                // User Stats Card
+                if (currentUser != null)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Mehul Kanzariya",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        // Avatar and Name
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(currentUser!['avatar']),
+                              backgroundColor: Colors.red[100],
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  currentUser!['username'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "${currentUser!['correctGuesses']} guesses",
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Text(
-                          "243",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
+                        // Global Rank
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              const Text(
+                                "Global Rank",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                "${currentUser!['rank']}",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-                // Global Rank
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Row(
-                    children: [
-                      Text(
-                        "Global Rank",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        "5",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Leaderboard Header
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: [
-                SizedBox(width: 50),
-                Expanded(
-                  child: Text(
-                    "Players",
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 80,
-                  child: Text(
-                    "Win",
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Leaderboard List
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              itemCount: leaderboardData.length,
-              itemBuilder: (context, index) {
-                final item = leaderboardData[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: kAccentColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                // Leaderboard Header
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Row(
                     children: [
-                      // Rank
-                      SizedBox(
-                        width: 30,
-                        child: Text(
-                          "${item['rank']}",
-                          style: TextStyle(
-                            color: item['rank'] <= 3
-                                ? Colors.amber
-                                : Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Avatar
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.blue[100],
-                        child: const Icon(Icons.person, color: Colors.white),
-                      ),
-                      const SizedBox(width: 12),
-                      // Name
+                      SizedBox(width: 50),
                       Expanded(
                         child: Text(
-                          item['name'],
-                          style: const TextStyle(
-                            color: Colors.white,
+                          "Players",
+                          style: TextStyle(
+                            color: kSecondaryColor,
                             fontSize: 16,
                           ),
                         ),
                       ),
-                      // Wins
                       SizedBox(
                         width: 80,
                         child: Text(
-                          "${item['wins']}",
-                          style: const TextStyle(
-                            color: Colors.white,
+                          "Guesses",
+                          style: TextStyle(
+                            color: kSecondaryColor,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.end,
                         ),
                       ),
                     ],
                   ),
-                );
-              },
+                ),
+                // Leaderboard List
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    itemCount: leaderboardData.length,
+                    itemBuilder: (context, index) {
+                      final item = leaderboardData[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: kAccentColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          children: [
+                            // Rank
+                            SizedBox(
+                              width: 30,
+                              child: Text(
+                                "${item['rank']}",
+                                style: TextStyle(
+                                  color: item['rank'] <= 3
+                                      ? Colors.amber
+                                      : Colors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            // Avatar
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundImage: NetworkImage(item['avatar']),
+                              backgroundColor: Colors.blue[100],
+                            ),
+                            const SizedBox(width: 12),
+                            // Name
+                            Expanded(
+                              child: Text(
+                                item['username'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            // Correct Guesses
+                            SizedBox(
+                              width: 80,
+                              child: Text(
+                                "${item['correctGuesses']}",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
