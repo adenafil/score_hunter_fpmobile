@@ -118,7 +118,7 @@ class ApiService {
 
   /// Method untuk fetch data dari endpoint `/api/home`.
   Future<Map<String, dynamic>> fetchHomeData() async {
-    final url = Uri.parse('localhost:3000/api/upcomingmatch');
+    final url = Uri.parse('api.scorehunter.my.id/api/upcomingmatch');
     final token = await dbHelper.getToken();
 
     try {
@@ -187,8 +187,8 @@ class ApiService {
 }
 
 class UpcomingMatchService {
-  final String baseUrl = "http://192.168.1.101:3000/api/upcomingmatch";
-  final String apiToken = "admin";
+  final String baseUrl = "https://api.scorehunter.my.id/api/upcomingmatch";
+  final String apiToken = "ade";
 
   Future<List<UpcomingMatch>> fetchUpcomingMatches() async {
     try {

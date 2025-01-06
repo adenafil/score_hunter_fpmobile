@@ -95,10 +95,10 @@ class LiveMatchService {
   Future<List<LiveMatch>> fetchLiveMatches() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.101:3000/api/startedmatch'),
+        Uri.parse('https://api.scorehunter.my.id/api/startedmatch'),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': "admin",
+          'X-API-TOKEN': "ade",
         },
       );
 
