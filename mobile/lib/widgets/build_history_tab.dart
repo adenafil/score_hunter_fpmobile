@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../constants.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import '../constants.dart';
 
 class HistoryTab extends StatefulWidget {
   const HistoryTab({super.key});
@@ -11,239 +14,101 @@ class HistoryTab extends StatefulWidget {
 }
 
 class _HistoryTabState extends State<HistoryTab> {
-  // Dummy data untuk testing
-  final List<Map<String, dynamic>> matches = [
-    {
-      'teams': [
-        {
-          'name': 'Aston Villa',
-          'logo': 'assets/img/aston_villa.png',
-          'score': 0,
-        },
-        {
-          'name': 'FC Bayern München',
-          'logo': 'assets/img/bayern.png',
-          'score': 5,
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 44:55',
-      'odds': '1.53',
-      'statusLabel': 'WIN',
-      'guessCategory': 'Regular Time',
-      'date': DateTime(2024, 11, 7),
-    },
-    {
-      'teams': [
-        {
-          'name': 'Chelsea F.C',
-          'logo': 'assets/img/chelsea.png',
-          'score': 2,
-        },
-        {
-          'name': 'Leicester City',
-          'logo': 'assets/img/leicester_city.png',
-          'score': 0,
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 44:55',
-      'odds': '3.73',
-      'statusLabel': 'WIN',
-      'guessCategory': 'Regular Time',
-      'date': DateTime(2024, 12, 5),
-    },
-    {
-      'teams': [
-        {
-          'name': 'Liverpool F.C.',
-          'logo': 'assets/img/liverpool.png',
-          'score': 3,
-        },
-        {
-          'name': 'Manchester United',
-          'logo': 'assets/img/man_united.png',
-          'score': 0,
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 40:12',
-      'odds': '3.75',
-      'statusLabel': 'LOSE',
-      'guessCategory': 'First to Happen',
-      'date': DateTime(2024, 12, 2),
-    },
-    {
-      'teams': [
-        {
-          'name': 'AFC Bournemouth',
-          'logo': 'assets/img/afc_bournemouth.png',
-          'score': 2,
-        },
-        {
-          'name': 'Nottingham Forest',
-          'logo': 'assets/img/nottingham_forest.png',
-          'score': 1,
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 44:55',
-      'odds': '2.56',
-      'statusLabel': 'WIN',
-      'guessCategory': 'Regular Time',
-      'date': DateTime(2024, 12, 3),
-    },
-  ];
-
-  DateTime? _startDate;
-  DateTime? _endDate;
-  List<Map<String, dynamic>> _filteredMatches = [];
+  List<Map<String, dynamic>> _matches = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // Set default filter ke 30 hari terakhir saat pertama kali di load
-    _startDate = DateTime.now().subtract(const Duration(days: 30));
-    _endDate = DateTime.now();
-    _filterMatchesByDatePeriod();
+    _fetchMatches();
   }
 
-  void _filterMatchesByDatePeriod() {
-    setState(() {
-      _filteredMatches = matches.where((match) {
-        DateTime matchDate = match['date'];
-        return matchDate.isAfter(_startDate!) &&
-            matchDate.isBefore(_endDate!.add(const Duration(days: 1)));
+
+Future<void> _fetchMatches() async {
+  const String apiUrl = 'http://192.168.1.101:3000/api/user/history?isHistory=true';
+  const Map<String, String> headers = {
+    'X-API-TOKEN': 'ade',
+  };
+
+  try {
+    final response = await http.get(Uri.parse(apiUrl), headers: headers);
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      // Casting data to List<Map<String, dynamic>>
+      final List<Map<String, dynamic>> formattedData = data.map((match) {
+        return {
+          'teams': List<Map<String, dynamic>>.from(match['teams']),
+          'matchStatus': match['matchStatus'],
+          'odds': match['odds'],
+          'statusLabel': match['statusLabel'],
+          'guessCategory': match['guessCategory'],
+          'date': match['date'],
+        };
       }).toList();
-    });
-  }
-
-  Future<void> _selectDateRange(BuildContext context) async {
-    // Tentukan batas tanggal terakhir yang dapat dipilih (60 hari dari hari ini)
-    final DateTime sixtyDaysAgo =
-        DateTime.now().subtract(const Duration(days: 60));
-    final DateTime today = DateTime.now();
-
-    final DateTimeRange? picked = await showDateRangePicker(
-      context: context,
-      firstDate: sixtyDaysAgo, // Hanya bisa memilih dari 60 hari yang lalu
-      lastDate: today, // Hingga hari ini
-      initialDateRange: _startDate != null && _endDate != null
-          ? DateTimeRange(start: _startDate!, end: _endDate!)
-          : null,
-      helpText: 'Maximum selected period: 30 days',
-      saveText: 'Apply',
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: kAccentColor,
-              surface: kBackgroundColorDarken,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null) {
-      // Validasi periode maksimum 30 hari
-      if (picked.end.difference(picked.start).inDays > 30) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Maximum period is 30 days🤗'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        return;
-      }
 
       setState(() {
-        _startDate = picked.start;
-        _endDate = picked.end;
-        _filterMatchesByDatePeriod();
+        _matches = formattedData;
+        _isLoading = false;
       });
+    } else {
+      throw Exception('Failed to load matches');
     }
+  } catch (e) {
+    print('Error: $e');
+    setState(() {
+      _isLoading = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kAccentColor,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () => _selectDateRange(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Row(
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : _matches.isEmpty
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.calendar_today),
-                  const SizedBox(width: 10),
-                  Text(
-                    _startDate != null && _endDate != null
-                        ? '${DateFormat('dd MMM yyyy').format(_startDate!)} - ${DateFormat('dd MMM yyyy').format(_endDate!)}'
-                        : 'Choose period!',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                  Image.asset(
+                    'assets/img/empty_data.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                  const SizedBox(height: 16),
+                  const SizedBox(
+                    width: 250,
+                    child: Text(
+                      "No history available,\nmake more predictions and win!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: _filteredMatches.isEmpty
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/img/empty_data.png',
-                      width: 150,
-                      height: 150,
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _matches.length,
+                itemBuilder: (context, index) {
+                  final match = _matches[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: MatchCard(
+                      teams: match['teams'],
+                      matchStatus: match['matchStatus'],
+                      odds: match['odds'].toString(),
+                      statusLabel: match['statusLabel'],
+                      guessCategory: match['guessCategory'],
                     ),
-                    const SizedBox(height: 16),
-                    const SizedBox(
-                      width: 250,
-                      child: Text(
-                        "No history available,\nmake more predictions and win!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'PlusJakartaSans',
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: _filteredMatches.length,
-                  itemBuilder: (context, index) {
-                    final match = _filteredMatches[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: MatchCard(
-                        teams: match['teams'],
-                        matchStatus: match['matchStatus'],
-                        odds: match['odds'],
-                        statusLabel: match['statusLabel'],
-                        guessCategory: match['guessCategory'],
-                      ),
-                    );
-                  },
-                ),
-        ),
-      ],
-    );
+                  );
+                },
+              );
   }
 }
 
@@ -302,7 +167,7 @@ class MatchCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Image.asset(
+                      Image.network(
                         teams[1]['logo'],
                         width: 24,
                         height: 24,
@@ -387,7 +252,7 @@ class MatchCard extends StatelessWidget {
       children: [
         Row(
           children: [
-            Image.asset(
+            Image.network(
               logoPath,
               width: 32,
               height: 32,

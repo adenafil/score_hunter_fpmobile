@@ -28,7 +28,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
     try {
       final response = await http.get(Uri.parse(apiUrl),         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': "ade",
+          'X-API-TOKEN': "Nafil Chess",
         },
 );
       if (response.statusCode == 200) {
