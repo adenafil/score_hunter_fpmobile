@@ -69,6 +69,7 @@ class ApiService {
   Future<Map<String, dynamic>> logoutUser() async {
     final url = Uri.parse('$baseUrl/auth/google');
     print("url");
+      final dbHelper = DatabaseHelper();
     final token = await dbHelper.getToken();
     print("kunci ${token}");
     print("ini token untuk delete account ${token}");
@@ -126,7 +127,7 @@ class ApiService {
         url,
         headers: {
           'accept': 'application/json',
-          'X-API-TOKEN': "admin",
+          'X-API-TOKEN': token,
         },
       );
 
@@ -188,15 +189,15 @@ class ApiService {
 
 class UpcomingMatchService {
   final String baseUrl = "https://api.scorehunter.my.id/api/upcomingmatch";
-  final String apiToken = "ade";
-
+      final dbHelper = DatabaseHelper();
+      
   Future<List<UpcomingMatch>> fetchUpcomingMatches() async {
     try {
       final response = await http.get(
         Uri.parse(baseUrl),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': apiToken,
+          'X-API-TOKEN': await dbHelper.getToken(),
         },
       );
 
@@ -214,4 +215,87 @@ class UpcomingMatchService {
       throw Exception('Error fetching upcoming matches: $e');
     }
   }
+
+
+Future<String> postGuessMatch({
+  required int type,
+  required String answer,
+  required String matchId,
+  required String username,
+}) async {
+  // URL endpoint API
+  const String url = 'https://api.scorehunter.my.id/api/user/guess';
+      final dbHelper = DatabaseHelper();
+
+  // Headers untuk request
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'X-API-TOKEN': await dbHelper.getToken(),
+  };
+
+  // Body JSON data
+  final body = {
+    "type": type,
+    "answer": answer,
+    "matchId": matchId,
+    "username": username,
+  };
+
+  try {
+    // Melakukan POST request
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    // Mengecek status response
+    if (response.statusCode == 200) {
+      // Berhasil
+      return response.body;
+      // print('Success: ${response.body}');
+    } else {
+      // Gagal
+            return response.body;
+      print('Failed: ${response.statusCode} - ${response.body}');
+    }
+  } catch (e) {
+    return "Gagal melakukan proses tebakan, check signal anda.";
+    // Menangani error
+    print('Error: $e');
+  }
+
+  
+}
+
+  Future<Map<String, dynamic>?> getMatchData(String matchId) async {
+    final url = Uri.parse('$baseUrl/match?matchId=$matchId');
+          final dbHelper = DatabaseHelper();
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'X-API-TOKEN': await dbHelper.getToken(),
+    };
+
+    try {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        // Berhasil mendapatkan data
+        return jsonDecode(response.body);
+      } else {
+        // Jika gagal, log error atau handle sesuai kebutuhan
+        print("Error: ${response.statusCode} - ${response.reasonPhrase}");
+        return null;
+      }
+    } catch (e) {
+      // Handle exception seperti koneksi internet terputus
+      print("Exception: $e");
+      return null;
+    }
+  }
+
+
 }

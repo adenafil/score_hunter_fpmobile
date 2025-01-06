@@ -1,4 +1,5 @@
 class UpcomingMatch {
+  final int matchId;
   final String awayLogo;
   final String awayTitle;
   final String homeLogo;
@@ -12,6 +13,7 @@ class UpcomingMatch {
   final Map<String, Map<String, dynamic>> votes;
 
   UpcomingMatch({
+    required this.matchId,
     required this.awayLogo,
     required this.awayTitle,
     required this.homeLogo,
@@ -27,6 +29,7 @@ class UpcomingMatch {
 
   factory UpcomingMatch.fromJson(Map<String, dynamic> json) {
     return UpcomingMatch(
+      matchId: json['matchId'],
       awayLogo: json['awayLogo'],
       awayTitle: json['awayTitle'],
       homeLogo: json['homeLogo'],
@@ -48,6 +51,8 @@ class UpcomingMatch {
 
 List<UpcomingMatch> upcomingMatches = [
   UpcomingMatch(
+          matchId: 1,
+
     awayLogo: "assets/img/brighton.png",
     awayTitle: "Brighton & Hove Albion",
     homeLogo: "assets/img/afc_bournemouth.png",
@@ -102,6 +107,8 @@ List<UpcomingMatch> upcomingMatches = [
     },
   ),
   UpcomingMatch(
+          matchId: 1,
+
     awayLogo: "assets/img/nottingham_forest.png",
     awayTitle: "Nottingham Forest",
     homeLogo: "assets/img/arsenal.png",
@@ -156,6 +163,8 @@ List<UpcomingMatch> upcomingMatches = [
     },
   ),
   UpcomingMatch(
+          matchId: 1,
+
     awayLogo: "assets/img/crystal_palace.png",
     awayTitle: "Crystal Palace",
     homeLogo: "assets/img/aston_villa.png",
@@ -210,6 +219,8 @@ List<UpcomingMatch> upcomingMatches = [
     },
   ),
   UpcomingMatch(
+          matchId: 1,
+
     awayLogo: "assets/img/wolves.png",
     awayTitle: "Wolves",
     homeLogo: "assets/img/fulham.png",
@@ -264,6 +275,8 @@ List<UpcomingMatch> upcomingMatches = [
     },
   ),
   UpcomingMatch(
+          matchId: 1,
+
     awayLogo: "assets/img/tottenham.png",
     awayTitle: "Tottenham Hotspur",
     homeLogo: "assets/img/man_city.png",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 
 class LiveMatch {
   final String awayGoal;
@@ -94,11 +95,13 @@ class LiveMatch {
 class LiveMatchService {
   Future<List<LiveMatch>> fetchLiveMatches() async {
     try {
+            final dbHelper = DatabaseHelper();
+
       final response = await http.get(
         Uri.parse('https://api.scorehunter.my.id/api/startedmatch'),
         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': "ade",
+          'X-API-TOKEN': await dbHelper.getToken(),
         },
       );
 

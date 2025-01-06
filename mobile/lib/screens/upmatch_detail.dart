@@ -181,9 +181,31 @@ Expanded(
           color: Colors.transparent,
         ),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+             int matchId = widget.upcomingMatch.matchId;  // Ambil matchId dari objek upcomingMatch
+            String username = 'user123';  // Gantilah dengan username pengguna yang aktif
+            int type = 1;
+            String answer = "0";
+
+/// PR JANGA DI APA APAIN DULU YAHHH 🥵
+            service.getMatchData(matchId.toString());
+
+            if (guestCategoryItems[current] == "Regular Time") type = 1;
+            if (guestCategoryItems[current] == "1st Half Time") type = 2;
+            if (guestCategoryItems[current] == "2nd Half Time") type = 3;
+            if (guestCategoryItems[current] == "First to Happen") type = 4;
+
+    // Memanggil method postGuessMatch
+    String message = await service.postGuessMatch(
+      type: type,
+      answer: answer,
+      matchId: matchId.toString(),
+      username: username,
+    );
+
+
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("hi Home")),
+               SnackBar(content: Text("$message")),
             );
           },
           child: Padding(
@@ -236,9 +258,31 @@ Expanded(
           color: Colors.transparent,
         ),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+             int matchId = widget.upcomingMatch.matchId;  // Ambil matchId dari objek upcomingMatch
+            String username = 'user123';  // Gantilah dengan username pengguna yang aktif
+            int type = 1;
+            String answer = "x";
+
+/// PR JANGA DI APA APAIN DULU YAHHH 🥵
+            service.getMatchData(matchId.toString());
+
+            if (guestCategoryItems[current] == "Regular Time") type = 1;
+            if (guestCategoryItems[current] == "1st Half Time") type = 2;
+            if (guestCategoryItems[current] == "2nd Half Time") type = 3;
+            if (guestCategoryItems[current] == "First to Happen") type = 4;
+
+    // Memanggil method postGuessMatch
+    String message = await service.postGuessMatch(
+      type: type,
+      answer: answer,
+      matchId: matchId.toString(),
+      username: username,
+    );
+
+
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("X tapped")),
+               SnackBar(content: Text("$message")),
             );
           },
           child: Padding(
@@ -286,9 +330,31 @@ Expanded(
           color: Colors.transparent,
         ),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+             int matchId = widget.upcomingMatch.matchId;  // Ambil matchId dari objek upcomingMatch
+            String username = 'user123';  // Gantilah dengan username pengguna yang aktif
+            int type = 1;
+            String answer = "1";
+
+/// PR JANGA DI APA APAIN DULU YAHHH 🥵
+            service.getMatchData(matchId.toString());
+
+            if (guestCategoryItems[current] == "Regular Time") type = 1;
+            if (guestCategoryItems[current] == "1st Half Time") type = 2;
+            if (guestCategoryItems[current] == "2nd Half Time") type = 3;
+            if (guestCategoryItems[current] == "First to Happen") type = 4;
+
+    // Memanggil method postGuessMatch
+    String message = await service.postGuessMatch(
+      type: type,
+      answer: answer,
+      matchId: matchId.toString(),
+      username: username,
+    );
+
+
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Away team logo tapped")),
+               SnackBar(content: Text("$message")),
             );
           },
           child: Padding(

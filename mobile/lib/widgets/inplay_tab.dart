@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 import 'dart:convert';
 import '../constants.dart';
 
@@ -13,6 +14,7 @@ class InPlayTab extends StatefulWidget {
 class _InPlayTabState extends State<InPlayTab> {
   List<Map<String, dynamic>> matches = [];
   bool _isLoading = true;
+  final dbHelper = DatabaseHelper();
 
   @override
   void initState() {
@@ -21,9 +23,9 @@ class _InPlayTabState extends State<InPlayTab> {
   }
 
   Future<void> _fetchMatches() async {
-    const String apiUrl = 'http://192.168.1.101:3000/api/user/history?isHistory=false';
-    const Map<String, String> headers = {
-      'X-API-TOKEN': 'ade',
+    const String apiUrl = 'https://api.scorehunter.my.id/api/user/history?isHistory=false';
+     Map<String, String> headers = {
+      'X-API-TOKEN': await dbHelper.getToken(),
     };
 
     try {

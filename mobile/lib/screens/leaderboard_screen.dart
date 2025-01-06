@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:soccer_live_score/constants.dart';
+import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 
 class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({super.key});
@@ -26,9 +27,11 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
   Future<void> fetchLeaderboardData() async {
     const String apiUrl = 'https://api.scorehunter.my.id/api/user/rank'; // Ganti dengan URL API Anda
     try {
+            final dbHelper = DatabaseHelper();
+
       final response = await http.get(Uri.parse(apiUrl),         headers: {
           'Content-Type': 'application/json',
-          'X-API-TOKEN': "Nafil Chess",
+          'X-API-TOKEN': await dbHelper.getToken(),
         },
 );
       if (response.statusCode == 200) {
