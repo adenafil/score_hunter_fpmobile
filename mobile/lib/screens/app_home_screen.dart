@@ -75,7 +75,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     }
   }
 
-    Future<void> fetchLiveMatch() async {
+  Future<void> fetchLiveMatch() async {
     try {
       // Fetch upcoming matches from service
       List<LiveMatch> matches = await serviceLive.fetchLiveMatches();
@@ -114,9 +114,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => MatchDetailCard(
-                            liveMatch: live,
-                          ), //before: MatchDetailScreen(liveMatch: live)
+                          builder: (_) => MatchDetail(liveMatch: live), //before: MatchDetailCard(liveMatch: live),
                         ),
                       );
                     },

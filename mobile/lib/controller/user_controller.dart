@@ -9,48 +9,72 @@ class UserController {
   static User? user = FirebaseAuth.instance.currentUser;
 
   static Future<User?> loginWithGoogle() async {
-    final googleAccount = await GoogleSignIn().signIn();
+    try {
+      final googleAccount = await GoogleSignIn().signIn();
+      if (googleAccount == null) return null;
 
-    final googleAuth = await googleAccount?.authentication;
+      final googleAuth = await googleAccount.authentication;
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    final userCredential = await FirebaseAuth.instance.signInWithCredential(
-      credential,
-    );
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        credential,
+      );
 
-    print(userCredential.user);
+      // Update user setelah login berhasil
+      user = userCredential.user;
 
+      if (user == null) {
+        throw Exception('Failed to get user data after login');
+      }
 
+      print(userCredential.user);
 
-    final token = await user!.displayName ?? "";
-    print("memek ${token}");
+      // Gunakan null safety untuk menghindari null errors
+      final displayName = user?.displayName ?? "Guest User";
+      print("Token: $displayName");
 
-
-    ApiService apiService = ApiService();
-    final response = await apiService.loginUser(creationTime: user!.metadata.creationTime.toString() , displayName: user!.displayName.toString(), email: user!.email.toString(), isAnonymous: user!.isAnonymous, isEmailVerified: user!.emailVerified, lastSignInTime: user!.metadata.lastSignInTime.toString(), phoneNumber: user!.phoneNumber.toString() ?? "", photoURL: user!.photoURL.toString(), token: token ?? "", username: user!.displayName.toString().splitMapJoin(" "));
-
-
-    if (user != null) {
-      // Mendapatkan token.
-      print("memek ${token}");
+      ApiService apiService = ApiService();
+      final response = await apiService.loginUser(
+          creationTime: user?.metadata.creationTime?.toString() ?? "",
+          displayName: user?.displayName ?? "Guest User",
+          email: user?.email ?? "",
+          isAnonymous: user?.isAnonymous ?? false,
+          isEmailVerified: user?.emailVerified ?? false,
+          lastSignInTime: user?.metadata.lastSignInTime?.toString() ?? "",
+          phoneNumber: "+6281234961804",
+          photoURL: user?.photoURL ?? "",
+          token: user?.displayName ?? "",
+          username: (user?.displayName ?? "Guest User").splitMapJoin(" ")
+      );
 
       // Simpan token ke database lokal
-      final dbHelper = DatabaseHelper();
-        await dbHelper.saveToken(token);
+      if (user != null) {
+        final dbHelper = DatabaseHelper();
+        await dbHelper.saveToken(displayName);
+      }
+
+      print(await apiService.fetchHomeData());
+
+      return user;
+
+    } catch (e) {
+      print('Error during Google Sign In: $e');
+      return null;
     }
-
-    print(await apiService.fetchHomeData());
-
-    // POST KE API AUTHENTICATION SI GOLEK API
-    return userCredential.user;
   }
 
   static Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
+    try {
+      await FirebaseAuth.instance.signOut();
+      await GoogleSignIn().signOut();
+      // Reset user setelah logout
+      user = null;
+    } catch (e) {
+      print('Error during Sign Out: $e');
+    }
   }
 }

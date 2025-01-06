@@ -18,7 +18,7 @@ class UpmatchDetail extends StatefulWidget {
 
 class _UpmatchDetailState extends State<UpmatchDetail> {
   late List<String> guestCategoryItems;
-    final UpcomingMatchService service = UpcomingMatchService();
+  final UpcomingMatchService service = UpcomingMatchService();
 
 
   // Asynchronous method to fetch upcoming matches

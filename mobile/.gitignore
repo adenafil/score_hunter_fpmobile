@@ -44,3 +44,9 @@ app.*.map.json
 
 # Flutter FireBase Options
 /lib/firebase_options.dart
+
+# Ignore key.properties file
+/android/key.properties
+
+# Ignore keystore file
+/android/app/upload-keystore.jks

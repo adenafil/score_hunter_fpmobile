@@ -7,6 +7,7 @@ import 'package:soccer_live_score/screens/app_home_screen.dart';
 import 'package:soccer_live_score/screens/leaderboard_screen.dart';
 import 'package:soccer_live_score/screens/login_screen.dart';
 import 'package:soccer_live_score/screens/my_guest_screen.dart';
+import 'package:soccer_live_score/screens/profile.dart';
 import '../controller/user_controller.dart';
 
 class AppMainScreen extends StatefulWidget {
@@ -55,31 +56,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
       const AppHomeScreen(),
       const LeaderboardScreen(),
       const MyGuestScreen(),
-      Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                foregroundImage:
-                    NetworkImage(UserController.user?.photoURL ?? ''),
-                radius: 50,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                UserController.user?.displayName ?? 'Guest User',
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _logout,
-                child: const Text("Logout"),
-              ),
-            ],
-          ),
-        ),
-      ),
+      const Profile(),
     ];
 
     return Scaffold(
@@ -98,7 +75,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               4,
               (index) => Padding(
@@ -143,10 +120,10 @@ class MyBottomNavBarItems extends StatelessWidget {
         onTap: onTab,
         child: IntrinsicWidth(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 80),
+            constraints: const BoxConstraints(minWidth: 60),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 100),
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               decoration: BoxDecoration(
                 color: isActive ? kPrimaryColor50 : kBackgroundColorDarken,
                 borderRadius: BorderRadius.circular(8),
@@ -165,7 +142,7 @@ class MyBottomNavBarItems extends StatelessWidget {
                       child: Text(
                         title,
                         style: const TextStyle(
-                            color: Colors.white, fontSize: 10),
+                            color: Colors.white, fontSize: 8)
                       ),
                     ),
                   ),
@@ -175,7 +152,7 @@ class MyBottomNavBarItems extends StatelessWidget {
                       child: Text(
                         title,
                         style: const TextStyle(
-                            color: kTransparentWhite, fontSize: 10),
+                            color: kTransparentWhite, fontSize: 8),
                       ),
                     ),
                 ],
