@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../constants.dart';
 
 class InPlayTab extends StatefulWidget {
@@ -9,117 +11,102 @@ class InPlayTab extends StatefulWidget {
 }
 
 class _InPlayTabState extends State<InPlayTab> {
-  // Dummy data untuk testing
-  final List<Map<String, dynamic>> matches = [
-    {
-      'teams': [
-        {
-          'name': 'Arsenal F.C',
-          'logo': 'assets/img/arsenal.png',
-          'score': 2,
-        },
-        {
-          'name': 'Manchester City',
-          'logo': 'assets/img/man_city.png',
-          'score': 1
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 44:55',
-      'odds': '2.56',
-      'statusLabel': 'MATCH IN PROGRESS',
-      'guessCategory': 'Regular Time',
-    },
-    {
-      'teams': [
-        {
-          'name': 'Chelsea F.C',
-          'logo': 'assets/img/chelsea.png',
-          'score': 1,
-        },
-        {
-          'name': 'Liverpool F.C',
-          'logo': 'assets/img/liverpool.png',
-          'score': 3
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 40:12',
-      'odds': '3.75',
-      'statusLabel': 'MATCH IN PROGRESS',
-      'guessCategory': 'First to Happen',
-    },
-    {
-      'teams': [
-        {
-          'name': 'Arsenal F.C',
-          'logo': 'assets/img/arsenal.png',
-          'score': 2,
-        },
-        {
-          'name': 'Manchester City',
-          'logo': 'assets/img/man_city.png',
-          'score': 1
-        },
-      ],
-      'matchStatus': '1st half, time elapse: 44:55',
-      'odds': '2.56',
-      'statusLabel': 'MATCH IN PROGRESS',
-      'guessCategory': 'Regular Time',
-    },
-  ];
+  List<Map<String, dynamic>> matches = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMatches();
+  }
+
+  Future<void> _fetchMatches() async {
+    const String apiUrl = 'http://192.168.1.101:3000/api/user/history?isHistory=false';
+    const Map<String, String> headers = {
+      'X-API-TOKEN': 'ade',
+    };
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl), headers: headers);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        final List<Map<String, dynamic>> formattedData = data.map((match) {
+          return {
+            'teams': List<Map<String, dynamic>>.from(match['teams']),
+            'matchStatus': match['matchStatus'],
+            'odds': match['odds'].toString(),
+            'statusLabel': match['statusLabel'],
+            'guessCategory': match['guessCategory'],
+          };
+        }).toList();
+
+        setState(() {
+          matches = formattedData;
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load matches');
+      }
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return matches.isEmpty
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/img/empty_data.png',
-                width: 150,
-                height: 150,
-              ),
-              const SizedBox(height: 16),
-              const SizedBox(
-                width: 250,
-                child: Text(
-                  "No guesses in play,\nmake more predictions and win!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'PlusJakartaSans',
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : matches.isEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/img/empty_data.png',
+                    width: 150,
+                    height: 150,
                   ),
-                ),
-              ),
-            ],
-          )
-        : ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: matches.length,
-            itemBuilder: (context, index) {
-              final match = matches[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: GestureDetector(
-                  onTap: () {
-                    // Navigate to the match_detail.dart screen
-                    // Navigator.push( context, MaterialPageRoute(
-                    //     builder: (context) => MatchDetail(),
-                    //   ),
-                    // );
-                  },
-                  child: MatchCard(
-                    teams: match['teams'],
-                    matchStatus: match['matchStatus'],
-                    odds: match['odds'],
-                    statusLabel: match['statusLabel'],
-                    guessCategory: match['guessCategory'],
+                  const SizedBox(height: 16),
+                  const SizedBox(
+                    width: 250,
+                    child: Text(
+                      "No guesses in play,\nmake more predictions and win!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ),
-                ),
+                ],
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: matches.length,
+                itemBuilder: (context, index) {
+                  final match = matches[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: GestureDetector(
+                      onTap: () {
+                        // Handle match card tap
+                      },
+                      child: MatchCard(
+                        teams: match['teams'],
+                        matchStatus: match['matchStatus'],
+                        odds: match['odds'],
+                        statusLabel: match['statusLabel'],
+                        guessCategory: match['guessCategory'],
+                      ),
+                    ),
+                  );
+                },
               );
-            },
-          );
   }
 }
 
@@ -188,7 +175,7 @@ class MatchCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Image.asset(
+                      Image.network(
                         teams[1]['logo'],
                         width: 24,
                         height: 24,
@@ -219,8 +206,7 @@ class MatchCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: kBackgroundColorDarken,
                       borderRadius: BorderRadius.circular(50),
@@ -243,15 +229,15 @@ class MatchCard extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: const BoxDecoration(
-              color: Color(0xFFD3C529),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color:  Color(0xFFD3C529),
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8),
                 bottomRight: Radius.circular(8),
               ),
             ),
             child: Text(
-              statusLabel,
+              "CHECKING YOUR GUESS, STAY TUNED!",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.white,
@@ -265,14 +251,13 @@ class MatchCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamRow(
-      String teamName, String logoPath, int score, bool isWinner) {
+  Widget _buildTeamRow(String teamName, String logoPath, int score, bool isWinner) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            Image.asset(
+            Image.network(
               logoPath,
               width: 32,
               height: 32,
