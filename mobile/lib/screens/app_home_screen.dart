@@ -186,7 +186,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       child: Row(
         children: [
           const Text(
-            "End Matches",
+            "End Matches And Live Matches",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -194,20 +194,6 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             ),
           ),
           const Spacer(),
-          TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: kPrimaryColor,
-            ),
-            onPressed: () {},
-            child: const Text(
-              "View all",
-              style: TextStyle(
-                color: kTransparentWhite,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
         ],
       ),
     );

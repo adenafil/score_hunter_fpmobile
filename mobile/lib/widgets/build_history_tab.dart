@@ -10,7 +10,6 @@ import '../constants.dart';
 class HistoryTab extends StatefulWidget {
   const HistoryTab({super.key});
 
-
   @override
   State<HistoryTab> createState() => _HistoryTabState();
 }
@@ -25,45 +24,45 @@ class _HistoryTabState extends State<HistoryTab> {
     _fetchMatches();
   }
 
+  Future<void> _fetchMatches() async {
+    const String apiUrl =
+        'https://api.scorehunter.my.id/api/user/history?isHistory=true';
+    Map<String, String> headers = {
+      'X-API-TOKEN': await dbHelper.getToken(),
+    };
 
-Future<void> _fetchMatches() async {
-  const String apiUrl = 'https://api.scorehunter.my.id/api/user/history?isHistory=true';
-  Map<String, String> headers = {
-    'X-API-TOKEN': await dbHelper.getToken(),
-  };
+    try {
+      final response = await http.get(Uri.parse(apiUrl), headers: headers);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
 
-  try {
-    final response = await http.get(Uri.parse(apiUrl), headers: headers);
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
+        // Casting data to List<Map<String, dynamic>>
+        final List<Map<String, dynamic>> formattedData = data.map((match) {
+          return {
+            'teams': List<Map<String, dynamic>>.from(match['teams']),
+            'matchStatus': match['matchStatus'],
+            'odds': match['odds'],
+            'statusLabel': match['statusLabel'],
+            'guessCategory': match['guessCategory'],
+            'date': match['date'],
+            'answer': match['answer']
+          };
+        }).toList();
 
-      // Casting data to List<Map<String, dynamic>>
-      final List<Map<String, dynamic>> formattedData = data.map((match) {
-        return {
-          'teams': List<Map<String, dynamic>>.from(match['teams']),
-          'matchStatus': match['matchStatus'],
-          'odds': match['odds'],
-          'statusLabel': match['statusLabel'],
-          'guessCategory': match['guessCategory'],
-          'date': match['date'],
-        };
-      }).toList();
-
+        setState(() {
+          _matches = formattedData;
+          _isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load matches');
+      }
+    } catch (e) {
+      print('Error: $e');
       setState(() {
-        _matches = formattedData;
         _isLoading = false;
       });
-    } else {
-      throw Exception('Failed to load matches');
     }
-  } catch (e) {
-    print('Error: $e');
-    setState(() {
-      _isLoading = false;
-    });
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +101,12 @@ Future<void> _fetchMatches() async {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: MatchCard(
-                      teams: match['teams'],
-                      matchStatus: match['matchStatus'],
-                      odds: match['odds'].toString(),
-                      statusLabel: match['statusLabel'],
-                      guessCategory: match['guessCategory'],
-                    ),
+                        teams: match['teams'],
+                        matchStatus: match['matchStatus'],
+                        odds: match['odds'].toString(),
+                        statusLabel: match['statusLabel'],
+                        guessCategory: match['guessCategory'],
+                        answer: match['answer']),
                   );
                 },
               );
@@ -120,6 +119,7 @@ class MatchCard extends StatelessWidget {
   final String odds;
   final String statusLabel;
   final String guessCategory;
+  final String answer;
 
   const MatchCard({
     super.key,
@@ -128,6 +128,7 @@ class MatchCard extends StatelessWidget {
     required this.odds,
     required this.statusLabel,
     required this.guessCategory,
+    required this.answer,
   });
 
   @override
@@ -170,7 +171,7 @@ class MatchCard extends StatelessWidget {
                   Row(
                     children: [
                       Image.network(
-                        teams[1]['logo'],
+                        teams[(answer == "0" ? 0 : 1)]['logo'],
                         width: 24,
                         height: 24,
                       ),
@@ -273,10 +274,17 @@ class MatchCard extends StatelessWidget {
         ),
         Row(
           children: [
-            if (isWinner)
+            if (isWinner && teams[0]['score'] == teams[1]['score'])
               const Icon(
                 Icons.arrow_right,
-                color: Colors.white, // Warna menang
+                color: Colors.white, // Warna putih jika kondisi pertama benar
+                size: 16,
+              )
+            else if (isWinner)
+              const Icon(
+                Icons.arrow_right,
+                color:
+                    kPrimaryColor, // Warna ungu jika hanya isWinner yang benar
                 size: 16,
               ),
             const SizedBox(width: 6),

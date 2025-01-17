@@ -23,8 +23,9 @@ class _InPlayTabState extends State<InPlayTab> {
   }
 
   Future<void> _fetchMatches() async {
-    const String apiUrl = 'https://api.scorehunter.my.id/api/user/history?isHistory=false';
-     Map<String, String> headers = {
+    const String apiUrl =
+        'https://api.scorehunter.my.id/api/user/history?isHistory=false';
+    Map<String, String> headers = {
       'X-API-TOKEN': await dbHelper.getToken(),
     };
 
@@ -36,10 +37,13 @@ class _InPlayTabState extends State<InPlayTab> {
         final List<Map<String, dynamic>> formattedData = data.map((match) {
           return {
             'teams': List<Map<String, dynamic>>.from(match['teams']),
-            'matchStatus': match['matchStatus'],
+            'matchStatus': (match['matchStatus'] == "90:00")
+                ? "Belum Di Mulai"
+                : match['matchStatus'],
             'odds': match['odds'].toString(),
             'statusLabel': match['statusLabel'],
             'guessCategory': match['guessCategory'],
+            'answer': match['answer']
           };
         }).toList();
 
@@ -99,12 +103,12 @@ class _InPlayTabState extends State<InPlayTab> {
                         // Handle match card tap
                       },
                       child: MatchCard(
-                        teams: match['teams'],
-                        matchStatus: match['matchStatus'],
-                        odds: match['odds'],
-                        statusLabel: match['statusLabel'],
-                        guessCategory: match['guessCategory'],
-                      ),
+                          teams: match['teams'],
+                          matchStatus: match['matchStatus'],
+                          odds: match['odds'],
+                          statusLabel: match['statusLabel'],
+                          guessCategory: match['guessCategory'],
+                          answer: match['answer']),
                     ),
                   );
                 },
@@ -118,15 +122,16 @@ class MatchCard extends StatelessWidget {
   final String odds;
   final String statusLabel;
   final String guessCategory;
+  final String answer;
 
-  const MatchCard({
-    super.key,
-    required this.teams,
-    required this.matchStatus,
-    required this.odds,
-    required this.statusLabel,
-    required this.guessCategory,
-  });
+  const MatchCard(
+      {super.key,
+      required this.teams,
+      required this.matchStatus,
+      required this.odds,
+      required this.statusLabel,
+      required this.guessCategory,
+      required this.answer});
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +183,7 @@ class MatchCard extends StatelessWidget {
                   Row(
                     children: [
                       Image.network(
-                        teams[1]['logo'],
+                        teams[answer == "0" ? 0 : 1]['logo'],
                         width: 24,
                         height: 24,
                       ),
@@ -208,7 +213,8 @@ class MatchCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: kBackgroundColorDarken,
                       borderRadius: BorderRadius.circular(50),
@@ -232,7 +238,7 @@ class MatchCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color:  Color(0xFFD3C529),
+              color: Color(0xFFD3C529),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(8),
                 bottomRight: Radius.circular(8),
@@ -253,7 +259,8 @@ class MatchCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTeamRow(String teamName, String logoPath, int score, bool isWinner) {
+  Widget _buildTeamRow(
+      String teamName, String logoPath, int score, bool isWinner) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -278,10 +285,17 @@ class MatchCard extends StatelessWidget {
         ),
         Row(
           children: [
-            if (isWinner)
+            if (isWinner && teams[0]['score'] == teams[1]['score'])
               const Icon(
                 Icons.arrow_right,
-                color: Colors.white,
+                color: Colors.white, // Warna putih jika kondisi pertama benar
+                size: 16,
+              )
+            else if (isWinner)
+              const Icon(
+                Icons.arrow_right,
+                color:
+                    kPrimaryColor, // Warna ungu jika hanya isWinner yang benar
                 size: 16,
               ),
             const SizedBox(width: 6),
