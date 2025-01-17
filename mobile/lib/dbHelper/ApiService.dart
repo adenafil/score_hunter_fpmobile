@@ -213,7 +213,7 @@ class ApiService {
       await cacheManager.putFile(
         cacheKeyProfile,
         utf8.encode(json.encode(userData)),
-        maxAge: const Duration(days: 1),
+        maxAge: const Duration(minutes: 1),
       );
 
       return userData;

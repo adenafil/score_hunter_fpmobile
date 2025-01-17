@@ -276,7 +276,7 @@ class MatchCard extends StatelessWidget {
             if (isWinner)
               const Icon(
                 Icons.arrow_right,
-                color: Colors.white,
+                color: Colors.white, // Warna menang
                 size: 16,
               ),
             const SizedBox(width: 6),

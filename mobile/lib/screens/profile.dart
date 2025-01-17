@@ -63,134 +63,143 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    final bool isSmallScreen = screenSize.width < 360;
-    final double avatarSize = screenSize.width * 0.2;
-    final double statItemSize = screenSize.width * 0.17;
-    final double horizontalPadding = screenSize.width * 0.05;
+@override
+Widget build(BuildContext context) {
+  final Size screenSize = MediaQuery.of(context).size;
+  final bool isSmallScreen = screenSize.width < 360;
+  final double avatarSize = screenSize.width * 0.2;
+  final double statItemSize = screenSize.width * 0.17;
+  final double horizontalPadding = screenSize.width * 0.05;
 
-    if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+  if (_isLoading) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
 
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      appBar: headerParts(context),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: screenSize.height - MediaQuery.of(context).padding.top,
+  return Scaffold(
+    backgroundColor: kBackgroundColor,
+    appBar: headerParts(context),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: screenSize.height - MediaQuery.of(context).padding.top,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: screenSize.height * 0.03,
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: horizontalPadding,
-                vertical: screenSize.height * 0.03,
-              ),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: avatarSize / 2,
-                    backgroundImage: NetworkImage(UserController.userProfile?.photoURL ?? ''),
-                    onBackgroundImageError: (exception, stackTrace) {
-                      // Handle error loading image
-                    },
-                  ),
-                  SizedBox(height: screenSize.height * 0.04),
-                  Wrap(
-                    spacing: screenSize.width * 0.03,
-                    runSpacing: screenSize.width * 0.03,
-                    alignment: WrapAlignment.center,
-                    children: [
-                      _buildStatItem("Prediction", "${UserController.userProfile?.statistic["total_guess"] ?? 0}", statItemSize, isSmallScreen),
-                      _buildStatItem("Win",  "${UserController.userProfile?.statistic["total_win"] ?? 0}", statItemSize, isSmallScreen),
-                      _buildStatItem("Lose",  "${UserController.userProfile?.statistic["total_lose"] ?? 0}", statItemSize, isSmallScreen),
-                      _buildStatItem("Winrate",  "${UserController.userProfile?.statistic["win_rate_percentage"] ?? 0}", statItemSize, isSmallScreen),
-                    ],
-                  ),
-                  SizedBox(height: screenSize.height * 0.04),
-                  _buildInfoCard(
-                    icon: Icons.person,
-                    text: UserController.userProfile?.displayName ?? 'Guest User',
-                    isSmallScreen: isSmallScreen,
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  _buildInfoCard(
-                    icon: Icons.mail,
-                    text: UserController.userProfile?.email ?? 'Guest Email',
-                    isSmallScreen: isSmallScreen,
-                  ),
-                  SizedBox(height: screenSize.height * 0.04),
-                  SizedBox(
-                    width: double.infinity,
-                    height: screenSize.height * 0.06,
-                    child: ElevatedButton(
-                      onPressed: _logout,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF4B4B),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: avatarSize / 2,
+                  backgroundImage: NetworkImage(UserController.userProfile?.photoURL ?? ''),
+                  onBackgroundImageError: (exception, stackTrace) {
+                    // Handle error loading image
+                  },
+                ),
+                SizedBox(height: screenSize.height * 0.04),
+Wrap(
+  spacing: screenSize.width * 0.03,
+  runSpacing: screenSize.width * 0.03,
+  alignment: WrapAlignment.center,
+  children: [
+    _buildStatItem("Prediction", "${UserController.userProfile?.statistic["total_guess"] ?? 0}", statItemSize, isSmallScreen),
+    _buildStatItem("Win",  "${UserController.userProfile?.statistic["total_win"] ?? 0}", statItemSize, isSmallScreen),
+    _buildStatItem("Lose",  "${UserController.userProfile?.statistic["total_lose"] ?? 0}", statItemSize, isSmallScreen),
+    _buildStatItem("Winrate",  "${(UserController.userProfile?.statistic["win_rate_percentage"] ?? 0).toStringAsFixed(2)}%", statItemSize, isSmallScreen),
+  ],
+),
+                SizedBox(height: screenSize.height * 0.04),
+                _buildInfoCard(
+                  icon: Icons.person,
+                  text: UserController.userProfile?.displayName ?? 'Guest User',
+                  isSmallScreen: isSmallScreen,
+                ),
+                SizedBox(height: screenSize.height * 0.02),
+                _buildInfoCard(
+                  icon: Icons.mail,
+                  text: UserController.userProfile?.email ?? 'Guest Email',
+                  isSmallScreen: isSmallScreen,
+                ),
+                SizedBox(height: screenSize.height * 0.04),
+                SizedBox(
+                  width: double.infinity,
+                  height: screenSize.height * 0.06,
+                  child: ElevatedButton(
+                    onPressed: _logout,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF4B4B),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Text(
-                        "Log Out",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: isSmallScreen ? 14 : 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    child: Text(
+                      "Log Out",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: isSmallScreen ? 14 : 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                // Tambahkan SizedBox untuk memberikan ruang tambahan di bagian bawah
+                SizedBox(height: screenSize.height * 0.04),
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
 
 
-  Widget _buildStatItem(String label, String value, double size, bool isSmallScreen) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: const BoxDecoration(
-        color: Color(0xFF6C63FF),
-        shape: BoxShape.circle,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
+Widget _buildStatItem(String label, String value, double size, bool isSmallScreen) {
+  return Container(
+    width: size,
+    height: size,
+    decoration: const BoxDecoration(
+      color: Color(0xFF6C63FF),
+      shape: BoxShape.circle,
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Text(
             value,
             style: TextStyle(
               color: Colors.white,
-              fontSize: isSmallScreen ? 14 : 18,
+              fontSize: isSmallScreen ? 12 : 14,
               fontWeight: FontWeight.bold,
             ),
+            maxLines: 1, // Batasi teks ke 1 baris
+            overflow: TextOverflow.ellipsis, // Tambahkan ellipsis jika teks terlalu panjang
           ),
-          Text(
+        ),
+        SizedBox(height: 4), // Jarak antara value dan label
+        Flexible(
+          child: Text(
             label,
             style: TextStyle(
               color: Colors.white,
-              fontSize: isSmallScreen ? 10 : 12,
+              fontSize: isSmallScreen ? 8 : 10,
             ),
+            maxLines: 1, // Batasi teks ke 1 baris
+            overflow: TextOverflow.ellipsis, // Tambahkan ellipsis jika teks terlalu panjang
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCard({
+        ),
+      ],
+    ),
+  );
+}  Widget _buildInfoCard({
     required IconData icon,
     required String text,
     required bool isSmallScreen,
