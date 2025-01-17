@@ -250,14 +250,29 @@ Future<String> postGuessMatch({
       body: jsonEncode(body),
     );
 
+    Map<String, dynamic> responseMap = jsonDecode(response.body);
+
+    // Cek apakah ada key 'message' atau 'errors' di dalam response
+    if (responseMap.containsKey('message')) {
+      String message = responseMap['message'];
+      print('Message: $message');
+    }
+
+    if (responseMap.containsKey('errors')) {
+      String errors = responseMap['errors'];
+      print('Errors: $errors');
+    }
+
+
     // Mengecek status response
     if (response.statusCode == 200) {
       // Berhasil
-      return response.body;
+
+      return responseMap.containsKey('message') ? responseMap['message'] : responseMap['errors'];
       // print('Success: ${response.body}');
     } else {
       // Gagal
-            return response.body;
+      return responseMap.containsKey('message') ? responseMap['message'] : responseMap['errors'];
       print('Failed: ${response.statusCode} - ${response.body}');
     }
   } catch (e) {
