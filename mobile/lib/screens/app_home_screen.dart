@@ -22,8 +22,8 @@ class AppHomeScreen extends StatefulWidget {
 }
 
 class _AppHomeScreenState extends State<AppHomeScreen> {
-    final UpcomingMatchService service = UpcomingMatchService();
-    final LiveMatchService serviceLive = LiveMatchService();
+  final UpcomingMatchService service = UpcomingMatchService();
+  final LiveMatchService serviceLive = LiveMatchService();
 
   final List<Map<String, dynamic>> leagues = [
     {
@@ -48,47 +48,32 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     },
   ];
 
-  
-  // Define a state variable to store upcoming matches
   List<UpcomingMatch> upcomingMatches = [];
   List<LiveMatch> liveMatch = [];
+  bool isLoading = true;
 
-  // Fetch upcoming matches in initState
   @override
   void initState() {
     super.initState();
-    fetchUpcomingMatches(); // Fetch the upcoming matches when the screen is initialized
-    fetchLiveMatch();
+    fetchData();
   }
 
-  // Asynchronous method to fetch upcoming matches
-  Future<void> fetchUpcomingMatches() async {
+  Future<void> fetchData() async {
     try {
-      // Fetch upcoming matches from service
       List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
-      // Update the state with fetched matches
+      List<LiveMatch> liveMatches = await serviceLive.fetchLiveMatches();
       setState(() {
         upcomingMatches = matches;
+        liveMatch = liveMatches;
+        isLoading = false;
       });
     } catch (e) {
-      print('Error fetching upcoming matches: $e');
-    }
-  }
-
-  Future<void> fetchLiveMatch() async {
-    try {
-      // Fetch upcoming matches from service
-      List<LiveMatch> matches = await serviceLive.fetchLiveMatches();
-      // Update the state with fetched matches
+      print('Error fetching data: $e');
       setState(() {
-        liveMatch = matches;
+        isLoading = false;
       });
-    } catch (e) {
-      print('Error fetching upcoming matches: $e');
     }
   }
-
-
 
   String selectedLeague = 'Premiere League';
 
@@ -97,92 +82,97 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: headerParts(),
-      body: Column(
-        children: [
-          liveMatchText(),
-          SizedBox(
-            height: 230,
-            child: ListView.builder(
-                itemCount: liveMatch.length,
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(left: 20),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  final live = liveMatch[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => MatchDetail(liveMatch: live), //before: MatchDetailCard(liveMatch: live),
-                        ),
-                      );
-                    },
-                    child: LiveMatchData(live: live),
-                  );
-                }),
-          ),
-          // for up-coming match
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
+            )
+          : Column(
               children: [
-                const Text(
-                  "Up-Coming Matches",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                liveMatchText(),
+                SizedBox(
+                  height: 230,
+                  child: ListView.builder(
+                      itemCount: liveMatch.length,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 20),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final live = liveMatch[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MatchDetail(liveMatch: live),
+                              ),
+                            );
+                          },
+                          child: LiveMatchData(live: live),
+                        );
+                      }),
                 ),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.only(
-                    top: 2,
-                    bottom: 2,
-                    left: 20,
-                    right: 20,
-                  ),
-                  decoration: BoxDecoration(
-                    color: kBackgroundColorDarken,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 20,
-                        color: Colors.black12.withOpacity(0.08),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Up-Coming Matches",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: 2,
+                          bottom: 2,
+                          left: 20,
+                          right: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: kBackgroundColorDarken,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 20,
+                              color: Colors.black12.withOpacity(0.08),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: upcomingMatches.length,
+                      itemBuilder: (context, index) {
+                        final upMatch = upcomingMatches[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => UpmatchDetail(upcomingMatch: upMatch),
+                              ),
+                            );
+                          },
+                          child: UpComingMatches(upMatch: upMatch),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: upcomingMatches.length,
-                itemBuilder: (context, index) {
-                  final upMatch = upcomingMatches[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => UpmatchDetail(upcomingMatch: upMatch),
-                        ),
-                      );
-                    },
-                    child: UpComingMatches(upMatch: upMatch),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
