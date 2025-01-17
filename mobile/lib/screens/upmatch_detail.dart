@@ -188,8 +188,6 @@ Expanded(
             int type = 1;
             String answer = "0";
 
-/// PR JANGA DI APA APAIN DULU YAHHH 🥵
-            service.getMatchData(matchId.toString());
 
             if (guestCategoryItems[current] == "Regular Time") type = 1;
             if (guestCategoryItems[current] == "1st Half Time") type = 2;
@@ -265,8 +263,6 @@ Expanded(
             int type = 1;
             String answer = "x";
 
-/// PR JANGA DI APA APAIN DULU YAHHH 🥵
-            service.getMatchData(matchId.toString());
 
             if (guestCategoryItems[current] == "Regular Time") type = 1;
             if (guestCategoryItems[current] == "1st Half Time") type = 2;
@@ -337,8 +333,6 @@ Expanded(
             int type = 1;
             String answer = "1";
 
-/// PR JANGA DI APA APAIN DULU YAHHH 🥵
-            service.getMatchData(matchId.toString());
 
             if (guestCategoryItems[current] == "Regular Time") type = 1;
             if (guestCategoryItems[current] == "1st Half Time") type = 2;

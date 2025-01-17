@@ -62,8 +62,6 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     try {
       List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
       List<LiveMatch> liveMatches = await serviceLive.fetchLiveMatches();
-      print('Live Matches: $liveMatch');
-
       setState(() {
         upcomingMatches = matches;
         liveMatch = liveMatches;
