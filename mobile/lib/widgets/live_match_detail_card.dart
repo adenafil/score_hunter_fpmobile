@@ -235,11 +235,11 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildOddsPill('W1', liveMatch.votes["regularTime"]?["percentage"]["homeWin"] ?? '0.0'),
+                    _buildOddsPill('W1', liveMatch.votes["regularTime"]?["percentage"]["homeWin"].toString() ?? '0.0'),
                     const SizedBox(width: 16),
-                    _buildOddsPill('X', liveMatch.votes["regularTime"]?["percentage"]["draw"] ?? '0.0'),
+                    _buildOddsPill('X', liveMatch.votes["regularTime"]?["percentage"]["draw"].toString() ?? '0.0'),
                     const SizedBox(width: 16),
-                    _buildOddsPill('W2', liveMatch.votes["regularTime"]?["percentage"]["awayWin"] ?? '0.0'),
+                    _buildOddsPill('W2', liveMatch.votes["regularTime"]?["percentage"]["awayWin"].toString() ?? '0.0'),
                   ],
                 ),
               ),

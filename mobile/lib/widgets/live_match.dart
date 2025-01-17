@@ -217,7 +217,7 @@ class LiveMatchData extends StatelessWidget {
                         ),
                         const SizedBox(width: 20),
                         Text(
-                          live.votes["regularTime"]?["percentage"]["homeWin"] ?? '0.0',
+                          live.votes["regularTime"]?["percentage"]["homeWin"].toString() ?? '0.0',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
@@ -252,7 +252,7 @@ class LiveMatchData extends StatelessWidget {
                         ),
                         const SizedBox(width: 28),
                         Text(
-                          live.votes["regularTime"]?["percentage"]["draw"] ?? '0.0',
+                          live.votes["regularTime"]?["percentage"]["draw"].toString() ?? '0.0',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
@@ -287,7 +287,7 @@ class LiveMatchData extends StatelessWidget {
                         ),
                         const SizedBox(width: 19),
                         Text(
-                          live.votes["regularTime"]?["percentage"]["awayWin"] ?? '0.0',
+                          live.votes["regularTime"]?["percentage"]["awayWin"].toString() ?? '0.0',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,

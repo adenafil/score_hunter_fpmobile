@@ -17,7 +17,7 @@ class LiveMatch {
   final String matchTime;
   final List<String> awayGoalScorers;
   final List<String> homeGoalScorers;
-  final Map<String, String> odds;
+  final Map<String, dynamic> odds; // Diubah ke dynamic
   final String shotOnTarget;
   final String possession;
   final String yellowCard;
@@ -54,45 +54,39 @@ class LiveMatch {
     required this.onTheWinner,
     required this.votes,
   });
-  
-  
+
   factory LiveMatch.fromJson(Map<String, dynamic> json) {
-  return LiveMatch(
-    awayGoal: json['awayGoal']?.toString() ?? '0',
-    homeGoal: json['homeGoal']?.toString() ?? '0',
-    time: json['time'] ?? '',
-    awayLogo: json['awayLogo'] ?? '',
-    homeLogo: json['homeLogo'] ?? '',
-    awayTitle: json['awayTitle'] ?? '',
-    homeTitle: json['homeTitle'] ?? '',
-    stadium: json['stadium'] ?? 'Unknown Stadium',
-    stageWeek: json['stageWeek']?.toString() ?? '0',
-    matchTime: json['matchTime'] ?? '',
-    awayGoalScorers: List<String>.from(json['awayGoalScorers'] ?? []),
-    homeGoalScorers: List<String>.from(json['homeGoalScorers'] ?? []),
-    odds: Map<String, String>.from(json['odds'] ?? {}),
-    shotOnTarget: json['shotOnTarget']?.toString() ?? '0',
-    possession: json['possession']?.toString() ?? '0',
-    yellowCard: json['yellowCard']?.toString() ?? '0',
-    redCard: json['redCard']?.toString() ?? '0',
-    corner: json['corner']?.toString() ?? '0',
-    color: json['color']?.toString() ?? '0xff202020',
-    textColors: json['textColors'] ?? '#ffffff',
-    backgroundImage: json['backgroundImage'] ?? '',
-    onTheWinner: json['onTheWinner'] ?? false,
-    votes: Map<String, Map<String, dynamic>>.from(
-      (json['votes'] ?? {}).map(
-        (key, value) => MapEntry(key, Map<String, dynamic>.from(value)),
+    return LiveMatch(
+      awayGoal: json['awayGoal']?.toString() ?? '0',
+      homeGoal: json['homeGoal']?.toString() ?? '0',
+      time: json['time'] ?? '',
+      awayLogo: json['awayLogo'] ?? '',
+      homeLogo: json['homeLogo'] ?? '',
+      awayTitle: json['awayTitle'] ?? '',
+      homeTitle: json['homeTitle'] ?? '',
+      stadium: json['stadium'] ?? 'Unknown Stadium',
+      stageWeek: json['stageWeek']?.toString() ?? '0',
+      matchTime: json['matchTime'] ?? '',
+      awayGoalScorers: List<String>.from(json['awayGoalScorers'] ?? []),
+      homeGoalScorers: List<String>.from(json['homeGoalScorers'] ?? []),
+      odds: Map<String, dynamic>.from(json['odds'] ?? {}), // Diubah ke dynamic
+      shotOnTarget: json['shotOnTarget']?.toString() ?? '0',
+      possession: json['possession']?.toString() ?? '0',
+      yellowCard: json['yellowCard']?.toString() ?? '0',
+      redCard: json['redCard']?.toString() ?? '0',
+      corner: json['corner']?.toString() ?? '0',
+      color: json['color']?.toString() ?? '0xff202020',
+      textColors: json['textColors'] ?? '#ffffff',
+      backgroundImage: json['backgroundImage'] ?? '',
+      onTheWinner: json['onTheWinner'] ?? 0,
+      votes: Map<String, Map<String, dynamic>>.from(
+        (json['votes'] ?? {}).map(
+          (key, value) => MapEntry(key, Map<String, dynamic>.from(value)),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
-
-  get matchId => null;
-
-
-}
-
 
 class LiveMatchService {
   Future<List<LiveMatch>> fetchLiveMatches() async {
@@ -109,6 +103,7 @@ class LiveMatchService {
 
       if (response.statusCode == 200) {
         final decodedResponse = jsonDecode(response.body);
+        print(response.body);
 
         // Memastikan data ada dan dalam format yang diharapkan
         if (decodedResponse != null &&
