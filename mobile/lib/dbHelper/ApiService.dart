@@ -7,6 +7,7 @@ import 'package:soccer_live_score/model/up_coming_model.dart';
 class ApiService {
   final String baseUrl = 'https://api.scorehunter.my.id';
   final dbHelper = DatabaseHelper();
+    static const String cacheKeyProfile = 'user_data_cache';
 
 
   /// Method untuk login user menggunakan endpoint `/auth/google`.
@@ -183,6 +184,41 @@ class ApiService {
         'success': false,
         'message': 'An error occurred: $e',
       };
+    }
+  }
+
+
+  Future<Map<String, dynamic>> fetchUserData(String token) async {
+    final cacheManager = DefaultCacheManager();
+
+    // Cek apakah data sudah ada di cache
+    final fileInfo = await cacheManager.getFileFromCache(cacheKeyProfile);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      // Jika data cache masih valid, baca dari cache
+      final cachedData = await fileInfo.file.readAsString();
+      return json.decode(cachedData);
+    }
+
+    // Jika tidak ada cache atau cache sudah kadaluarsa, fetch dari API
+    final response = await http.get(
+      Uri.parse("https://api.scorehunter.my.id/api/user"),
+      headers: {'X-API-TOKEN': await dbHelper.getToken()},
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> userData = json.decode(response.body);
+
+      // Simpan data ke cache dengan durasi 1 hari
+      await cacheManager.putFile(
+        cacheKeyProfile,
+        utf8.encode(json.encode(userData)),
+        maxAge: const Duration(days: 1),
+      );
+
+      return userData;
+    } else {
+      throw Exception('Failed to load user data');
     }
   }
 

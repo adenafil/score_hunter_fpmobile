@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:soccer_live_score/model/UserProfile.dart';
 
 import '../constants.dart';
 import '../controller/user_controller.dart';
@@ -15,46 +17,67 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final ApiService _apiService = ApiService();
+  bool _isLoading = true;
+
   @override
-  void dispose() {
-    // Cleanup resources saat widget di-dispose oleh Flutter
-    super.dispose();
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      final userData = await _apiService.fetchUserData('ade');
+      setState(() {
+        UserController.userProfile = UserProfile.fromJson(userData['data']); // Assign data profil
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error fetching user data: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _logout() async {
     try {
-      // Reset user data dan state
       setState(() {
         UserController.user = null;
+        UserController.userProfile = null;
       });
 
-      // Proses logout
       await UserController.signOut();
-      await ApiService().logoutUser();
+      final cacheManager = DefaultCacheManager();
+      await cacheManager.removeFile(ApiService.cacheKeyProfile); // Hapus cache saat logout
 
       if (mounted) {
-        // Clear navigation stack dan pindah ke login screen
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginScreen()),
-              (route) => false,
+          (route) => false,
         );
       }
     } catch (e) {
       print('Error during logout: $e');
-      // Handle error
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Get screen size
     final Size screenSize = MediaQuery.of(context).size;
     final bool isSmallScreen = screenSize.width < 360;
+    final double avatarSize = screenSize.width * 0.2;
+    final double statItemSize = screenSize.width * 0.17;
+    final double horizontalPadding = screenSize.width * 0.05;
 
-    // Calculate responsive sizes
-    final double avatarSize = screenSize.width * 0.2; // 20% of screen width
-    final double statItemSize = screenSize.width * 0.17; // 17% of screen width
-    final double horizontalPadding = screenSize.width * 0.05; // 5% of screen width
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: kBackgroundColor,
@@ -72,47 +95,38 @@ class _ProfileState extends State<Profile> {
               ),
               child: Column(
                 children: [
-                  // Profile Avatar
                   CircleAvatar(
                     radius: avatarSize / 2,
-                    backgroundImage: NetworkImage(UserController.user?.photoURL ?? ''),
+                    backgroundImage: NetworkImage(UserController.userProfile?.photoURL ?? ''),
                     onBackgroundImageError: (exception, stackTrace) {
                       // Handle error loading image
                     },
                   ),
                   SizedBox(height: screenSize.height * 0.04),
-
-                  // Stats Row with Wrap for smaller screens
                   Wrap(
                     spacing: screenSize.width * 0.03,
                     runSpacing: screenSize.width * 0.03,
                     alignment: WrapAlignment.center,
                     children: [
-                      _buildStatItem("Prediction", "99", statItemSize, isSmallScreen),
-                      _buildStatItem("Win", "90", statItemSize, isSmallScreen),
-                      _buildStatItem("Lose", "9", statItemSize, isSmallScreen),
-                      _buildStatItem("Winrate", "89%", statItemSize, isSmallScreen),
+                      _buildStatItem("Prediction", "${UserController.userProfile?.statistic["total_guess"] ?? 0}", statItemSize, isSmallScreen),
+                      _buildStatItem("Win",  "${UserController.userProfile?.statistic["total_win"] ?? 0}", statItemSize, isSmallScreen),
+                      _buildStatItem("Lose",  "${UserController.userProfile?.statistic["total_lose"] ?? 0}", statItemSize, isSmallScreen),
+                      _buildStatItem("Winrate",  "${UserController.userProfile?.statistic["win_rate_percentage"] ?? 0}", statItemSize, isSmallScreen),
                     ],
                   ),
-
                   SizedBox(height: screenSize.height * 0.04),
-
-                  // Profile Info Cards
                   _buildInfoCard(
                     icon: Icons.person,
-                    text: UserController.user?.displayName ?? 'Guest User',
+                    text: UserController.userProfile?.displayName ?? 'Guest User',
                     isSmallScreen: isSmallScreen,
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   _buildInfoCard(
                     icon: Icons.mail,
-                    text: UserController.user?.email ?? 'Guest Email',
+                    text: UserController.userProfile?.email ?? 'Guest Email',
                     isSmallScreen: isSmallScreen,
                   ),
-
                   SizedBox(height: screenSize.height * 0.04),
-
-                  // Logout Button
                   SizedBox(
                     width: double.infinity,
                     height: screenSize.height * 0.06,
@@ -142,6 +156,8 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
+
 
   Widget _buildStatItem(String label, String value, double size, bool isSmallScreen) {
     return Container(
