@@ -380,7 +380,7 @@ class _MatchDetailState extends State<MatchDetail> {
                 // Logo di tengah
                 const Center(
                   child: Text(
-                    "Premiere League",
+                    "Belanda", // Up Header
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

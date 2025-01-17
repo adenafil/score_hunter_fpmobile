@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 import 'package:soccer_live_score/model/up_coming_model.dart';
@@ -190,9 +191,26 @@ class ApiService {
 class UpcomingMatchService {
   final String baseUrl = "https://api.scorehunter.my.id/api/upcomingmatch";
       final dbHelper = DatabaseHelper();
-      
+        final DefaultCacheManager cacheManager = DefaultCacheManager();
+
   Future<List<UpcomingMatch>> fetchUpcomingMatches() async {
+    final cacheKey = 'upcoming_matches_cache'; // Key untuk cache
+
     try {
+      // Cek apakah data sudah ada di cache
+      final file = await cacheManager.getFileFromCache(cacheKey);
+
+      if (file != null && file.validTill.isAfter(DateTime.now())) {
+        // Jika data di cache masih valid, gunakan data dari cache
+        final cachedData = await file.file.readAsString();
+        final data = jsonDecode(cachedData);
+        final List<dynamic> matches = data['data']
+            .expand((item) => item['upcomingMatches'] as List)
+            .toList();
+        return matches.map((json) => UpcomingMatch.fromJson(json)).toList();
+      }
+
+      // Jika cache tidak ada atau sudah expired, fetch data baru dari API
       final response = await http.get(
         Uri.parse(baseUrl),
         headers: {
@@ -204,8 +222,15 @@ class UpcomingMatchService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> matches = data['data']
-        .expand((item) => item['upcomingMatches'] as List)
-        .toList();
+            .expand((item) => item['upcomingMatches'] as List)
+            .toList();
+
+        // Simpan data ke cache dengan durasi 3 menit
+        await cacheManager.putFile(
+          cacheKey,
+          utf8.encode(jsonEncode(data)),
+          maxAge: Duration(minutes: 5), // Durasi cache 3 menit
+        );
 
         return matches.map((json) => UpcomingMatch.fromJson(json)).toList();
       } else {
@@ -285,21 +310,39 @@ Future<String> postGuessMatch({
 }
 
   Future<Map<String, dynamic>?> getMatchData(String matchId) async {
-    final url = Uri.parse('$baseUrl/match?matchId=$matchId');
-          final dbHelper = DatabaseHelper();
-
-    final headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'X-API-TOKEN': await dbHelper.getToken(),
-    };
+    final cacheKey = 'match_data_$matchId'; // Key untuk cache (unik berdasarkan matchId)
 
     try {
+      // Cek apakah data sudah ada di cache
+      final file = await cacheManager.getFileFromCache(cacheKey);
+
+      if (file != null && file.validTill.isAfter(DateTime.now())) {
+        // Jika data di cache masih valid, gunakan data dari cache
+        final cachedData = await file.file.readAsString();
+        return jsonDecode(cachedData);
+      }
+
+      // Jika cache tidak ada atau sudah expired, fetch data baru dari API
+      final url = Uri.parse('$baseUrl/match?matchId=$matchId');
+      final headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-API-TOKEN': await dbHelper.getToken(),
+      };
+
       final response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
-        // Berhasil mendapatkan data
-        return jsonDecode(response.body);
+        final data = jsonDecode(response.body);
+
+        // Simpan data ke cache dengan durasi 3 menit
+        await cacheManager.putFile(
+          cacheKey,
+          utf8.encode(jsonEncode(data)),
+          maxAge: Duration(minutes: 5), // Durasi cache 3 menit
+        );
+
+        return data;
       } else {
         // Jika gagal, log error atau handle sesuai kebutuhan
         print("Error: ${response.statusCode} - ${response.reasonPhrase}");
@@ -312,11 +355,25 @@ Future<String> postGuessMatch({
     }
   }
 
-  Future<String> fetchStadiumName(String matchId) async {
+Future<String> fetchStadiumName(String matchId) async {
   final String apiUrl = 'http://api.scorehunter.my.id/api/match/stadium?matchId=$matchId';
   const String apiKey = 'ade';
+  final DefaultCacheManager cacheManager = DefaultCacheManager();
+  final cacheKey = 'stadium_name_$matchId'; // Key untuk cache (unik berdasarkan matchId)
 
   try {
+    // Cek apakah data sudah ada di cache
+    final file = await cacheManager.getFileFromCache(cacheKey);
+
+    if (file != null && file.validTill.isAfter(DateTime.now())) {
+      // Jika data di cache masih valid, gunakan data dari cache
+      final cachedData = await file.file.readAsString();
+      final Map<String, dynamic> data = json.decode(cachedData);
+      final String stadiumName = data['data']['name'];
+      return stadiumName;
+    }
+
+    // Jika cache tidak ada atau sudah expired, fetch data baru dari API
     final response = await http.get(
       Uri.parse(apiUrl),
       headers: {
@@ -330,6 +387,14 @@ Future<String> postGuessMatch({
       // Parse JSON response
       final Map<String, dynamic> data = json.decode(response.body);
       final String stadiumName = data['data']['name'];
+
+      // Simpan data ke cache dengan durasi 1 tahun
+      await cacheManager.putFile(
+        cacheKey,
+        utf8.encode(jsonEncode(data)),
+        maxAge: Duration(days: 365), // Durasi cache 1 tahun
+      );
+
       return stadiumName;
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');

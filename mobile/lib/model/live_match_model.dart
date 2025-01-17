@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -89,10 +90,44 @@ class LiveMatch {
 }
 
 class LiveMatchService {
-  Future<List<LiveMatch>> fetchLiveMatches() async {
-    try {
-            final dbHelper = DatabaseHelper();
+  final DefaultCacheManager cacheManager = DefaultCacheManager();
 
+  Future<List<LiveMatch>> fetchLiveMatches() async {
+    final cacheKey = 'live_matches_cache'; // Key untuk cache
+
+    try {
+      // Cek apakah data sudah ada di cache
+      final file = await cacheManager.getFileFromCache(cacheKey);
+
+      if (file != null && file.validTill.isAfter(DateTime.now())) {
+        // Jika data di cache masih valid, gunakan data dari cache
+        final cachedData = await file.file.readAsString();
+        final decodedResponse = jsonDecode(cachedData);
+
+        // Memproses data dari cache
+        if (decodedResponse != null &&
+            decodedResponse is Map<String, dynamic> &&
+            decodedResponse['data'] is List) {
+          final matches = (decodedResponse['data'] as List)
+              .map((match) {
+                try {
+                  return LiveMatch.fromJson(match);
+                } catch (e) {
+                  // Abaikan elemen yang tidak valid
+                  return null;
+                }
+              })
+              .whereType<LiveMatch>()
+              .toList();
+
+          return matches;
+        } else {
+          throw Exception("Invalid data format from cache");
+        }
+      }
+
+      // Jika cache tidak ada atau sudah expired, fetch data baru dari API
+      final dbHelper = DatabaseHelper();
       final response = await http.get(
         Uri.parse('https://api.scorehunter.my.id/api/startedmatch'),
         headers: {
@@ -121,6 +156,13 @@ class LiveMatchService {
               })
               .whereType<LiveMatch>()
               .toList();
+
+          // Simpan data ke cache dengan durasi 5 menit
+          await cacheManager.putFile(
+            cacheKey,
+            utf8.encode(jsonEncode(decodedResponse)),
+            maxAge: Duration(minutes: 5), // Durasi cache 5 menit
+          );
 
           return matches;
         } else {

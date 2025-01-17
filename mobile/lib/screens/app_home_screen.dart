@@ -88,90 +88,94 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 color: kPrimaryColor,
               ),
             )
-          : Column(
-              children: [
-                liveMatchText(),
-                SizedBox(
-                  height: 230,
-                  child: ListView.builder(
-                      itemCount: liveMatch.length,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(left: 20),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final live = liveMatch[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MatchDetail(liveMatch: live),
-                              ),
+          : RefreshIndicator(
+              onRefresh: fetchData, // Fungsi yang dipanggil saat refresh
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    liveMatchText(),
+                    SizedBox(
+                      height: 230,
+                      child: ListView.builder(
+                          itemCount: liveMatch.length,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.only(left: 20),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            final live = liveMatch[index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => MatchDetail(liveMatch: live),
+                                  ),
+                                );
+                              },
+                              child: LiveMatchData(live: live),
                             );
-                          },
-                          child: LiveMatchData(live: live),
-                        );
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      const Text(
-                        "Up-Coming Matches",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 2,
-                          bottom: 2,
-                          left: 20,
-                          right: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: kBackgroundColorDarken,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 20,
-                              color: Colors.black12.withOpacity(0.08),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: upcomingMatches.length,
-                      itemBuilder: (context, index) {
-                        final upMatch = upcomingMatches[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => UpmatchDetail(upcomingMatch: upMatch),
-                              ),
-                            );
-                          },
-                          child: UpComingMatches(upMatch: upMatch),
-                        );
-                      },
+                          }),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Up-Coming Matches",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.only(
+                              top: 2,
+                              bottom: 2,
+                              left: 20,
+                              right: 20,
+                            ),
+                            decoration: BoxDecoration(
+                              color: kBackgroundColorDarken,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 20,
+                                  color: Colors.black12.withOpacity(0.08),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: upcomingMatches.length,
+                        itemBuilder: (context, index) {
+                          final upMatch = upcomingMatches[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => UpmatchDetail(upcomingMatch: upMatch),
+                                ),
+                              );
+                            },
+                            child: UpComingMatches(upMatch: upMatch),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
     );
   }
