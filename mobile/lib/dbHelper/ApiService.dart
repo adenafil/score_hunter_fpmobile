@@ -312,5 +312,33 @@ Future<String> postGuessMatch({
     }
   }
 
+  Future<String> fetchStadiumName(String matchId) async {
+  final String apiUrl = 'http://api.scorehunter.my.id/api/match/stadium?matchId=$matchId';
+  const String apiKey = 'ade';
+
+  try {
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {
+        'X-API-TOKEN': apiKey,
+      },
+    );
+
+    print("stadium ${response.body}");
+
+    if (response.statusCode == 200) {
+      // Parse JSON response
+      final Map<String, dynamic> data = json.decode(response.body);
+      final String stadiumName = data['data']['name'];
+      return stadiumName;
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error: $e');
+  }
+}
+
+
 
 }

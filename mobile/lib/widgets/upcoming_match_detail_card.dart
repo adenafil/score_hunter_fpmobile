@@ -1,12 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
 import '../constants.dart';
 import '../model/up_coming_model.dart';
 
-class UpcomingMatchDetailCard extends StatelessWidget {
+class UpcomingMatchDetailCard extends StatefulWidget {
   final UpcomingMatch upMatch;
   const UpcomingMatchDetailCard({super.key, required this.upMatch});
+
+  @override
+  State<UpcomingMatchDetailCard> createState() => _UpcomingMatchDetailCardState();
+}
+
+class _UpcomingMatchDetailCardState extends State<UpcomingMatchDetailCard> {
+  // State untuk menyimpan nama stadion
+  String _stadiumName = 'Loading...';
+  late UpcomingMatchService _upcomingMatchService;
+
+  @override
+  void initState() {
+    super.initState();
+    _upcomingMatchService = UpcomingMatchService(); // Inisialisasi service
+    _fetchStadiumName(); // Panggil method untuk fetch nama stadion
+  }
+
+  // Method untuk fetch nama stadion dari API
+  void _fetchStadiumName() async {
+    try {
+      String stadiumName = await _upcomingMatchService.fetchStadiumName(widget.upMatch.matchId.toString());
+      setState(() {
+        _stadiumName = stadiumName; // Update state dengan nama stadion
+      });
+    } catch (e) {
+      setState(() {
+        _stadiumName = 'Failed to load stadium name'; // Handle error
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +61,7 @@ class UpcomingMatchDetailCard extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    upMatch.stadium,
+                    _stadiumName, // Gunakan _stadiumName dari state
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
@@ -40,7 +71,7 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Week ${upMatch.stageWeek.toString()}',
+                    'Week ${widget.upMatch.stageWeek.toString()}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: kSecondaryColor,
@@ -65,23 +96,24 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                             SizedBox(
                               height: 64,
                               child: Image.network(
-                                                        upMatch.homeLogo,
-                        height: 45,
-                        width: 45,
-                        loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
-
-                                  ),
-                                );
-                        },
+                                widget.upMatch.homeLogo,
+                                height: 45,
+                                width: 45,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                          : null,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              upMatch.homeTitle,
+                              widget.upMatch.homeTitle,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -113,14 +145,13 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
-                            const SizedBox(height: 8), // Spacer
-                            // Match Date and Time
+                            const SizedBox(height: 8),
                             Column(
                               children: [
                                 Text(
-  upMatch.date != null
-      ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(upMatch.date!))
-      : "",
+                                  widget.upMatch.date != null
+                                      ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(widget.upMatch.date!))
+                                      : "",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: Colors.white,
@@ -130,7 +161,7 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  upMatch.time ?? "",
+                                  widget.upMatch.time ?? "",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     color: kSecondaryColor,
@@ -151,23 +182,24 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                             SizedBox(
                               height: 64,
                               child: Image.network(
-                                                        upMatch.awayLogo,
-                        height: 45,
-                        width: 45,
-                        loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child; // Jika selesai loading, tampilkan gambar
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1) : null,
-
-                                  ),
-                                );
-                        },
+                                widget.upMatch.awayLogo,
+                                height: 45,
+                                width: 45,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                          : null,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              upMatch.awayTitle,
+                              widget.upMatch.awayTitle,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -201,11 +233,11 @@ class UpcomingMatchDetailCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildOddsPill('W1', upMatch.odds['homeWin'].toString()),
+                    _buildOddsPill('W1', widget.upMatch.odds['homeWin'].toString()),
                     const SizedBox(width: 16),
-                    _buildOddsPill('X', upMatch.odds['draw'].toString()),
+                    _buildOddsPill('X', widget.upMatch.odds['draw'].toString()),
                     const SizedBox(width: 16),
-                    _buildOddsPill('W2', upMatch.odds['awayWin'].toString()),
+                    _buildOddsPill('W2', widget.upMatch.odds['awayWin'].toString()),
                   ],
                 ),
               ),

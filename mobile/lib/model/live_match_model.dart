@@ -88,6 +88,8 @@ class LiveMatch {
   );
 }
 
+  get matchId => null;
+
 
 }
 

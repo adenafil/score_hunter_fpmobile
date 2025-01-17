@@ -29,6 +29,7 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
       // Update the state with fetched matches
       setState(() {
         upcomingMatches = matches;
+        
       });
     } catch (e) {
       print('Error fetching upcoming matches: $e');
