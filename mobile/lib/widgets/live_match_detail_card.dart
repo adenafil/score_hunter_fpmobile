@@ -113,7 +113,15 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.network(liveMatch.homeLogo),
+                              child: Image.network(
+                                liveMatch.homeLogo,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/img/logo-team-default.png',
+                                    height: 64,
+                                  );
+                                },
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -191,7 +199,15 @@ class _MatchDetailCardState extends State<MatchDetailCard> {
                           children: [
                             SizedBox(
                               height: 64,
-                              child: Image.network(liveMatch.awayLogo),
+                              child: Image.network(
+                                liveMatch.awayLogo,
+                                  errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/img/logo-team-default.png',
+                                    height: 64,
+                                  );
+                                },
+                              ),
                             ),
                             const SizedBox(height: 4),
                             Text(

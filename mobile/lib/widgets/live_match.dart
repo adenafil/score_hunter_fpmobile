@@ -63,6 +63,12 @@ class LiveMatchData extends StatelessWidget {
                             child: Image.network(
                               live.homeLogo,
                               fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/img/logo-team-default.png',
+                                  height: 64,
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -156,6 +162,12 @@ class LiveMatchData extends StatelessWidget {
                             child: Image.network(
                               live.awayLogo,
                               fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/img/logo-team-default.png',
+                                  height: 64,
+                                );
+                              },
                             ),
                           ),
                         ),
