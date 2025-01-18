@@ -22,6 +22,7 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
   final ApiService votesService = ApiService();
   int totalVotes = 0;
   bool isLoading = true;
+  String leagueName = 'Loading...'; // Tambahkan state untuk menyimpan nama liga
 
 
   // Asynchronous method to fetch upcoming matches
@@ -29,6 +30,8 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
     try {
             int matchId = widget.upcomingMatch.matchId;
      totalVotes = await votesService.fetchTotalVotes(matchId);
+           leagueName = await votesService.fetchLeagueName(matchId); // Ambil nama liga
+
       guestCategoryItems = widget.upcomingMatch.votes.values
           .map(
               (vote) => (vote['categoryName'] as String?) ?? 'Unknown Category')
@@ -37,11 +40,14 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
       // Fetch upcoming matches from service
       List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
       // Update the state with fetched matches
-      setState(() {
+      if (mounted) {
+              setState(() {
         upcomingMatches = matches;
                 isLoading = false;
 
       });
+
+      }
     } catch (e) {
             setState(() {
         isLoading = false;
@@ -50,6 +56,11 @@ class _UpmatchDetailState extends State<UpmatchDetail> {
     }
   }
 
+
+@override
+void dispose() {
+  super.dispose();
+}
 
   @override
   void initState() {
@@ -487,15 +498,15 @@ Expanded(
                   ),
                 ),
                 // Logo di tengah
-                const Center(
-                  child: Text(
-                    "Nigeria", // up match header
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
+                Center(
+                child: Text(
+                  leagueName, // Tampilkan nama liga di sini
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                  ),
                   ),
                 ),
               ],

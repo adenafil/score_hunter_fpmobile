@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:soccer_live_score/constants.dart';
+import 'package:soccer_live_score/dbHelper/ApiService.dart';
 import 'package:soccer_live_score/model/live_match_model.dart';
 import 'package:soccer_live_score/widgets/live_match_detail_card.dart';
 import 'package:intl/intl.dart';
@@ -20,11 +21,18 @@ class _MatchDetailState extends State<MatchDetail> {
   List<LiveMatch> liveMatch = [];
 
   late List<String> guestCategoryItems;
+    String leagueName = 'Loading...'; // Tambahkan state untuk menyimpan nama liga
+  final ApiService apiService = ApiService();
+
 
   @override
   void initState() {
     super.initState();
+
+
+
     fetchLiveMatch();
+
 
     // Validasi apakah votes ada
     if (widget.liveMatch.votes != null) {
@@ -41,6 +49,7 @@ class _MatchDetailState extends State<MatchDetail> {
     try {
       // Fetch upcoming matches from service
       List<LiveMatch> matches = await serviceLive.fetchLiveMatches();
+
       // Update the state with fetched matches
       setState(() {
         liveMatch = matches;
@@ -378,11 +387,11 @@ class _MatchDetailState extends State<MatchDetail> {
                   ),
                 ),
                 // Logo di tengah
-                const Center(
+                Center(
                   child: Text(
-                    "Belanda", // Up Header
+                    widget.liveMatch.nameLeague, // Up Header
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w900,

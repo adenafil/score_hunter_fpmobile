@@ -255,8 +255,44 @@ class ApiService {
     } else {
       throw Exception('Failed to load total votes');
     }
+
+    
   }
 
+  Future<String> fetchLeagueName(int matchId) async {
+    // Membuat cache key berdasarkan matchId
+    final cacheKey = 'league_name_$matchId';
+
+    // Mengecek apakah data sudah ada di cache dan masih valid
+    final fileInfo = await cacheManager.getFileFromCache(cacheKey);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      // Jika data cache masih valid, baca dari cache
+      final cachedData = await fileInfo.file.readAsString();
+      return json.decode(cachedData)['data']['name'];
+    }
+
+    // Jika tidak ada cache atau cache sudah kadaluarsa, fetch dari API
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/nameleague?matchId=$matchId'),
+      headers: {'X-API-TOKEN': 'ade'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // Simpan data ke cache dengan durasi 1 hari
+      await cacheManager.putFile(
+        cacheKey,
+        utf8.encode(json.encode(data)),
+        maxAge: const Duration(days: 1),
+      );
+
+      return data['data']['name'];
+    } else {
+      throw Exception('Failed to load league name');
+    }
+  }
 }
 
 class UpcomingMatchService {

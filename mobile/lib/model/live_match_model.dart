@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:soccer_live_score/dbHelper/sqlite_db.dart';
 
 class LiveMatch {
+  final String nameLeague;
   final String awayGoal;
   final String homeGoal;
   final String time;
@@ -31,6 +32,7 @@ class LiveMatch {
   final Map<String, Map<String, dynamic>> votes;
 
   LiveMatch({
+    required this.nameLeague,
     required this.awayGoal,
     required this.homeGoal,
     required this.time,
@@ -58,6 +60,7 @@ class LiveMatch {
 
   factory LiveMatch.fromJson(Map<String, dynamic> json) {
     return LiveMatch(
+      nameLeague: json['nameLeague']?.toString() ?? 'Unknown League',
       awayGoal: json['awayGoal']?.toString() ?? '0',
       homeGoal: json['homeGoal']?.toString() ?? '0',
       time: json['time'] ?? '',
@@ -182,6 +185,7 @@ class LiveMatchService {
 
 List<LiveMatch> liveMatches = [
   LiveMatch(
+    nameLeague: "",
     awayGoal: "1",
     homeGoal: "2",
     stadium: "Etihad Stadium",
@@ -248,6 +252,7 @@ List<LiveMatch> liveMatches = [
     },
   ),
   LiveMatch(
+        nameLeague: "",
     awayGoal: "0",
     homeGoal: "2",
     stadium: "King Power Stadium",
@@ -314,6 +319,7 @@ List<LiveMatch> liveMatches = [
     },
   ),
   LiveMatch(
+        nameLeague: "",
     awayGoal: "3",
     homeGoal: "1",
     stadium: "Old Trafford Stadium",
