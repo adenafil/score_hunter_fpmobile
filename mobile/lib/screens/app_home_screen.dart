@@ -62,16 +62,22 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     try {
       List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
       List<LiveMatch> liveMatches = await serviceLive.fetchLiveMatches();
-      setState(() {
+      if (mounted) {
+              setState(() {
         upcomingMatches = matches;
         liveMatch = liveMatches;
         isLoading = false;
       });
+
+      }
     } catch (e) {
       print('Error fetching data: $e');
+    // Handle errors and ensure the widget is still mounted before calling setState
+    if (mounted) {
       setState(() {
         isLoading = false;
       });
+    }
     }
   }
 

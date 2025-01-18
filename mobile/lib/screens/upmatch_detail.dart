@@ -19,19 +19,33 @@ class UpmatchDetail extends StatefulWidget {
 class _UpmatchDetailState extends State<UpmatchDetail> {
   late List<String> guestCategoryItems;
   final UpcomingMatchService service = UpcomingMatchService();
+  final ApiService votesService = ApiService();
+  int totalVotes = 0;
+  bool isLoading = true;
 
 
   // Asynchronous method to fetch upcoming matches
   Future<void> fetchUpcomingMatches() async {
     try {
+            int matchId = widget.upcomingMatch.matchId;
+     totalVotes = await votesService.fetchTotalVotes(matchId);
+      guestCategoryItems = widget.upcomingMatch.votes.values
+          .map(
+              (vote) => (vote['categoryName'] as String?) ?? 'Unknown Category')
+          .toList();
+
       // Fetch upcoming matches from service
       List<UpcomingMatch> matches = await service.fetchUpcomingMatches();
       // Update the state with fetched matches
       setState(() {
         upcomingMatches = matches;
-        
+                isLoading = false;
+
       });
     } catch (e) {
+            setState(() {
+        isLoading = false;
+      });
       print('Error fetching upcoming matches: $e');
     }
   }
@@ -392,7 +406,7 @@ Expanded(
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text(
-                            'Total votes: ${NumberFormat("#,##0").format(widget.upcomingMatch.votes["regularTime"]?["totalVotes"] ?? 0)}',
+                            'Total votes: ${totalVotes}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: kTransparentWhite,
@@ -475,7 +489,7 @@ Expanded(
                 // Logo di tengah
                 const Center(
                   child: Text(
-                    "Belanda", // up match header
+                    "Nigeria", // up match header
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,

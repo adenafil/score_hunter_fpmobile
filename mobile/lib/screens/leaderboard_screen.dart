@@ -36,11 +36,14 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 );
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        setState(() {
+        if (mounted) {
+                  setState(() {
           leaderboardData = data['data'];
           currentUser = data['current_rank_user'];
           isLoading = false;
         });
+
+        }
       } else {
         throw Exception('Failed to load leaderboard data');
       }
@@ -148,7 +151,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
                       SizedBox(
                         width: 80,
                         child: Text(
-                          "Guesses",
+                          "Correct Guesses",
                           style: TextStyle(
                             color: kSecondaryColor,
                             fontSize: 16,

@@ -29,9 +29,15 @@ class _UpcomingMatchDetailCardState extends State<UpcomingMatchDetailCard> {
   void _fetchStadiumName() async {
     try {
       String stadiumName = await _upcomingMatchService.fetchStadiumName(widget.upMatch.matchId.toString());
+    // Check if the widget is still mounted before calling setState
+    if (mounted) {
       setState(() {
-        _stadiumName = stadiumName; // Update state dengan nama stadion
+        _stadiumName = stadiumName; // Update state with the stadium name
       });
+    }
+
+
+
     } catch (e) {
       setState(() {
         _stadiumName = 'Failed to load stadium name'; // Handle error

@@ -22,6 +22,8 @@ class _InPlayTabState extends State<InPlayTab> {
     _fetchMatches();
   }
 
+  
+
   Future<void> _fetchMatches() async {
     const String apiUrl =
         'https://api.scorehunter.my.id/api/user/history?isHistory=false';
@@ -47,20 +49,31 @@ class _InPlayTabState extends State<InPlayTab> {
           };
         }).toList();
 
-        setState(() {
-          matches = formattedData;
-          _isLoading = false;
-        });
+    // Check if the widget is still mounted before calling setState
+    if (mounted) {
+      setState(() {
+        matches = formattedData;
+        _isLoading = false;
+      });
+    }
       } else {
         throw Exception('Failed to load matches');
       }
     } catch (e) {
       print('Error: $e');
-      setState(() {
+      if (mounted) {
+              setState(() {
         _isLoading = false;
       });
+      }
     }
   }
+
+@override
+void dispose() {
+  super.dispose();
+}
+
 
   @override
   Widget build(BuildContext context) {

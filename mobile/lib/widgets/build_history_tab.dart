@@ -48,11 +48,14 @@ class _HistoryTabState extends State<HistoryTab> {
             'answer': match['answer']
           };
         }).toList();
-
-        setState(() {
+        
+        if (mounted) {
+                  setState(() {
           _matches = formattedData;
           _isLoading = false;
         });
+        }
+
       } else {
         throw Exception('Failed to load matches');
       }

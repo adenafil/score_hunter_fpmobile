@@ -8,6 +8,7 @@ class ApiService {
   final String baseUrl = 'https://api.scorehunter.my.id';
   final dbHelper = DatabaseHelper();
     static const String cacheKeyProfile = 'user_data_cache';
+    final DefaultCacheManager cacheManager = DefaultCacheManager();
 
 
   /// Method untuk login user menggunakan endpoint `/auth/google`.
@@ -219,6 +220,40 @@ class ApiService {
       return userData;
     } else {
       throw Exception('Failed to load user data');
+    }
+  }
+
+
+  Future<int> fetchTotalVotes(int matchId) async {
+    // Membuat cache key berdasarkan matchId dan type
+    final cacheKey = "totalVotes_{$matchId}";
+
+    // Mengecek apakah data sudah ada di cache dan masih valid
+    final cachedData = await cacheManager.getFileFromCache(cacheKey);
+
+    if (cachedData != null && cachedData.validTill.isAfter(DateTime.now())) {
+      final jsonData = json.decode(await cachedData.file.readAsString());
+      return jsonData['data']['totalVotes'];
+    }
+
+    final response = await http.get(
+      Uri.parse('https://api.scorehunter.my.id/api/totalvotes?matchId=$matchId'),
+      headers: {'X-API-TOKEN': 'ade'},
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      final int totalVotes = jsonData['data']['totalVotes'];
+      print(totalVotes);
+      await cacheManager.putFile(
+        cacheKey,
+        utf8.encode(json.encode(jsonData)),
+        maxAge: const Duration(seconds: 30),
+      );
+
+      return totalVotes;
+    } else {
+      throw Exception('Failed to load total votes');
     }
   }
 
