@@ -95,7 +95,7 @@ class LiveMatch {
 class LiveMatchService {
   final DefaultCacheManager cacheManager = DefaultCacheManager();
 
-  Future<List<LiveMatch>> fetchLiveMatches({int page = 1, int limit = 10}) async {
+  Future<List<LiveMatch>> fetchLiveMatches({int page = 1, int limit = 3}) async {
     final cacheKey = 'live_matches_cache_page_$page'; // Key untuk cache per halaman
 
     try {
