@@ -51,6 +51,13 @@ class UpComingMatches extends StatelessWidget {
                     children: [
                       Image.network(
                         upMatch.homeLogo,
+                                                      errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/img/logo-team-default.png',
+                                  height: 64,
+                                );
+                              },
+
                         height: 45,
                         width: 45,
                         loadingBuilder: (context, child, loadingProgress) {
@@ -117,6 +124,13 @@ class UpComingMatches extends StatelessWidget {
                     children: [
                       Image.network(
                         upMatch.awayLogo,
+                                                      errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/img/logo-team-default.png',
+                                  height: 64,
+                                );
+                              },
+
                         height: 45,
                         width: 45,
                         loadingBuilder: (context, child, loadingProgress) {
