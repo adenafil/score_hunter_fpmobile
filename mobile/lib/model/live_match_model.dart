@@ -95,8 +95,8 @@ class LiveMatch {
 class LiveMatchService {
   final DefaultCacheManager cacheManager = DefaultCacheManager();
 
-  Future<List<LiveMatch>> fetchLiveMatches() async {
-    final cacheKey = 'live_matches_cache'; // Key untuk cache
+  Future<List<LiveMatch>> fetchLiveMatches({int page = 1, int limit = 10}) async {
+    final cacheKey = 'live_matches_cache_page_$page'; // Key untuk cache per halaman
 
     try {
       // Cek apakah data sudah ada di cache
@@ -132,7 +132,7 @@ class LiveMatchService {
       // Jika cache tidak ada atau sudah expired, fetch data baru dari API
       final dbHelper = DatabaseHelper();
       final response = await http.get(
-        Uri.parse('https://api.scorehunter.my.id/api/startedmatch'),
+        Uri.parse('https://api.scorehunter.my.id/api/startedmatch?page=$page&limit=$limit'),
         headers: {
           'Content-Type': 'application/json',
           'X-API-TOKEN': await dbHelper.getToken(),
@@ -179,7 +179,6 @@ class LiveMatchService {
     }
   }
 }
-
 
 
 

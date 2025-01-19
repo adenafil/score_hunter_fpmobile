@@ -25,38 +25,37 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
   final UpcomingMatchService service = UpcomingMatchService();
   final LiveMatchService serviceLive = LiveMatchService();
 
-  final List<Map<String, dynamic>> leagues = [
-    {
-      'image': 'assets/img/pl_white.png',
-      'name': 'Premiere League',
-    },
-    {
-      'image': 'assets/img/LaLiga.png',
-      'name': 'La Liga',
-    },
-    {
-      'image': 'assets/img/Bundesliga.png',
-      'name': 'Bundesliga',
-    },
-    {
-      'image': 'assets/img/Ligue1_Uber_Eats.png',
-      'name': 'Ligue 1 Uber Eats',
-    },
-    {
-      'image': 'assets/img/SerieA.png',
-      'name': 'Serie A',
-    },
-  ];
 
   List<UpcomingMatch> upcomingMatches = [];
   List<LiveMatch> liveMatch = [];
   bool isLoading = true;
+  bool isLoadMore = false; // Untuk menandai apakah sedang memuat data tambahan
+  int currentPage = 1; // Halaman saat ini
+  final int limit = 10; // Jumlah data per halaman
+  final ScrollController _scrollController = ScrollController(); // Controller untuk scroll
+
 
   @override
   void initState() {
     super.initState();
     fetchData();
+    _scrollController.addListener(_onScroll); // Tambahkan listener untuk scroll
   }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll); // Hapus listener saat widget di-dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // Method untuk mendeteksi scroll
+  void _onScroll() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      loadMoreData(); // Muat data tambahan saat mencapai akhir list
+    }
+  }
+
 
   Future<void> fetchData() async {
     try {
@@ -81,6 +80,35 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
     }
   }
 
+
+  Future<void> loadMoreData() async {
+    if (isLoadMore) return; // Hindari multiple calls
+
+    setState(() {
+      isLoadMore = true;
+    });
+
+    try {
+      currentPage++; // Pindah ke halaman berikutnya
+      List<LiveMatch> newMatches = await serviceLive.fetchLiveMatches(page: currentPage, limit: limit);
+
+      if (mounted) {
+        setState(() {
+          liveMatch.addAll(newMatches); // Tambahkan data baru ke list yang ada
+          isLoadMore = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading more data: $e');
+      if (mounted) {
+        setState(() {
+          isLoadMore = false;
+        });
+      }
+    }
+  }
+
+
   String selectedLeague = 'Premiere League';
 
   @override
@@ -104,24 +132,36 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                     SizedBox(
                       height: 230,
                       child: ListView.builder(
-                          itemCount: liveMatch.length,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(left: 20),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            final live = liveMatch[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => MatchDetail(liveMatch: live),
-                                  ),
-                                );
-                              },
-                              child: LiveMatchData(live: live),
-                            );
-                          }),
+  controller: _scrollController, // Tambahkan ScrollController
+  itemCount: liveMatch.length + (isLoadMore ? 1 : 0), // Tambahkan 1 item untuk loading indicator
+  shrinkWrap: true,
+  padding: const EdgeInsets.only(left: 20),
+  scrollDirection: Axis.horizontal,
+  itemBuilder: (context, index) {
+    if (index == liveMatch.length) {
+      // Tampilkan loading indicator di akhir list
+      return Center(
+        child: CircularProgressIndicator(
+          color: kPrimaryColor,
+        ),
+      );
+    }
+
+    final live = liveMatch[index];
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => MatchDetail(liveMatch: live),
+          ),
+        );
+      },
+      child: LiveMatchData(live: live),
+    );
+  },
+),
+
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20),

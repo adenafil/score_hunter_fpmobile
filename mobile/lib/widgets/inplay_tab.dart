@@ -301,7 +301,7 @@ class MatchCard extends StatelessWidget {
             if (isWinner && teams[0]['score'] == teams[1]['score'])
               const Icon(
                 Icons.arrow_right,
-                color: Colors.white, // Warna putih jika kondisi pertama benar
+                color: kAccentColor, // Warna putih jika kondisi pertama benar
                 size: 16,
               )
             else if (isWinner)
