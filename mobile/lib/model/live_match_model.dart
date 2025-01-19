@@ -95,7 +95,7 @@ class LiveMatch {
 class LiveMatchService {
   final DefaultCacheManager cacheManager = DefaultCacheManager();
 
-  Future<List<LiveMatch>> fetchLiveMatches({int page = 1, int limit = 3}) async {
+  Future<List<LiveMatch>> fetchLiveMatches({int page = 1, int limit = 5}) async {
     final cacheKey = 'live_matches_cache_page_$page'; // Key untuk cache per halaman
 
     try {
@@ -141,7 +141,6 @@ class LiveMatchService {
 
       if (response.statusCode == 200) {
         final decodedResponse = jsonDecode(response.body);
-        print(response.body);
 
         // Memastikan data ada dan dalam format yang diharapkan
         if (decodedResponse != null &&
@@ -157,6 +156,7 @@ class LiveMatchService {
                   return null;
                 }
               })
+              .where((match) => match != null)
               .whereType<LiveMatch>()
               .toList();
 
